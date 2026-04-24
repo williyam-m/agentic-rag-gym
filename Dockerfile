@@ -16,20 +16,21 @@ COPY domains/ domains/
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir .
 
-COPY . .
+# Pre-warm embedding model so first /reset doesn't time out
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+
+COPY inference.py main.py openenv.yaml ./
 
 RUN mkdir -p /app/data/faiss_indices
 
 ENV SERVER_HOST=0.0.0.0
 ENV SERVER_PORT=7860
-ENV API_BASE_URL=https://router.huggingface.co/hf-inference/models/meta-llama/Llama-3.2-3B-Instruct/v1
-ENV MODEL_NAME=meta-llama/Llama-3.2-3B-Instruct
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 EXPOSE 7860
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD curl -f http://localhost:7860/health || exit 1
 
 CMD ["python", "main.py"]
