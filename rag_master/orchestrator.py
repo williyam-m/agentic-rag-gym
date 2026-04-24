@@ -321,21 +321,25 @@ class Orchestrator:
     async def _handle_reason(self, action: Dict[str, Any], step: StepRecord) -> None:
         """Handle a reasoning action."""
         assert self._state is not None
-        if AgentRole.REASONER in self._agents:
-            result, messages = await self._agents[AgentRole.REASONER].act(
-                self._state, self._state.agent_messages[-5:]
-            )
-            reasoning = result.get("reasoning", "")
-            self._state.agent_messages.extend(messages)
-        else:
-            context = self._build_reasoning_context()
-            reasoning = await self._llm.generate(
-                [
-                    {"role": "system", "content": self._domain.get_system_prompt()},
-                    {"role": "user", "content": context},
-                ],
-                temperature=0.3,
-            )
+        try:
+            if AgentRole.REASONER in self._agents:
+                result, messages = await self._agents[AgentRole.REASONER].act(
+                    self._state, self._state.agent_messages[-5:]
+                )
+                reasoning = result.get("reasoning", "")
+                self._state.agent_messages.extend(messages)
+            else:
+                context = self._build_reasoning_context()
+                reasoning = await self._llm.generate(
+                    [
+                        {"role": "system", "content": self._domain.get_system_prompt()},
+                        {"role": "user", "content": context},
+                    ],
+                    temperature=0.3,
+                )
+        except Exception as exc:
+            logger.warning("reason_llm_failed", error=str(exc))
+            reasoning = self._fallback_reasoning()
         step.reasoning_trace = reasoning
         step.observation_summary = f"Reasoning completed ({len(reasoning)} chars)"
 
@@ -344,14 +348,18 @@ class Orchestrator:
         assert self._state is not None
         answer = action.get("answer", "")
         if not answer:
-            context = self._build_answer_context()
-            answer = await self._llm.generate(
-                [
-                    {"role": "system", "content": self._domain.get_system_prompt()},
-                    {"role": "user", "content": context},
-                ],
-                temperature=0.2,
-            )
+            try:
+                context = self._build_answer_context()
+                answer = await self._llm.generate(
+                    [
+                        {"role": "system", "content": self._domain.get_system_prompt()},
+                        {"role": "user", "content": context},
+                    ],
+                    temperature=0.2,
+                )
+            except Exception as exc:
+                logger.warning("answer_llm_failed", error=str(exc))
+                answer = self._fallback_answer()
         self._state.generated_answer = answer
         step.observation_summary = f"Answer submitted ({len(answer)} chars)"
         step.reasoning_trace = answer[:300]
@@ -359,41 +367,53 @@ class Orchestrator:
     async def _handle_critique(self, action: Dict[str, Any], step: StepRecord) -> None:
         """Handle a critique action."""
         assert self._state is not None
-        if AgentRole.CRITIC in self._agents:
-            result, messages = await self._agents[AgentRole.CRITIC].act(
-                self._state, self._state.agent_messages[-5:]
-            )
-            critique = result.get("critique", "")
-            self._state.agent_messages.extend(messages)
-        else:
-            critique = "No critic agent configured."
+        try:
+            if AgentRole.CRITIC in self._agents:
+                result, messages = await self._agents[AgentRole.CRITIC].act(
+                    self._state, self._state.agent_messages[-5:]
+                )
+                critique = result.get("critique", "")
+                self._state.agent_messages.extend(messages)
+            else:
+                critique = "No critic agent configured."
+        except Exception as exc:
+            logger.warning("critique_llm_failed", error=str(exc))
+            critique = "Critique unavailable: LLM backend not reachable."
         step.reasoning_trace = critique
         step.observation_summary = "Critique completed"
 
     async def _handle_plan(self, action: Dict[str, Any], step: StepRecord) -> None:
         """Handle a planning action."""
         assert self._state is not None
-        if AgentRole.PLANNER in self._agents:
-            result, messages = await self._agents[AgentRole.PLANNER].act(
-                self._state, []
-            )
-            plan = result.get("plan", "")
-            self._state.agent_messages.extend(messages)
-        else:
-            plan = "Default plan: retrieve → reason → answer"
+        try:
+            if AgentRole.PLANNER in self._agents:
+                result, messages = await self._agents[AgentRole.PLANNER].act(
+                    self._state, []
+                )
+                plan = result.get("plan", "")
+                self._state.agent_messages.extend(messages)
+            else:
+                plan = "Default plan: retrieve → reason → answer"
+        except Exception as exc:
+            logger.warning("plan_llm_failed", error=str(exc))
+            plan = "Default plan: 1. Retrieve relevant documents 2. Analyze findings 3. Submit answer"
         step.reasoning_trace = plan
         step.observation_summary = "Plan created"
 
     async def _handle_verify(self, action: Dict[str, Any], step: StepRecord) -> None:
         """Handle a verification action."""
         assert self._state is not None
-        if AgentRole.VERIFIER in self._agents:
-            result, messages = await self._agents[AgentRole.VERIFIER].act(
-                self._state, []
-            )
-            verification = result.get("verification", "")
-        else:
-            verification = "No verifier agent configured."
+        try:
+            if AgentRole.VERIFIER in self._agents:
+                result, messages = await self._agents[AgentRole.VERIFIER].act(
+                    self._state, []
+                )
+                verification = result.get("verification", "")
+            else:
+                verification = "No verifier agent configured."
+        except Exception as exc:
+            logger.warning("verify_llm_failed", error=str(exc))
+            verification = "Verification unavailable: LLM backend not reachable."
         step.reasoning_trace = verification
         step.observation_summary = "Verification completed"
 
@@ -424,4 +444,25 @@ class Orchestrator:
         if reasoning_traces:
             parts.append(f"Analysis:\n{reasoning_traces[-1][:500]}")
         parts.append("Provide a complete, well-structured answer based on the above.")
+        return "\n\n".join(parts)
+
+    def _fallback_reasoning(self) -> str:
+        """Generate a fallback reasoning when LLM is unavailable."""
+        assert self._state is not None
+        parts = [f"[Fallback reasoning — LLM unavailable] Task: {self._state.task.description}"]
+        if self._state.retrieved_docs:
+            parts.append("Key findings from retrieved documents:")
+            for r in self._state.retrieved_docs[:3]:
+                parts.append(f"- {r.document.content[:200]}")
+        return "\n".join(parts)
+
+    def _fallback_answer(self) -> str:
+        """Generate a fallback answer when LLM is unavailable."""
+        assert self._state is not None
+        parts = [f"Based on the retrieved documents for: {self._state.task.description}"]
+        if self._state.retrieved_docs:
+            for r in self._state.retrieved_docs[:3]:
+                parts.append(f"• {r.document.content[:300]}")
+        else:
+            parts.append("No documents were retrieved. Unable to generate a detailed answer.")
         return "\n\n".join(parts)

@@ -22,6 +22,8 @@ RUN mkdir -p /app/data/faiss_indices
 
 ENV SERVER_HOST=0.0.0.0
 ENV SERVER_PORT=7860
+ENV API_BASE_URL=https://router.huggingface.co/novita/v3/openai
+ENV MODEL_NAME=meta-llama/llama-3.1-8b-instruct
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
