@@ -1,3 +1,19 @@
+---
+title: Agentic RAG Gym
+emoji: ⚜
+colorFrom: gray
+colorTo: yellow
+sdk: docker
+app_port: 7860
+tags:
+  - openenv
+  - rag
+  - reinforcement-learning
+  - multi-agent
+  - aerospace
+pinned: true
+---
+
 # ⚜ Agentic RAG Gym
 
 > *Where autonomous agents learn to research like experts.*
