@@ -132,6 +132,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# --- Prometheus metrics ---
+try:
+    from prometheus_fastapi_instrumentator import Instrumentator
+
+    Instrumentator(
+        should_group_status_codes=True,
+        should_ignore_untemplated=True,
+        excluded_handlers=["/metrics"],
+    ).instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
+except ImportError:
+    logger.warning("prometheus_not_available", msg="Install prometheus_fastapi_instrumentator for /metrics")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

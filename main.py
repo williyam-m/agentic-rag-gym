@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-import os
-import sys
-
 import gradio as gr
 import uvicorn
 
@@ -19,16 +16,11 @@ def main() -> None:
     settings = get_settings()
     setup_logging(settings.log_level.value)
 
-    # Build and mount Gradio UI at /ui (not / which would catch all routes)
+    # Mount Gradio UI at root.  Explicit FastAPI routes (/health, /reset,
+    # /step, /state, /tasks, /grade, /metrics) take priority over the
+    # mounted sub-app, so there is no route conflict.
     ui = build_ui()
-    gr.mount_gradio_app(fastapi_app, ui, path="/ui")
-
-    # Redirect root to /ui
-    from fastapi.responses import RedirectResponse
-
-    @fastapi_app.get("/", include_in_schema=False)
-    async def root_redirect():
-        return RedirectResponse(url="/ui")
+    gr.mount_gradio_app(fastapi_app, ui, path="/")
 
     uvicorn.run(
         fastapi_app,
