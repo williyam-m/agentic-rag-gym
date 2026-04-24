@@ -1,0 +1,108 @@
+name: agentic-rag-gym
+description: >
+  A reinforcement learning environment for training AI agents on
+  Retrieval-Augmented Generation (RAG) tasks in the Aerospace Research domain.
+  Features multi-agent cooperation, process-aware reward functions,
+  self-improvement loops, and anti-reward-hacking measures.
+version: "1.0.0"
+author: williyam
+tags:
+  - openenv
+  - rag
+  - reinforcement-learning
+  - multi-agent
+  - aerospace
+  - agentic
+
+observation:
+  type: object
+  description: >
+    Current task info, retrieved documents, query history,
+    generated answer draft, and step-level reward.
+  fields:
+    task:
+      type: object
+      fields:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        difficulty: { type: string, enum: [easy, medium, hard, expert] }
+        max_steps: { type: integer }
+    step: { type: integer }
+    retrieved_docs:
+      type: array
+      items:
+        type: object
+        fields:
+          content: { type: string }
+          score: { type: number }
+          source: { type: string }
+    query_history:
+      type: array
+      items: { type: string }
+    current_answer: { type: string }
+    last_reward: { type: number }
+    done: { type: boolean }
+
+action:
+  type: object
+  description: >
+    Agent action with type and optional query/answer parameters.
+  fields:
+    type:
+      type: string
+      enum: [retrieve, reason, answer, critique, plan, verify]
+      description: Type of action to perform
+    query:
+      type: string
+      description: Search query (for retrieve actions)
+      optional: true
+    answer:
+      type: string
+      description: Answer text (for answer actions)
+      optional: true
+
+reward:
+  type: number
+  minimum: 0.01
+  maximum: 0.99
+  description: >
+    Composite reward combining retrieval relevance, reasoning quality,
+    answer completeness, efficiency, and anti-hacking penalties.
+
+tasks:
+  - id: aero_easy_propulsion_comparison
+    name: Compare Propulsion Technologies
+    difficulty: easy
+  - id: aero_easy_debris_mitigation
+    name: Space Debris Mitigation Strategies
+    difficulty: easy
+  - id: aero_medium_mars_edl
+    name: Mars EDL Architecture Design
+    difficulty: medium
+  - id: aero_medium_life_support
+    name: Deep Space Life Support Design
+    difficulty: medium
+  - id: aero_hard_hypersonic_vehicle
+    name: Reusable Hypersonic Space Access Vehicle
+    difficulty: hard
+
+endpoints:
+  reset:
+    method: POST
+    path: /reset
+  step:
+    method: POST
+    path: /step
+  state:
+    method: GET
+    path: /state
+  grade:
+    method: POST
+    path: /grade
+  health:
+    method: GET
+    path: /health
+  tasks:
+    method: GET
+    path: /tasks

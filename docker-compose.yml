@@ -1,0 +1,48 @@
+services:
+  agentic-rag-gym:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=7860
+    volumes:
+      - faiss_data:/app/data/faiss_indices
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 8G
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-changeme_secure_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-agentic_rag_gym}
+      MYSQL_USER: ${MYSQL_USER:-raguser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-changeme_secure_password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  faiss_data:
+  mysql_data:
