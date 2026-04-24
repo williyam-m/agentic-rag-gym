@@ -1,4 +1,4 @@
-"""Aerospace domain graders with deterministic scoring."""
+"""Aerospace domain graders with deterministic scoring and anti-hack measures."""
 
 from __future__ import annotations
 
@@ -12,9 +12,40 @@ from rag_master.rewards import _SCORE_MAX, _SCORE_MIN, clamp_score
 
 logger = get_logger(__name__)
 
+# Minimum words in a sentence for a keyword match to count
+_MIN_SENTENCE_WORDS = 6
+# Maximum keyword density before penalty kicks in
+_MAX_KEYWORD_DENSITY = 0.15
+
+
+def _split_sentences(text: str) -> List[str]:
+    """Split text into sentences."""
+    return [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+
+
+def _keyword_in_context(keyword: str, text: str) -> bool:
+    """Check if keyword appears in a sentence with at least _MIN_SENTENCE_WORDS words."""
+    sentences = _split_sentences(text)
+    kw_lower = keyword.lower()
+    for sentence in sentences:
+        if kw_lower in sentence.lower() and len(sentence.split()) >= _MIN_SENTENCE_WORDS:
+            return True
+    return False
+
+
+def _keyword_density_penalty(answer: str, keywords_found: int) -> float:
+    """Penalize if keyword density is suspiciously high (keyword stuffing)."""
+    word_count = len(answer.split())
+    if word_count == 0:
+        return 0.0
+    density = keywords_found / word_count
+    if density > _MAX_KEYWORD_DENSITY:
+        return min((density - _MAX_KEYWORD_DENSITY) * 5.0, 0.5)
+    return 0.0
+
 
 class KeywordCoverageGrader(BaseGrader):
-    """Grades based on keyword coverage from expected topics."""
+    """Grades based on keyword coverage with anti-stuffing measures."""
 
     def __init__(
         self,
@@ -31,13 +62,27 @@ class KeywordCoverageGrader(BaseGrader):
             return _SCORE_MIN
 
         total_score = 0.0
+        total_keywords_found = 0
         for category, keywords in self._required_keywords.items():
             weight = self._rubric_weights.get(category, 0.0)
             if not keywords:
                 continue
-            hits = sum(1 for kw in keywords if kw.lower() in answer)
+            # Keywords must appear in sentences with sufficient context
+            hits = sum(1 for kw in keywords if _keyword_in_context(kw, answer))
+            total_keywords_found += hits
             coverage = hits / len(keywords)
             total_score += weight * coverage
+
+        # Apply keyword density penalty (anti-stuffing)
+        density_penalty = _keyword_density_penalty(answer, total_keywords_found)
+        total_score = max(0.0, total_score - density_penalty)
+
+        # Degenerate content check: low unique word ratio
+        words = answer.split()
+        if len(words) > 10:
+            unique_ratio = len(set(words)) / len(words)
+            if unique_ratio < 0.3:
+                total_score *= 0.3
 
         # Process quality bonus
         process_bonus = self._evaluate_process(trajectory)
