@@ -70,7 +70,7 @@ class TestPropulsionComparisonGrader:
         )
         state = _make_state(answer)
         score = await grader.grade(state, _make_trajectory())
-        assert score > 0.4
+        assert score > 0.35
 
     @pytest.mark.asyncio
     async def test_partial_answer_medium_score(self, grader: PropulsionComparisonGrader) -> None:

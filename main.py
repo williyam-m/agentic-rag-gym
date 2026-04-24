@@ -19,9 +19,16 @@ def main() -> None:
     settings = get_settings()
     setup_logging(settings.log_level.value)
 
-    # Build and mount Gradio UI
+    # Build and mount Gradio UI at /ui (not / which would catch all routes)
     ui = build_ui()
-    gr.mount_gradio_app(fastapi_app, ui, path="/")
+    gr.mount_gradio_app(fastapi_app, ui, path="/ui")
+
+    # Redirect root to /ui
+    from fastapi.responses import RedirectResponse
+
+    @fastapi_app.get("/", include_in_schema=False)
+    async def root_redirect():
+        return RedirectResponse(url="/ui")
 
     uvicorn.run(
         fastapi_app,

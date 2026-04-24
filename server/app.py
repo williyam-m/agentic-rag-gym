@@ -12,11 +12,12 @@ Endpoints:
 
 from __future__ import annotations
 
+import asyncio
+import re
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, AsyncGenerator, Dict, Optional
 
-import bleach
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -48,6 +49,10 @@ logger = get_logger(__name__)
 # --- Global state ---
 _orchestrator: Optional[Orchestrator] = None
 _settings: Optional[AppSettings] = None
+_lock = asyncio.Lock()
+
+# Regex pattern for sanitization: strip HTML tags and control chars
+_SANITIZE_RE = re.compile(r'<[^>]+>|[\x00-\x08\x0b\x0c\x0e-\x1f]')
 
 
 class ResetRequest(BaseModel):
@@ -61,8 +66,8 @@ class GradeRequest(BaseModel):
 
 
 def _sanitize(text: str) -> str:
-    """Sanitize user input to prevent injection."""
-    return bleach.clean(text, tags=[], attributes={}, strip=True)
+    """Sanitize user input: strip HTML tags and control characters."""
+    return _SANITIZE_RE.sub('', text).strip()
 
 
 async def _initialize_orchestrator(settings: AppSettings) -> Orchestrator:
@@ -130,7 +135,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -150,7 +155,8 @@ async def reset(request: ResetRequest = ResetRequest()) -> Dict[str, Any]:
 
     task_id = _sanitize(request.task_id) if request.task_id else None
     try:
-        observation = await _orchestrator.reset(task_id=task_id)
+        async with _lock:
+            observation = await _orchestrator.reset(task_id=task_id)
         return {"observation": observation, "done": False, "info": {"message": "Episode reset"}}
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -167,10 +173,14 @@ async def step(action: Action) -> Dict[str, Any]:
         action_dict["query"] = _sanitize(action.query)
     if action.answer:
         action_dict["answer"] = _sanitize(action.answer)
-    action_dict.update(action.parameters)
+    # Merge extra parameters but block overriding type/query/answer
+    for k, v in action.parameters.items():
+        if k not in ("type", "query", "answer"):
+            action_dict[k] = v
 
     try:
-        result = await _orchestrator.step(action_dict)
+        async with _lock:
+            result = await _orchestrator.step(action_dict)
         return result
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -209,7 +219,8 @@ async def grade(request: GradeRequest = GradeRequest()) -> Dict[str, Any]:
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
 
     try:
-        score = await _orchestrator.grade(task_id=request.task_id)
+        async with _lock:
+            score = await _orchestrator.grade(task_id=request.task_id)
         state_data = _orchestrator.state()
         return GradeResult(
             task_id=state_data.get("task_id", ""),
