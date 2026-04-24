@@ -8,7 +8,11 @@ RUN apt-get update && \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml .
+COPY pyproject.toml README.md ./
+COPY rag_master/ rag_master/
+COPY server/ server/
+COPY domains/ domains/
+
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir .
 
