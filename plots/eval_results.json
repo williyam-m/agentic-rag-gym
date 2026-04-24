@@ -1,0 +1,84 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "finetuned": "williyam/agentic-rag-aerospace-grpo",
+  "training_time_min": 116.41443806489309,
+  "baseline": [
+    {
+      "task_id": "aero_hard_hypersonic_vehicle",
+      "task_name": "Reusable Hypersonic Space Access Vehicle",
+      "difficulty": "hard",
+      "answer": "### Conceptual Design Overview\n\n#### Introduction\nReusability of a hypersonic space access vehicle (SAV) with a combined-cycle propulsion (CCP) system is crucial for reducing operational costs, increasing payload capacity, and enhancing safety. The proposed SAV utilizes a combination of scramjet, turbine, and rocket engines, designed to achieve high-speed, long-duration hypersonic travel. The propulsion mode transitions between scramjets and rockets, allowing for efficient use of both technologi",
+      "score": 0.48219047619047617
+    },
+    {
+      "task_id": "aero_easy_propulsion_comparison",
+      "task_name": "Compare Propulsion Technologies",
+      "difficulty": "easy",
+      "answer": "### Comparison of Propulsion Technologies for a Mars Transit Mission\n\n#### Specific Impulse and Thrust Levels\n\n**Ion Propulsion (IP):**\n- **Specific Impulse:** 4,190 seconds (NASA)\n- **Thrust Level:** Very Low (0.5 N for NEXT)\n\n**Nuclear Thermal Propulsion (NTP):**\n- **Specific Impulse:** 850-1,000 seconds (NASA)\n- **Thrust Level:** Extremely High (approximately 1,000 seconds)\n\n**Comparison:**\n- **Specific Impulse:** IP > NTP\n- **Thrust Level:** IP < NTP\n\n**Impact on Mission Duration:**\n- **IP:*",
+      "score": 0.5082857142857143
+    },
+    {
+      "task_id": "aero_medium_mars_edl",
+      "task_name": "Mars EDL Architecture Design",
+      "difficulty": "medium",
+      "answer": "### Overview of the EDL Architecture Design\n\n#### 1. **Entry Phase**\n   - **Aerocapture**: \n     - **Objective**: To capture the spacecraft into the Martian atmosphere.\n     - **Data**: The spacecraft must be designed to achieve a high velocity relative to the Martian atmosphere to avoid atmospheric drag. This typically involves using a combination of parachutes, airbags, and other aerodynamic devices.\n     - **Quantitative Evidence**: The aerocapture trajectory should be optimized to minimize e",
+      "score": 0.5742857142857143
+    },
+    {
+      "task_id": "aero_medium_life_support",
+      "task_name": "Deep Space Life Support Design",
+      "difficulty": "medium",
+      "answer": "### Deep Space Life Support Design for a 6-Person Crew on a 2.5-Year Mars Mission\n\n#### Overview\nThis design integrates physicochemical and bioregenerative systems to maximize closure ratios and address various aspects of life support on a 2.5-year Mars mission. The goal is to ensure the survival and health of the crew while minimizing resource consumption and environmental impact.\n\n#### System Components\n1. **Physicochemical Life Support (PLS)**\n   - **Thermophilic Bacteria for Waste Liquefacti",
+      "score": 0.5917142857142857
+    },
+    {
+      "task_id": "aero_easy_debris_mitigation",
+      "task_name": "Space Debris Mitigation Strategies",
+      "difficulty": "easy",
+      "answer": "### Space Debris Mitigation Strategies\n\n#### Current Challenges and Active Debris Removal Technologies\n\n**Current Challenges:**\n1. **Kessler Syndrome Risk:** Over 36,500 objects >10 cm in LEO reach critical densities, leading to significant collisions that threaten orbit stability.\n2. **Tracking Capabilities:** Limited ground-based and orbital tracking capabilities, especially for larger objects like satellites and asteroids.\n3. **Proposed Removal Methods:**\n   - **Electrodynamic Tethers:** Gene",
+      "score": 0.6334285714285715
+    }
+  ],
+  "trained": [
+    {
+      "task_id": "aero_hard_hypersonic_vehicle",
+      "task_name": "Reusable Hypersonic Space Access Vehicle",
+      "difficulty": "hard",
+      "answer": "### Conceptual Design Overview\n\n#### Introduction\nReusability of a hypersonic space access vehicle (SAV) with a combined-cycle propulsion (CCP) system is crucial for reducing operational costs, increasing payload capacity, and enhancing safety. The proposed SAV utilizes a combination of scramjet, turbine, and rocket propulsion modes, aiming to achieve high-speed, long-duration flights within the hypersonic regime. This approach addresses key aerothermodynamic challenges such as shock-boundary la",
+      "score": 0.5214285714285715
+    },
+    {
+      "task_id": "aero_easy_propulsion_comparison",
+      "task_name": "Compare Propulsion Technologies",
+      "difficulty": "easy",
+      "answer": "### Comparison of Propulsion Technologies for a Mars Transit Mission\n\n#### Specific Impulse\n**Ion Propulsion (IP):**\n- **Specific Impulse:** 4,190 seconds\n- **Thrust Level:** Extremely Low (0.5 N)\n- **Impact on Mission Duration:** Minimal impact on mission duration as IP is designed for short-duration missions.\n- **Technology Readiness:** High due to its ability to achieve high specific impulses without significant technological hurdles.\n\n**Nuclear Thermal Propulsion (NTP):**\n- **Specific Impuls",
+      "score": 0.5616190476190477
+    },
+    {
+      "task_id": "aero_medium_mars_edl",
+      "task_name": "Mars EDL Architecture Design",
+      "difficulty": "medium",
+      "answer": "### Overview of the EDL Architecture Design\n\n#### Introduction\nThe EDL architecture design addresses the challenges posed by the Mars atmospheric environment, including the high peak heat flux and the need for effective aerodynamic deceleration of heavy payloads. This design integrates multiple phases into a single, cohesive approach to ensure efficient and safe mission execution. The proposed architecture includes:\n\n1. **Aerocapture**: The first phase involves capturing the payload using aerobr",
+      "score": 0.5678095238095239
+    },
+    {
+      "task_id": "aero_medium_life_support",
+      "task_name": "Deep Space Life Support Design",
+      "difficulty": "medium",
+      "answer": "### Overview of the Integrated Life Support System Design\n\n#### Introduction\nDeep space exploration presents unique challenges due to the extreme conditions encountered, including low gravity, radiation exposure, and the presence of hazardous materials like water and carbon dioxide. To ensure long-term survival and minimize environmental impact, a sophisticated life support system must be designed. This design integrates various biological processes and energy sources to maximize closure ratios ",
+      "score": 0.5897142857142857
+    },
+    {
+      "task_id": "aero_easy_debris_mitigation",
+      "task_name": "Space Debris Mitigation Strategies",
+      "difficulty": "easy",
+      "answer": "**Task: Space Debris Mitigation Strategies**\n\n**Current Challenges and Evaluation of Active Debris Removal Technologies**\n\nActive debris removal (ADR) technologies have been developed to mitigate the effects of space debris on orbiting satellites and other spacecraft. These technologies aim to prevent collisions that could lead to catastrophic damage to spacecraft and disrupt satellite communications. However, the effectiveness of these technologies varies widely depending on several factors suc",
+      "score": 0.6894285714285716
+    }
+  ],
+  "summary": {
+    "baseline_mean": 0.5579809523809524,
+    "trained_mean": 0.5860000000000001,
+    "improvement": 0.02801904761904772
+  }
+}

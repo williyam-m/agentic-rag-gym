@@ -291,6 +291,80 @@ Update `server/app.py` to use your domain config instead of `AerospaceDomainConf
 
 ---
 
+## GRPO Fine-Tuning (Reinforcement Learning)
+
+We fine-tune **Qwen2.5-0.5B-Instruct** using **Group Relative Policy Optimization (GRPO)** from TRL,
+with LoRA adapters and the **real domain graders** as the reward signal — no proxy rewards.
+
+### Training Results
+
+| Metric | Baseline | GRPO-Trained | Improvement |
+|--------|----------|-------------|-------------|
+| **Mean Score** | 0.5580 | 0.5860 | **+0.0280** |
+| Propulsion Comparison | 0.508 | 0.562 | +0.053 |
+| Debris Mitigation | 0.633 | 0.689 | +0.056 |
+| Hypersonic Vehicle | 0.482 | 0.521 | +0.039 |
+| Mars EDL | 0.574 | 0.568 | -0.006 |
+| Life Support | 0.592 | 0.590 | -0.002 |
+
+### Training Curves
+
+![Training Curves](plots/training_curves.png)
+
+### Baseline vs. GRPO-Trained
+
+![Baseline vs Trained](plots/baseline_vs_trained.png)
+
+### Score Distribution
+
+![Score Distribution](plots/score_distribution.png)
+
+### Run Training (Notebook)
+
+The primary training interface is the Jupyter notebook:
+
+```bash
+jupyter notebook agentic-rag-for-aerospace-research.ipynb
+```
+
+### Run Training (Script)
+
+For headless/CI environments:
+
+```bash
+python train.py
+```
+
+### Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Base Model | `Qwen/Qwen2.5-0.5B-Instruct` |
+| Method | GRPO (Group Relative Policy Optimization) |
+| LoRA | r=16, α=32, targets=q/k/v/o_proj |
+| Optimizer | AdamW (torch) |
+| Learning Rate | 5e-6 |
+| Epochs | 2 |
+| Group Size (G) | 4 |
+| Max Completion | 512 tokens |
+| Hardware | Apple M1 Pro (MPS) |
+| Training Time | ~116 min |
+
+### Fine-Tuned Model
+
+The GRPO-trained model is available on Hugging Face:
+**[williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)**
+
+```python
+from peft import AutoPeftModelForCausalLM
+from transformers import AutoTokenizer
+
+model = AutoPeftModelForCausalLM.from_pretrained("williyam/agentic-rag-aerospace-grpo")
+tokenizer = AutoTokenizer.from_pretrained("williyam/agentic-rag-aerospace-grpo")
+```
+
+---
+
 ## Testing
 
 ```bash
@@ -344,9 +418,13 @@ agentic-rag-gym/
 ├── server/                  # FastAPI + Gradio server
 ├── domains/aerospace/       # Aerospace research domain
 ├── domains/legal_research/  # Legal research domain (stub)
+├── training/                # GRPO training package
 ├── tests/                   # Unit & integration tests (102+)
 ├── .github/workflows/       # CI pipeline
 ├── documents/               # Architecture & design docs
+├── plots/                   # Training curves & evaluation plots
+├── agentic-rag-for-aerospace-research.ipynb  # GRPO training notebook
+├── train.py                 # Standalone training script
 ├── inference.py             # Baseline inference script
 ├── openenv.yaml             # OpenEnv specification
 ├── Dockerfile               # Container definition

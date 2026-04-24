@@ -25,3 +25,7 @@ data/uploads/
 .DS_Store
 Thumbs.db
 node_modules/
+
+# Training checkpoints (large files)
+checkpoints/
+.venv-1/
