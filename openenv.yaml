@@ -6,6 +6,9 @@ description: >
   self-improvement loops, and anti-reward-hacking measures.
 version: "1.0.0"
 author: williyam
+image: williyam/agentic-rag-gym:latest
+port: 7860
+entrypoint: ["python", "main.py"]
 tags:
   - openenv
   - rag
@@ -70,23 +73,6 @@ reward:
     Composite reward combining retrieval relevance, reasoning quality,
     answer completeness, efficiency, and anti-hacking penalties.
 
-tasks:
-  - id: aero_easy_propulsion_comparison
-    name: Compare Propulsion Technologies
-    difficulty: easy
-  - id: aero_easy_debris_mitigation
-    name: Space Debris Mitigation Strategies
-    difficulty: easy
-  - id: aero_medium_mars_edl
-    name: Mars EDL Architecture Design
-    difficulty: medium
-  - id: aero_medium_life_support
-    name: Deep Space Life Support Design
-    difficulty: medium
-  - id: aero_hard_hypersonic_vehicle
-    name: Reusable Hypersonic Space Access Vehicle
-    difficulty: hard
-
 endpoints:
   reset:
     method: POST
@@ -106,3 +92,25 @@ endpoints:
   tasks:
     method: GET
     path: /tasks
+
+tasks:
+  - id: aero_easy_propulsion_comparison
+    name: Compare Propulsion Technologies
+    difficulty: easy
+    max_steps: 12
+  - id: aero_easy_debris_mitigation
+    name: Space Debris Mitigation Strategies
+    difficulty: easy
+    max_steps: 12
+  - id: aero_medium_mars_edl
+    name: Mars EDL Architecture Design
+    difficulty: medium
+    max_steps: 16
+  - id: aero_medium_life_support
+    name: Deep Space Life Support Design
+    difficulty: medium
+    max_steps: 16
+  - id: aero_hard_hypersonic_vehicle
+    name: Reusable Hypersonic Space Access Vehicle
+    difficulty: hard
+    max_steps: 20
