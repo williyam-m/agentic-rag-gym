@@ -166,7 +166,24 @@ class TestOrchestrator:
         await orchestrator.reset(task_id="test_easy")
         await orchestrator.step({"type": "retrieve"})
         await orchestrator.step({"type": "reason"})
+        # Answer on step 3 allows one more step (verify/critique)
         result = await orchestrator.step({"type": "answer", "answer": "Test answer"})
+        assert result["done"] is False
+        # A non-verify step after answer terminates
+        result = await orchestrator.step({"type": "reason"})
+        assert result["done"] is True
+
+    @pytest.mark.asyncio
+    async def test_step_verify_after_answer(self, orchestrator: Orchestrator) -> None:
+        """Verify step after answer should be allowed."""
+        await orchestrator.reset(task_id="test_easy")
+        await orchestrator.step({"type": "retrieve"})
+        await orchestrator.step({"type": "reason"})
+        await orchestrator.step({"type": "answer", "answer": "Test answer"})
+        result = await orchestrator.step({"type": "verify"})
+        assert result["done"] is False
+        # Terminates 2 steps after answer
+        result = await orchestrator.step({"type": "reason"})
         assert result["done"] is True
 
     @pytest.mark.asyncio
@@ -175,6 +192,9 @@ class TestOrchestrator:
         await orchestrator.step({"type": "retrieve"})
         await orchestrator.step({"type": "reason"})
         await orchestrator.step({"type": "answer", "answer": "Done"})
+        # Step after answer (non-verify) triggers done
+        await orchestrator.step({"type": "reason"})
+        # Now episode is done, further steps should return done=True with 0 reward
         result = await orchestrator.step({"type": "retrieve"})
         assert result["done"] is True
         assert result["reward"] == 0.0
@@ -229,8 +249,10 @@ class TestOrchestrator:
         await orchestrator.step({"type": "retrieve", "query": "propulsion"})
         await orchestrator.step({"type": "reason"})
         await orchestrator.step({"type": "answer", "answer": "Final answer"})
+        # One more step after answer to trigger done
+        await orchestrator.step({"type": "reason"})
 
         traj = orchestrator.current_trajectory
         assert traj is not None
         assert traj.completed is True
-        assert len(traj.steps) == 4
+        assert len(traj.steps) == 5

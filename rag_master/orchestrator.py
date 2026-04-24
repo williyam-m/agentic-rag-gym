@@ -169,6 +169,11 @@ class Orchestrator:
             step.observation_summary = f"Unknown action type: {action_type}"
             step.intermediate_reward = 0.01
 
+        # Track action types for repetition detection in rewards
+        if "last_action_types" not in self._state.info:
+            self._state.info["last_action_types"] = []
+        self._state.info["last_action_types"].append(action_type)
+
         # Compute step reward
         step_reward = await self._reward_fn.compute_step_reward(self._state, step)
         step.intermediate_reward = step_reward
@@ -288,14 +293,20 @@ class Orchestrator:
         assert self._state is not None
         if self._state.current_step >= self._state.task.max_steps:
             return True
+        # Allow at least one step after answer (for verify/critique)
         if self._state.generated_answer and self._state.current_step >= 3:
-            last_action = (
-                self._trajectory.steps[-1].action_type
-                if self._trajectory and self._trajectory.steps
-                else ""
-            )
-            if last_action == "answer":
-                return True
+            if self._trajectory and len(self._trajectory.steps) >= 2:
+                last_action = self._trajectory.steps[-1].action_type
+                prev_action = self._trajectory.steps[-2].action_type
+                # Terminate only if the previous step was answer and current is not verify/critique
+                if prev_action == "answer" and last_action not in ("verify", "critique"):
+                    return True
+                # Also terminate if two steps have passed since answer
+                answer_steps = [i for i, s in enumerate(self._trajectory.steps) if s.action_type == "answer"]
+                if answer_steps:
+                    steps_since_answer = len(self._trajectory.steps) - 1 - answer_steps[-1]
+                    if steps_since_answer >= 2:
+                        return True
         return False
 
     async def _handle_retrieve(self, action: Dict[str, Any], step: StepRecord) -> None:

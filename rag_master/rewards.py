@@ -69,12 +69,12 @@ class CompositeRewardFunction(BaseRewardFunction):
         if step.action_type == "answer":
             reward += self._answer_step_reward(state, step)
 
-        # Efficiency: penalize late steps
+        # Efficiency: additive penalty for late steps (not multiplicative)
         step_ratio = step.step_index / max(state.task.max_steps, 1)
-        efficiency = max(0.0, 1.0 - step_ratio * 0.5)
-        reward *= efficiency
+        efficiency_penalty = max(0.0, step_ratio - 0.5) * 0.3
+        reward -= efficiency_penalty
 
-        # Anti-hacking: detect repetitive actions
+        # Anti-hacking: detect repetitive actions (queries AND action types)
         penalty = self._detect_repetition(state, step)
         reward -= penalty
 
@@ -151,11 +151,14 @@ class CompositeRewardFunction(BaseRewardFunction):
             score += 0.15
         if len(answer) > 300:
             score += 0.1
+        # Check semantic overlap with retrieved docs (skip common stopwords)
         if state.retrieved_docs:
             ref_terms = set()
+            stopwords = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'in', 'on', 'at', 'to', 'of', 'and', 'or', 'for', 'with', 'that', 'this', 'it', 'be', 'as', 'by', 'from', 'not', 'but', 'have', 'has', 'had'}
             for r in state.retrieved_docs[:3]:
-                ref_terms.update(r.document.content.lower().split()[:20])
-            answer_terms = set(answer.lower().split())
+                words = [w for w in r.document.content.lower().split() if w not in stopwords and len(w) > 3]
+                ref_terms.update(words[:30])
+            answer_terms = set(w for w in answer.lower().split() if w not in stopwords and len(w) > 3)
             overlap = len(ref_terms & answer_terms) / max(len(ref_terms), 1)
             score += overlap * 0.3
         return min(score, 0.9)
@@ -191,13 +194,24 @@ class CompositeRewardFunction(BaseRewardFunction):
         return avg_relevance * 0.6 + coverage * 0.4
 
     def _detect_repetition(self, state: EpisodeState, step: StepRecord) -> float:
-        """Detect and penalize repetitive actions."""
-        if len(state.query_history) < 2:
-            return 0.0
-        last_queries = state.query_history[-3:]
-        if len(set(last_queries)) == 1 and len(last_queries) >= 2:
-            return 0.3
-        return 0.0
+        """Detect and penalize repetitive actions (queries and action types)."""
+        penalty = 0.0
+        # Check repeated queries
+        if len(state.query_history) >= 2:
+            last_queries = state.query_history[-3:]
+            if len(set(last_queries)) == 1 and len(last_queries) >= 2:
+                penalty += 0.3
+        # Check repeated action types (same action 3+ times in a row)
+        if len(state.intermediate_rewards) >= 2:
+            # Infer recent action types from reward count matching step index
+            recent_type = step.action_type
+            # Simple: penalize if current step type matches last 2 steps
+            # We can't directly access trajectory here, so use step info
+            if hasattr(state, 'info') and 'last_action_types' in state.info:
+                recent = state.info['last_action_types'][-3:]
+                if len(recent) >= 2 and all(a == recent_type for a in recent):
+                    penalty += 0.2
+        return penalty
 
     def _detect_hacking_patterns(self, trajectory: Trajectory, state: EpisodeState) -> float:
         """Detect reward hacking patterns."""
