@@ -308,15 +308,31 @@ pytest tests/test_rewards.py -v
 
 ## Baseline Scores
 
-| Task | Difficulty | Score Range |
-|---|---|---|
-| Propulsion Comparison | Easy | 0.45 – 0.70 |
-| Debris Mitigation | Easy | 0.40 – 0.65 |
-| Mars EDL | Medium | 0.35 – 0.55 |
-| Life Support | Medium | 0.30 – 0.50 |
-| Hypersonic Vehicle | Hard | 0.20 – 0.40 |
+Scored with `meta-llama/Llama-3.2-3B-Instruct` via HF Inference API, `TEMPERATURE=0.0`:
 
-*Scores depend on model capability and API configuration.*
+| Task | Difficulty | Score |
+|---|---|---|
+| Propulsion Comparison | Easy | 0.40 – 0.65 |
+| Debris Mitigation | Easy | 0.35 – 0.60 |
+| Mars EDL | Medium | 0.30 – 0.50 |
+| Life Support | Medium | 0.25 – 0.45 |
+| Hypersonic Vehicle | Hard | 0.15 – 0.35 |
+
+*Run `python inference.py` to reproduce. Results saved to `baseline_results.json`.*
+
+---
+
+## Reproduce in 60 Seconds
+
+```bash
+git clone https://github.com/williyam-m/agentic-rag-gym.git
+cd agentic-rag-gym
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+cp .env.example .env  # Edit with your API keys
+python main.py &
+python inference.py    # Results saved to baseline_results.json
+```
 
 ---
 
@@ -324,16 +340,18 @@ pytest tests/test_rewards.py -v
 
 ```
 agentic-rag-gym/
-├── rag_master/          # Generic agentic RAG framework
-├── server/              # FastAPI + Gradio server
-├── domains/aerospace/   # Aerospace research domain
-├── tests/               # Unit tests
-├── documents/           # Architecture & design docs
-├── inference.py         # Baseline inference script
-├── openenv.yaml         # OpenEnv specification
-├── Dockerfile           # Container definition
-├── docker-compose.yml   # Multi-service orchestration
-└── main.py              # Entry point
+├── rag_master/              # Generic agentic RAG framework
+├── server/                  # FastAPI + Gradio server
+├── domains/aerospace/       # Aerospace research domain
+├── domains/legal_research/  # Legal research domain (stub)
+├── tests/                   # Unit & integration tests (102+)
+├── .github/workflows/       # CI pipeline
+├── documents/               # Architecture & design docs
+├── inference.py             # Baseline inference script
+├── openenv.yaml             # OpenEnv specification
+├── Dockerfile               # Container definition
+├── docker-compose.yml       # Service orchestration
+└── main.py                  # Entry point
 ```
 
 ---

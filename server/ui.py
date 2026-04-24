@@ -488,7 +488,6 @@ def build_ui() -> gr.Blocks:
                     | Vector Store | FAISS |
                     | Embeddings | sentence-transformers |
                     | LLM | OpenAI-compatible (Ollama/GROQ/HF) |
-                    | Database | MySQL + SQLAlchemy |
                     | UI | Gradio |
 
                     ### Multi-Agent System
