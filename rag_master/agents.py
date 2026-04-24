@@ -197,7 +197,7 @@ class PlannerAgent(BaseAgent):
         outgoing = [
             AgentMessage(
                 sender=self.role,
-                receiver=AgentRole.EXECUTOR,
+                receiver=AgentRole.REASONER,
                 content=plan,
                 message_type="execution_plan",
             )

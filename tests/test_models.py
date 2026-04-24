@@ -173,5 +173,4 @@ class TestAgentRole:
         assert AgentRole.REASONER == "reasoner"
         assert AgentRole.CRITIC == "critic"
         assert AgentRole.PLANNER == "planner"
-        assert AgentRole.EXECUTOR == "executor"
         assert AgentRole.VERIFIER == "verifier"

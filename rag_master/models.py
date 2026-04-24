@@ -17,7 +17,6 @@ class AgentRole(str, Enum):
     REASONER = "reasoner"
     CRITIC = "critic"
     PLANNER = "planner"
-    EXECUTOR = "executor"
     VERIFIER = "verifier"
 
 
