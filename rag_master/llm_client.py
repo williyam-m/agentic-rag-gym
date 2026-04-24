@@ -15,8 +15,8 @@ logger = get_logger(__name__)
 class OpenAICompatibleClient(BaseLLMClient):
     """LLM client that works with any OpenAI-compatible API (Ollama, GROQ, HF, etc.)."""
 
-    def __init__(self, base_url: str, api_key: str, model_name: str) -> None:
-        self._client = AsyncOpenAI(base_url=base_url, api_key=api_key)
+    def __init__(self, base_url: str, api_key: str, model_name: str, timeout: float = 30.0) -> None:
+        self._client = AsyncOpenAI(base_url=base_url, api_key=api_key, timeout=timeout)
         self._model = model_name
 
     async def generate(
