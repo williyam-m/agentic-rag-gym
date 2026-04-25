@@ -60,7 +60,7 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 | **#2 Long-Horizon Planning** | Tasks require 10-20 step trajectories with planning, iterative retrieval, reasoning, critique, and verification |
 | **#3.1 World Modeling (Professional)** | Dynamic RAG environment with FAISS vector store, LLM reasoning, and tool orchestration |
 | **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, GRPO fine-tuning with real graders |
-| **#5 Wild Card** | **A new orchestrator/framework designed from scratch** — RAG Master represents a new revolution for agentic RAG. This RL gym helps the system make better decisions by improving the entire agentic RAG foundation with reinforcement learning. Implemented as a domain-agnostic framework extensible to any domain, with 2 production domains (Aerospace Research, Legal Research) and deterministic grading |
+| **#5 Wild Card** | **Two compounding innovations in one submission:** (1) **RAG Master** — An orchestrator/framework designed from scratch, like LangChain/LangGraph but purpose-built for RL-driven agentic RAG, with multi-agent coordination, process supervision, and anti-reward-hacking built in. (2) **[Agentic RAG OS](agentic_rag_os/)** — An RL B2B RaaS (Rewards-as-a-Service) startup product built on top of RAG Master: a full-stack operating system for agentic RAG that lets enterprise AI teams generate dynamic RL reward signals from their own data and rules, export HuggingFace-ready datasets, and fine-tune LLMs with GRPO/PPO/DPO — all via a production REST API with a modern dark-themed UI. |
 
 ---
 

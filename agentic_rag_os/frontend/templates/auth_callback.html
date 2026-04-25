@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signing in — Agentic RAG OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { margin:0; background:#06060e; color:#f1f5f9; font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh; flex-direction:column; gap:20px; }
+    .logo { font-size:1.6rem; font-weight:800; }
+    .logo span { color:#8b5cf6; }
+    .spinner { width:28px; height:28px; border:2px solid rgba(255,255,255,0.1); border-top-color:#8b5cf6; border-radius:50%; animation:spin 0.7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    p { color:#94a3b8; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="logo">RAG<span>OS</span></div>
+  <div class="spinner"></div>
+  <p id="msg">Completing sign-in…</p>
+  <script>
+    (function() {
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token');
+      const error = params.get('error');
+      if (error) {
+        document.getElementById('msg').textContent = 'Sign-in failed: ' + error;
+        setTimeout(() => { location.href = '/'; }, 3000);
+        return;
+      }
+      if (token) {
+        localStorage.setItem('ragas_token', token);
+        location.href = '/dashboard';
+      } else {
+        document.getElementById('msg').textContent = 'No token received. Redirecting…';
+        setTimeout(() => { location.href = '/'; }, 2000);
+      }
+    })();
+  </script>
+</body>
+</html>
