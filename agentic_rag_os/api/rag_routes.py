@@ -56,10 +56,13 @@ async def list_docs_route(domain_id: str, user: Dict = Depends(get_current_user)
 
 @router.post("/domains/{domain_id}/documents", response_model=DocumentOut)
 async def upload_doc_route(domain_id: str, file: UploadFile = File(...), user: Dict = Depends(get_current_user)):
-    """Upload a text file to a domain. Free tier: max 2MB total."""
+    """Upload a text file to a domain. Max 2MB per file, 1GB total storage."""
     if not file.filename:
         raise HTTPException(status_code=400, detail="Filename required")
-    content = (await file.read()).decode("utf-8", errors="replace")
+    raw = await file.read()
+    if len(raw) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="File too large. Max 2MB per file.")
+    content = raw.decode("utf-8", errors="replace")
     if not content.strip():
         raise HTTPException(status_code=400, detail="File is empty")
     try:

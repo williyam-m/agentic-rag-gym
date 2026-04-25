@@ -48,7 +48,7 @@ async def dashboard_stats(user: Dict = Depends(get_current_user)):
         "total_queries": len(queries),
         "total_reward_configs": len(configs),
         "storage_used_bytes": total_size,
-        "storage_limit_bytes": int(settings.max_upload_mb * 1024 * 1024),
+        "storage_limit_bytes": int(settings.max_storage_gb * 1024 * 1024 * 1024),
     }
 
 

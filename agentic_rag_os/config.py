@@ -29,7 +29,8 @@ class RagOSSettings(BaseSettings):
     db_path: Path = _ROOT / "agentic_rag_os" / "data" / "ragos.db"
 
     # --- Upload limits ---
-    max_upload_mb: float = 2.0  # Free tier
+    max_file_mb: float = 2.0  # Max single file upload size
+    max_storage_gb: float = 1.0  # Free tier total storage per user
     premium_upload_mb: float = 100.0
 
     # --- RAG Master bridge ---

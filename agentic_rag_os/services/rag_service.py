@@ -82,13 +82,18 @@ async def upload_document(user_id: str, domain_id: str, filename: str, content: 
     if not domain:
         raise ValueError("Domain not found")
 
-    # Check storage limits
+    # Check per-file size limit
+    doc_size = len(content.encode("utf-8"))
+    file_limit = int(settings.max_file_mb * 1024 * 1024)
+    if doc_size > file_limit:
+        raise ValueError(f"File too large. Max file size is {settings.max_file_mb}MB.")
+
+    # Check total storage limits
     docs = await fetch_all("SELECT size_bytes FROM documents WHERE domain_id IN (SELECT id FROM domains WHERE user_id=?)", (user_id,))
     total_used = sum(d["size_bytes"] for d in docs)
-    doc_size = len(content.encode("utf-8"))
-    limit = int(settings.max_upload_mb * 1024 * 1024)
-    if total_used + doc_size > limit:
-        raise ValueError(f"Storage limit exceeded. Free tier allows {settings.max_upload_mb}MB. Upgrade to Premium (coming soon) for {settings.premium_upload_mb}MB.")
+    storage_limit = int(settings.max_storage_gb * 1024 * 1024 * 1024)
+    if total_used + doc_size > storage_limit:
+        raise ValueError(f"Storage limit exceeded. Free tier allows {settings.max_storage_gb}GB total.")
 
     doc_id = new_id()
     ts = now_iso()
