@@ -1,9 +1,10 @@
 name: agentic-rag-gym
 description: >
   A reinforcement learning environment for training AI agents on
-  Retrieval-Augmented Generation (RAG) tasks in the Aerospace Research domain.
+  Retrieval-Augmented Generation (RAG) tasks across multiple domains.
   Features multi-agent cooperation, process-aware reward functions,
   self-improvement loops, and anti-reward-hacking measures.
+  Domains: Aerospace Research, Legal Research.
 version: "1.0.0"
 author: williyam
 image: williyam/agentic-rag-gym:latest
@@ -15,6 +16,7 @@ tags:
   - reinforcement-learning
   - multi-agent
   - aerospace
+  - legal-research
   - agentic
 
 observation:
@@ -92,8 +94,15 @@ endpoints:
   tasks:
     method: GET
     path: /tasks
+  domains:
+    method: GET
+    path: /domains
+  domain_switch:
+    method: POST
+    path: /domain/switch
 
 tasks:
+  # --- Aerospace Research ---
   - id: aero_easy_propulsion_comparison
     name: Compare Propulsion Technologies
     difficulty: easy
@@ -112,5 +121,26 @@ tasks:
     max_steps: 16
   - id: aero_hard_hypersonic_vehicle
     name: Reusable Hypersonic Space Access Vehicle
+    difficulty: hard
+    max_steps: 20
+  # --- Legal Research ---
+  - id: legal_easy_contract_review
+    name: Contract Clause Analysis
+    difficulty: easy
+    max_steps: 12
+  - id: legal_easy_privacy_compliance
+    name: Data Privacy Compliance Review
+    difficulty: easy
+    max_steps: 12
+  - id: legal_medium_ip_analysis
+    name: Intellectual Property Assessment
+    difficulty: medium
+    max_steps: 16
+  - id: legal_medium_ma_due_diligence
+    name: M&A Due Diligence Assessment
+    difficulty: medium
+    max_steps: 16
+  - id: legal_hard_cross_border_dispute
+    name: Cross-Border Technology Dispute Resolution
     difficulty: hard
     max_steps: 20

@@ -1,1 +1,1 @@
-"""Legal Research domain package (stub)."""
+"""Legal Research domain implementation."""

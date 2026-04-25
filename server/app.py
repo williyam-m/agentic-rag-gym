@@ -33,6 +33,7 @@ from rag_master.retriever import FAISSRetriever
 from rag_master.rewards import CompositeRewardFunction
 
 from domains.aerospace.config import AerospaceDomainConfig
+from domains.legal_research.config import LegalResearchDomainConfig
 from server.models import (
     Action,
     GradeResult,
@@ -46,8 +47,15 @@ from server.models import (
 
 logger = get_logger(__name__)
 
+# --- Domain registry ---
+DOMAIN_REGISTRY = {
+    "aerospace": AerospaceDomainConfig,
+    "legal_research": LegalResearchDomainConfig,
+}
+
 # --- Global state ---
-_orchestrator: Optional[Orchestrator] = None
+_orchestrators: Dict[str, Orchestrator] = {}
+_active_domain: str = "aerospace"
 _settings: Optional[AppSettings] = None
 _lock = asyncio.Lock()
 
@@ -70,9 +78,12 @@ def _sanitize(text: str) -> str:
     return _SANITIZE_RE.sub('', text).strip()
 
 
-async def _initialize_orchestrator(settings: AppSettings) -> Orchestrator:
-    """Initialize the orchestrator with all components."""
-    domain = AerospaceDomainConfig()
+async def _initialize_orchestrator(settings: AppSettings, domain_name: str = "aerospace") -> Orchestrator:
+    """Initialize the orchestrator with all components for a given domain."""
+    domain_cls = DOMAIN_REGISTRY.get(domain_name)
+    if domain_cls is None:
+        raise ValueError(f"Unknown domain: {domain_name}. Available: {list(DOMAIN_REGISTRY.keys())}")
+    domain = domain_cls()
 
     retriever = FAISSRetriever(
         index_dir=settings.faiss_index_dir,
@@ -114,20 +125,22 @@ async def _initialize_orchestrator(settings: AppSettings) -> Orchestrator:
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan handler."""
-    global _orchestrator, _settings
+    global _orchestrators, _active_domain, _settings
     _settings = get_settings()
     setup_logging(_settings.log_level.value)
     logger.info("server_starting", host=_settings.server_host, port=_settings.server_port)
 
-    _orchestrator = await _initialize_orchestrator(_settings)
-    logger.info("orchestrator_initialized")
+    # Initialize default domain (aerospace)
+    _active_domain = "aerospace"
+    _orchestrators["aerospace"] = await _initialize_orchestrator(_settings, "aerospace")
+    logger.info("orchestrator_initialized", domain="aerospace")
     yield
     logger.info("server_shutting_down")
 
 
 app = FastAPI(
     title="Agentic RAG Gym",
-    description="A reinforcement learning environment for training AI agents on Retrieval-Augmented Generation tasks in the Aerospace Research domain.",
+    description="A reinforcement learning environment for training AI agents on Retrieval-Augmented Generation tasks across multiple domains.",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -159,16 +172,59 @@ async def health() -> HealthStatus:
     return HealthStatus()
 
 
+@app.get("/domains")
+async def list_domains() -> Dict[str, Any]:
+    """List all available domains and the currently active one."""
+    return {
+        "domains": list(DOMAIN_REGISTRY.keys()),
+        "active": _active_domain,
+    }
+
+
+class SwitchDomainRequest(BaseModel):
+    """Request body for /domain/switch endpoint."""
+    domain: str = Field(description="Domain name to switch to.")
+
+
+@app.post("/domain/switch")
+async def switch_domain(request: SwitchDomainRequest) -> Dict[str, Any]:
+    """Switch the active domain."""
+    global _active_domain
+    domain_name = _sanitize(request.domain)
+    if domain_name not in DOMAIN_REGISTRY:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown domain: {domain_name}. Available: {list(DOMAIN_REGISTRY.keys())}",
+        )
+
+    async with _lock:
+        if domain_name not in _orchestrators:
+            if _settings is None:
+                raise HTTPException(status_code=503, detail="Settings not initialized")
+            _orchestrators[domain_name] = await _initialize_orchestrator(_settings, domain_name)
+            logger.info("orchestrator_initialized", domain=domain_name)
+        _active_domain = domain_name
+
+    return {"active": _active_domain, "message": f"Switched to {domain_name} domain"}
+
+
+def _get_orchestrator() -> Orchestrator:
+    """Get the currently active orchestrator."""
+    orch = _orchestrators.get(_active_domain)
+    if orch is None:
+        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+    return orch
+
+
 @app.post("/reset")
 async def reset(request: ResetRequest = ResetRequest()) -> Dict[str, Any]:
     """Reset the environment for a new episode."""
-    if _orchestrator is None:
-        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+    orchestrator = _get_orchestrator()
 
     task_id = _sanitize(request.task_id) if request.task_id else None
     try:
         async with _lock:
-            observation = await _orchestrator.reset(task_id=task_id)
+            observation = await orchestrator.reset(task_id=task_id)
         return {"observation": observation, "done": False, "info": {"message": "Episode reset"}}
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -177,8 +233,7 @@ async def reset(request: ResetRequest = ResetRequest()) -> Dict[str, Any]:
 @app.post("/step")
 async def step(action: Action) -> Dict[str, Any]:
     """Take an action in the environment."""
-    if _orchestrator is None:
-        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+    orchestrator = _get_orchestrator()
 
     action_dict: Dict[str, Any] = {"type": action.type.value}
     if action.query:
@@ -192,7 +247,7 @@ async def step(action: Action) -> Dict[str, Any]:
 
     try:
         async with _lock:
-            result = await _orchestrator.step(action_dict)
+            result = await orchestrator.step(action_dict)
         return result
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -201,16 +256,14 @@ async def step(action: Action) -> Dict[str, Any]:
 @app.get("/state")
 async def state() -> Dict[str, Any]:
     """Get the current environment state."""
-    if _orchestrator is None:
-        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
-    return _orchestrator.state()
+    orchestrator = _get_orchestrator()
+    return orchestrator.state()
 
 
 @app.get("/tasks")
 async def list_tasks() -> Dict[str, Any]:
     """List all available tasks."""
-    if _orchestrator is None:
-        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+    orchestrator = _get_orchestrator()
     tasks = [
         TaskInfo(
             task_id=t.task_id,
@@ -219,7 +272,7 @@ async def list_tasks() -> Dict[str, Any]:
             difficulty=t.difficulty.value,
             max_steps=t.max_steps,
         ).model_dump()
-        for t in _orchestrator.tasks
+        for t in orchestrator.tasks
     ]
     return {"tasks": tasks}
 
@@ -227,13 +280,12 @@ async def list_tasks() -> Dict[str, Any]:
 @app.post("/grade")
 async def grade(request: GradeRequest = GradeRequest()) -> Dict[str, Any]:
     """Grade the current episode."""
-    if _orchestrator is None:
-        raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+    orchestrator = _get_orchestrator()
 
     try:
         async with _lock:
-            score = await _orchestrator.grade(task_id=request.task_id)
-        state_data = _orchestrator.state()
+            score = await orchestrator.grade(task_id=request.task_id)
+        state_data = orchestrator.state()
         return GradeResult(
             task_id=state_data.get("task_id", ""),
             score=score,

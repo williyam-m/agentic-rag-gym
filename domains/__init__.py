@@ -1,1 +1,1 @@
-"""Aerospace Research domain package for the Agentic RAG Gym."""
+"""Domain packages for the Agentic RAG Gym."""

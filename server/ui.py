@@ -173,6 +173,29 @@ textarea, input[type="text"], select {
 
 API_URL = "http://localhost:7860"
 
+# --- Task choices per domain ---
+DOMAIN_TASKS = {
+    "aerospace": [
+        ("Compare Propulsion Technologies (Easy)", "aero_easy_propulsion_comparison"),
+        ("Space Debris Mitigation (Easy)", "aero_easy_debris_mitigation"),
+        ("Mars EDL Architecture (Medium)", "aero_medium_mars_edl"),
+        ("Deep Space Life Support (Medium)", "aero_medium_life_support"),
+        ("Hypersonic Vehicle Design (Hard)", "aero_hard_hypersonic_vehicle"),
+    ],
+    "legal_research": [
+        ("Contract Clause Analysis (Easy)", "legal_easy_contract_review"),
+        ("Data Privacy Compliance (Easy)", "legal_easy_privacy_compliance"),
+        ("IP Assessment (Medium)", "legal_medium_ip_analysis"),
+        ("M&A Due Diligence (Medium)", "legal_medium_ma_due_diligence"),
+        ("Cross-Border Dispute (Hard)", "legal_hard_cross_border_dispute"),
+    ],
+}
+
+DOMAIN_LABELS = {
+    "aerospace": "Aerospace Research",
+    "legal_research": "Legal Research",
+}
+
 
 def _call_api(method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[str, Any]:
     """Make an API call to the backend."""
@@ -187,6 +210,15 @@ def _call_api(method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[s
             return resp.json()
     except Exception as exc:
         return {"error": str(exc)}
+
+
+def switch_domain(domain: str):
+    """Switch the active domain and return updated task choices."""
+    result = _call_api("POST", "/domain/switch", {"domain": domain})
+    if "error" in result:
+        return gr.update(choices=DOMAIN_TASKS.get("aerospace", []), value=None), f"Error: {result['error']}"
+    tasks = DOMAIN_TASKS.get(domain, [])
+    return gr.update(choices=tasks, value=tasks[0][1] if tasks else None), f"Switched to **{DOMAIN_LABELS.get(domain, domain)}** domain"
 
 
 def reset_environment(task_id: str) -> tuple:
@@ -362,9 +394,27 @@ def build_ui() -> gr.Blocks:
         gr.HTML(
             '<div class="main-header">'
             "<h1>⚜ AGENTIC RAG GYM ⚜</h1>"
-            "<p>Reinforcement Learning Environment for Aerospace Research Agents</p>"
+            "<p>RL-Enhanced Agentic RAG Framework — Extensible to Any Domain</p>"
             "</div>"
         )
+
+        # Domain selector - top level
+        with gr.Row():
+            domain_selector = gr.Dropdown(
+                choices=[
+                    ("Aerospace Research", "aerospace"),
+                    ("Legal Research", "legal_research"),
+                ],
+                label="Select Domain",
+                value="aerospace",
+                scale=2,
+            )
+            domain_status = gr.Textbox(label="Domain Status", value="Active: Aerospace Research", interactive=False, scale=2)
+            gr.HTML(
+                '<div style="padding: 10px; color: var(--text-secondary); font-size: 0.85rem; text-align: center;">'
+                '🔮 More domains coming soon — the RAG Master framework is designed for any domain'
+                '</div>'
+            )
 
         with gr.Tabs() as tabs:
             # --- Tab 1: Interactive Mode ---
@@ -373,13 +423,7 @@ def build_ui() -> gr.Blocks:
                     with gr.Column(scale=1):
                         gr.HTML('<div class="glass-card"><h3 style="color: var(--gold);">Environment Control</h3></div>')
                         task_dropdown = gr.Dropdown(
-                            choices=[
-                                ("Compare Propulsion Technologies (Easy)", "aero_easy_propulsion_comparison"),
-                                ("Space Debris Mitigation (Easy)", "aero_easy_debris_mitigation"),
-                                ("Mars EDL Architecture (Medium)", "aero_medium_mars_edl"),
-                                ("Deep Space Life Support (Medium)", "aero_medium_life_support"),
-                                ("Hypersonic Vehicle Design (Hard)", "aero_hard_hypersonic_vehicle"),
-                            ],
+                            choices=DOMAIN_TASKS["aerospace"],
                             label="Select Task",
                             value="aero_easy_propulsion_comparison",
                         )
@@ -436,13 +480,7 @@ def build_ui() -> gr.Blocks:
                 )
                 with gr.Row():
                     auto_task = gr.Dropdown(
-                        choices=[
-                            ("Compare Propulsion Technologies (Easy)", "aero_easy_propulsion_comparison"),
-                            ("Space Debris Mitigation (Easy)", "aero_easy_debris_mitigation"),
-                            ("Mars EDL Architecture (Medium)", "aero_medium_mars_edl"),
-                            ("Deep Space Life Support (Medium)", "aero_medium_life_support"),
-                            ("Hypersonic Vehicle Design (Hard)", "aero_hard_hypersonic_vehicle"),
-                        ],
+                        choices=DOMAIN_TASKS["aerospace"],
                         label="Select Task",
                         value="aero_easy_propulsion_comparison",
                     )
@@ -462,7 +500,7 @@ def build_ui() -> gr.Blocks:
             with gr.Tab("📋 Tasks", id="tasks"):
                 gr.HTML(
                     '<div class="glass-card"><h3 style="color: var(--gold);">Available Tasks</h3>'
-                    "<p>All tasks in the Aerospace Research domain with difficulty ratings</p></div>"
+                    "<p>Tasks for the currently active domain — switch domains above to see different tasks</p></div>"
                 )
                 tasks_display = gr.Markdown(value="Click refresh to load tasks")
                 refresh_btn = gr.Button("🔄 Refresh Tasks", variant="secondary")
@@ -476,8 +514,9 @@ def build_ui() -> gr.Blocks:
 
                     ## ⚜ Agentic RAG Gym
 
-                    A **reinforcement learning environment** for training AI agents on
-                    **Retrieval-Augmented Generation** tasks in the **Aerospace Research** domain.
+                    An **open-source RL-enhanced framework** that revolutionizes
+                    **Retrieval-Augmented Generation** by training agents through
+                    reinforcement learning across any knowledge domain.
 
                     ### Architecture
 
@@ -487,23 +526,17 @@ def build_ui() -> gr.Blocks:
                     | Backend | FastAPI + Uvicorn |
                     | Vector Store | FAISS |
                     | Embeddings | sentence-transformers |
-                    | LLM | OpenAI-compatible (Ollama/GROQ/HF) |
-                    | UI | Gradio |
+                    | LLM | OpenAI-compatible API |
+                    | UI | Gradio (HF Space) |
+                    | Domains | Aerospace Research, Legal Research, _more coming soon_ |
 
                     ### Multi-Agent System
 
-                    The environment uses a cooperative multi-agent architecture:
                     - **Retriever Agent** — Document search and query reformulation
                     - **Reasoner Agent** — Analysis and synthesis over documents
                     - **Critic Agent** — Quality evaluation and improvement suggestions
                     - **Planner Agent** — Strategic planning for complex tasks
                     - **Verifier Agent** — Factual grounding verification
-
-                    ### Reward Design
-
-                    - **Process Supervision** — Per-step rewards for retrieval quality, reasoning depth, answer completeness
-                    - **Anti-Hacking Guards** — Repetition detection, degenerate output penalties, copy-paste detection
-                    - **Composite Scoring** — Weighted combination of retrieval relevance, reasoning quality, efficiency, and answer quality
 
                     ### OpenEnv Compliance
 
@@ -513,5 +546,17 @@ def build_ui() -> gr.Blocks:
                     </div>
                     """
                 )
+
+        # Wire domain selector to update task dropdowns
+        domain_selector.change(
+            fn=switch_domain,
+            inputs=[domain_selector],
+            outputs=[task_dropdown, domain_status],
+        )
+        domain_selector.change(
+            fn=switch_domain,
+            inputs=[domain_selector],
+            outputs=[auto_task, domain_status],
+        )
 
     return demo

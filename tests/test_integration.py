@@ -91,9 +91,11 @@ def _inject_mock():
         llm_client=_MockLLM(),
         reward_function=_MockRewardFn(),
     )
-    server_app_module._orchestrator = orch
+    server_app_module._orchestrators = {"aerospace": orch}
+    server_app_module._active_domain = "aerospace"
     yield
-    server_app_module._orchestrator = None
+    server_app_module._orchestrators = {}
+    server_app_module._active_domain = "aerospace"
 
 
 @pytest.fixture

@@ -11,16 +11,39 @@ tags:
   - reinforcement-learning
   - multi-agent
   - aerospace
+  - legal-research
 pinned: true
 ---
 
+[![HF Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Space-blue)](https://huggingface.co/spaces/williyam/agentic-rag-gym)
+[![Fine-Tuned Model](https://img.shields.io/badge/%F0%9F%A4%97%20HF%20Model-GRPO--LoRA-orange)](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-OpenEnv%20API-009688?logo=fastapi&logoColor=white)](server/app.py)
+[![OpenEnv](https://img.shields.io/badge/OpenEnv-Compliant-4CAF50)](openenv.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # ⚜ Agentic RAG Gym
 
-> *Where autonomous agents learn to research like experts.*
+> **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
 
-**Agentic RAG Gym** is a reinforcement learning environment that trains AI agents on complex **Retrieval-Augmented Generation** tasks. Built on the OpenEnv specification, it simulates real-world research workflows where agents must search, reason, critique, and synthesize information from a domain-specific knowledge base.
+**Agentic RAG Gym** is an open-source reinforcement learning framework that fundamentally transforms Retrieval-Augmented Generation. We designed a new orchestrator from scratch — a **RAG Master** engine where autonomous agents don't just retrieve and generate, they *learn to research like experts* through RL-driven process supervision, multi-agent collaboration, and adversarial self-improvement.
 
-The first domain? **Aerospace Research** — because if your agent can design a hypersonic vehicle by cross-referencing scramjet propulsion, UHTC materials, and autonomous flight systems, it can handle anything.
+This is not an incremental improvement. This is a **new revolution for agentic RAG**: an RL gym that teaches the system to make better decisions at every step — which documents to retrieve, how to reason over them, when to critique its own work, and how to synthesize expert-level answers. Built as a **domain-agnostic framework**, it extends to any knowledge domain. We used reinforcement learning to improve the entire agentic RAG foundation — from retrieval strategies to reasoning quality to answer completeness.
+
+The first two domains? **Aerospace Research** and **Legal Research** — because if your agent can design a hypersonic vehicle by cross-referencing scramjet propulsion with UHTC materials, or navigate a cross-border IP dispute across three jurisdictions, it can handle anything.
+
+---
+
+## Why This Matters
+
+Traditional RAG systems are static pipelines: retrieve → generate → done. They have no feedback loop, no process awareness, no ability to learn from mistakes. **Agentic RAG Gym** changes this by:
+
+1. **Process Supervision** — Per-step rewards teach agents *how* to research, not just *what* to output
+2. **Multi-Agent Collaboration** — Five specialized agents (Retriever, Reasoner, Critic, Planner, Verifier) work together through message-passing
+3. **RL-Driven Improvement** — GRPO fine-tuning uses real domain graders as reward signals — no proxy rewards
+4. **Anti-Reward-Hacking** — Adversarial guards prevent the system from gaming its own rewards
+5. **Domain Extensibility** — Plug in any domain (aerospace, legal, medical, finance) through the adapter pattern
 
 ---
 
@@ -28,59 +51,64 @@ The first domain? **Aerospace Research** — because if your agent can design a 
 
 | Theme | Implementation |
 |---|---|
-| **#1 Multi-Agent Interactions** | Cooperative multi-agent system: Retriever, Reasoner, Critic, Planner, Verifier agents with message-passing |
+| **#1 Multi-Agent Interactions** | Cooperative 5-agent system: Retriever, Reasoner, Critic, Planner, Verifier with structured message-passing |
 | **#2 Long-Horizon Planning** | Tasks require 10-20 step trajectories with planning, iterative retrieval, reasoning, critique, and verification |
 | **#3.1 World Modeling (Professional)** | Dynamic RAG environment with FAISS vector store, LLM reasoning, and tool orchestration |
-| **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, process supervision rewards |
-| **#5 Wild Card** | Aerospace research domain — novel, technically deep, genuinely useful for evaluating agent capabilities |
+| **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, GRPO fine-tuning with real graders |
+| **#5 Wild Card** | **A new orchestrator/framework designed from scratch** — RAG Master represents a new revolution for agentic RAG. This RL gym helps the system make better decisions by improving the entire agentic RAG foundation with reinforcement learning. Implemented as a domain-agnostic framework extensible to any domain, with 2 production domains (Aerospace Research, Legal Research) and deterministic grading |
 
 ---
 
 ## Architecture
 
 ```
-┌──────────── Gradio UI (Royal Glassmorphism) ────────────┐
+┌────────────── HF Space Client ──────────────────────────┐
 │  Interactive │ Auto Pilot │ Tasks │ About                │
+│           [Domain Selector: Aerospace / Legal]           │
 └────────────────────────┬────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────┐
 │              FastAPI Server (OpenEnv API)                 │
-│  POST /reset │ POST /step │ GET /state │ POST /grade     │
+│  /reset │ /step │ /state │ /grade │ /domain/switch       │
 └────────────────────────┬────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────┐
 │              RAG Master Orchestrator                      │
 │                                                          │
 │  Retriever ←→ Reasoner ←→ Critic ←→ Verifier           │
-│       ↕            ↕                                     │
+│       ↕            ↕           ↕                         │
 │  FAISS Store   LLM Client    Composite Rewards           │
+├──────────────────────────────────────────────────────────┤
+│  Domains: [Aerospace] [Legal Research] [Your Domain]     │
 └──────────────────────────────────────────────────────────┘
 ```
 
 ## Key Features
 
-- **Generic `rag_master` Framework** — Domain-agnostic orchestrator (like LangChain/LangGraph) configurable for any domain
-- **5 Research Tasks** — Easy → Medium → Hard difficulty with deterministic graders
-- **Multi-Agent System** — Retriever, Reasoner, Critic, Planner, Verifier agents
-- **Process Supervision** — Per-step rewards, not just final outcomes
-- **Anti-Reward-Hacking** — Repetition detection, degenerate output penalties, copy-paste detection
-- **16 Curated Documents** — Real aerospace research covering propulsion, materials, orbital mechanics, life support, hypersonics, and more
-- **Royal Glassmorphism UI** — Black/gold/white theme with real-time feedback
+- **RAG Master Framework** — Domain-agnostic orchestrator designed from scratch, extensible to any domain through clean adapters
+- **Multi-Domain Support** — Aerospace Research (5 tasks, 16 documents) + Legal Research (5 tasks, 16 documents) with runtime domain switching
+- **10 Research Tasks** — Easy → Medium → Hard difficulty across domains with deterministic graders
+- **Multi-Agent System** — Retriever, Reasoner, Critic, Planner, Verifier agents with structured message-passing
+- **Process Supervision** — Per-step rewards for retrieval quality, reasoning depth, and answer completeness
+- **Anti-Reward-Hacking** — Repetition detection, degenerate output penalties, keyword stuffing guards, copy-paste detection
+- **GRPO Fine-Tuning** — Real domain graders as reward signal, LoRA adapters, published on HF Hub
+- **OpenAI-Compatible** — Works with any OpenAI-compatible API: Ollama, vLLM, OpenAI, Groq, HuggingFace Inference, and more
+- **[Live HF Space](https://huggingface.co/spaces/williyam/agentic-rag-gym)** — Interactive demo with domain switching and real-time feedback
 
 ---
 
-## Setup Instructions
+## Quick Start
 
 ### Prerequisites
 
 - Python 3.10+
-- Local LLM (Ollama with `qwen2.5:7b`) or API key (GROQ / HuggingFace)
+- Any OpenAI-compatible LLM endpoint (Ollama, OpenAI, Groq, HF Inference, vLLM, etc.)
 
-### Quick Start with `uv`
+### Install & Run
 
 ```bash
 # Clone the repository
-git clone https://github.com/williyam/agentic-rag-gym.git
+git clone https://github.com/williyam-m/agentic-rag-gym.git
 cd agentic-rag-gym
 
 # Create environment and install dependencies
@@ -89,30 +117,16 @@ uv pip install -e ".[dev]"
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your API keys and model settings
+# Edit .env with your API endpoint and keys
 
 # Start the server
-python main.py
-```
-
-### Quick Start with pip
-
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-cp .env.example .env
 python main.py
 ```
 
 ### Docker
 
 ```bash
-# Single command
 docker compose up --build
-
-# Or manually
-docker build -t agentic-rag-gym .
-docker run -p 7860:7860 --env-file .env agentic-rag-gym
 ```
 
 The server starts at `http://localhost:7860`.
@@ -125,7 +139,7 @@ All configuration is via environment variables (`.env` file):
 
 | Variable | Default | Description |
 |---|---|---|
-| `API_BASE_URL` | `http://localhost:11434/v1` | LLM API endpoint |
+| `API_BASE_URL` | `http://localhost:11434/v1` | Any OpenAI-compatible LLM endpoint |
 | `MODEL_NAME` | `qwen2.5:7b` | Model identifier |
 | `HF_TOKEN` | — | HuggingFace token |
 | `GROQ_API_KEY` | — | GROQ API key |
@@ -136,6 +150,14 @@ All configuration is via environment variables (`.env` file):
 ---
 
 ## API Usage
+
+### Switch Domain
+
+```bash
+curl -X POST http://localhost:7860/domain/switch \
+  -H "Content-Type: application/json" \
+  -d '{"domain": "legal_research"}'
+```
 
 ### Reset Environment
 
@@ -165,15 +187,23 @@ curl -X GET http://localhost:7860/state
 curl -X POST http://localhost:7860/grade
 ```
 
-### List Tasks
+### List Tasks (for active domain)
 
 ```bash
 curl -X GET http://localhost:7860/tasks
 ```
 
+### List Available Domains
+
+```bash
+curl -X GET http://localhost:7860/domains
+```
+
 ---
 
-## Tasks
+## Domains
+
+### Aerospace Research
 
 | Task | Difficulty | Max Steps | Description |
 |---|---|---|---|
@@ -182,6 +212,16 @@ curl -X GET http://localhost:7860/tasks
 | `aero_medium_mars_edl` | Medium | 16 | Design Mars Entry/Descent/Landing architecture |
 | `aero_medium_life_support` | Medium | 16 | Design integrated life support for Mars mission |
 | `aero_hard_hypersonic_vehicle` | Hard | 20 | Design reusable hypersonic space access vehicle |
+
+### Legal Research
+
+| Task | Difficulty | Max Steps | Description |
+|---|---|---|---|
+| `legal_easy_contract_review` | Easy | 12 | Analyze liability, indemnification, and termination clauses |
+| `legal_easy_privacy_compliance` | Easy | 12 | GDPR & CCPA/CPRA compliance gap analysis |
+| `legal_medium_ip_analysis` | Medium | 16 | Patent eligibility, prior art, and trade secret strategy |
+| `legal_medium_ma_due_diligence` | Medium | 16 | Technology company acquisition due diligence |
+| `legal_hard_cross_border_dispute` | Hard | 20 | Multi-jurisdictional technology dispute resolution |
 
 ---
 
@@ -194,7 +234,6 @@ python main.py &
 # Set environment variables
 export API_BASE_URL=http://localhost:11434/v1
 export MODEL_NAME=qwen2.5:7b
-export HF_TOKEN=your_token_here
 
 # Run inference
 python inference.py
@@ -242,9 +281,9 @@ All scores strictly within **[0.01, 0.99]**.
 
 ---
 
-## Using RAG Master for Any Domain
+## Extending to Any Domain
 
-The `rag_master` framework is designed to be **domain-agnostic**. To create a new domain:
+The `rag_master` framework is designed to be **domain-agnostic**. Adding a new domain takes four steps:
 
 ### 1. Create Domain Directory
 
@@ -263,31 +302,29 @@ domains/your_domain/
 from rag_master.adapters import BaseDomainConfig
 
 class YourDomainConfig(BaseDomainConfig):
-    def get_tasks(self) -> List[TaskDefinition]:
-        return [...]  # Your tasks
-
-    def get_documents(self) -> List[Document]:
-        return [...]  # Your knowledge base
-
-    def get_grader(self, task_id: str) -> BaseGrader:
-        return YourGrader(task_id)  # Your grading logic
-
-    def get_reward_function(self) -> BaseRewardFunction:
-        return CompositeRewardFunction()  # Or custom
-
-    def get_system_prompt(self) -> str:
-        return "You are an expert in..."
+    def get_tasks(self) -> List[TaskDefinition]: ...
+    def get_documents(self) -> List[Document]: ...
+    def get_grader(self, task_id: str) -> BaseGrader: ...
+    def get_reward_function(self) -> BaseRewardFunction: ...
+    def get_system_prompt(self) -> str: ...
 ```
 
 ### 3. Register in Server
 
-Update `server/app.py` to use your domain config instead of `AerospaceDomainConfig`.
+Add your domain to `DOMAIN_REGISTRY` in `server/app.py`:
+```python
+DOMAIN_REGISTRY = {
+    "aerospace": AerospaceDomainConfig,
+    "legal_research": LegalResearchDomainConfig,
+    "your_domain": YourDomainConfig,
+}
+```
 
 ### 4. Choose Evaluation Method
 
 - **Rule-based**: Use `KeywordCoverageGrader` with domain-specific keywords
 - **LLM Judge**: Use `LLMJudgeRewardFunction` for nuanced evaluation
-- **Hybrid**: Combine both with `CompositeRewardFunction`
+- **Hybrid**: Combine both approaches
 
 ---
 
@@ -319,19 +356,13 @@ with LoRA adapters and the **real domain graders** as the reward signal — no p
 
 ![Score Distribution](plots/score_distribution.png)
 
-### Run Training (Notebook)
-
-The primary training interface is the Jupyter notebook:
+### Run Training
 
 ```bash
+# Primary: Jupyter notebook
 jupyter notebook agentic-rag-for-aerospace-research.ipynb
-```
 
-### Run Training (Script)
-
-For headless/CI environments:
-
-```bash
+# Headless/CI
 python train.py
 ```
 
@@ -347,8 +378,6 @@ python train.py
 | Epochs | 2 |
 | Group Size (G) | 4 |
 | Max Completion | 512 tokens |
-| Hardware | Apple M1 Pro (MPS) |
-| Training Time | ~116 min |
 
 ### Fine-Tuned Model
 
@@ -380,22 +409,6 @@ pytest tests/test_rewards.py -v
 
 ---
 
-## Baseline Scores
-
-Scored with `meta-llama/Llama-3.2-3B-Instruct` via HF Inference API, `TEMPERATURE=0.0`:
-
-| Task | Difficulty | Score |
-|---|---|---|
-| Propulsion Comparison | Easy | 0.40 – 0.65 |
-| Debris Mitigation | Easy | 0.35 – 0.60 |
-| Mars EDL | Medium | 0.30 – 0.50 |
-| Life Support | Medium | 0.25 – 0.45 |
-| Hypersonic Vehicle | Hard | 0.15 – 0.35 |
-
-*Run `python inference.py` to reproduce. Results saved to `baseline_results.json`.*
-
----
-
 ## Reproduce in 60 Seconds
 
 ```bash
@@ -414,13 +427,12 @@ python inference.py    # Results saved to baseline_results.json
 
 ```
 agentic-rag-gym/
-├── rag_master/              # Generic agentic RAG framework
-├── server/                  # FastAPI + Gradio server
-├── domains/aerospace/       # Aerospace research domain
-├── domains/legal_research/  # Legal research domain (stub)
+├── rag_master/              # Generic agentic RAG framework (domain-agnostic)
+├── server/                  # FastAPI + Gradio server with domain switching
+├── domains/aerospace/       # Aerospace research domain (5 tasks, 16 docs)
+├── domains/legal_research/  # Legal research domain (5 tasks, 16 docs)
 ├── training/                # GRPO training package
-├── tests/                   # Unit & integration tests (102+)
-├── .github/workflows/       # CI pipeline
+├── tests/                   # Unit & integration tests
 ├── documents/               # Architecture & design docs
 ├── plots/                   # Training curves & evaluation plots
 ├── agentic-rag-for-aerospace-research.ipynb  # GRPO training notebook
@@ -431,6 +443,16 @@ agentic-rag-gym/
 ├── docker-compose.yml       # Service orchestration
 └── main.py                  # Entry point
 ```
+
+---
+
+## Links
+
+| Resource | URL |
+|---|---|
+| **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
+| **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+| **GitHub** | [github.com/williyam-m/agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
 
 ---
 
