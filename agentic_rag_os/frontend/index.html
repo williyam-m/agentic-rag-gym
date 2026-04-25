@@ -7,41 +7,34 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <style>
         /* ============================================================
-           AGENTIC RAG OS — Dark Theme Premium UI
+           AGENTIC RAG OS — Hacker Theme (Black / White / #9fef00)
            ============================================================ */
         :root {
-            --bg-primary: #09090b;
-            --bg-secondary: #111113;
-            --bg-card: #16161a;
-            --bg-card-hover: #1c1c21;
-            --border: #27272a;
-            --border-light: #3f3f46;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --accent: #6d28d9;
-            --accent-light: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.15);
-            --accent-2: #06b6d4;
-            --accent-3: #10b981;
-            --gradient-1: linear-gradient(135deg, #6d28d9 0%, #06b6d4 100%);
-            --gradient-2: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
-            --radius: 12px;
-            --radius-lg: 20px;
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
-            --shadow-lg: 0 20px 40px -12px rgba(0,0,0,0.5);
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #0d0d0d;
+            --bg-card-hover: #141414;
+            --border: #1a1a1a;
+            --border-light: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #666666;
+            --accent: #9fef00;
+            --accent-light: #9fef00;
+            --accent-glow: rgba(159, 239, 0, 0.1);
+            --accent-dim: rgba(159, 239, 0, 0.6);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.5);
+            --shadow-lg: 0 20px 40px -12px rgba(0,0,0,0.8);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
+        html { scroll-behavior: smooth; font-size: 16px; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -49,874 +42,234 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ---- Scrollbar ---- */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 
         /* ---- Animations ---- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.1); }
-            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); }
-        }
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes slide-in-right {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes orbit {
-            from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
-        }
-        @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-        @keyframes count-up {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 5px rgba(159,239,0,0.2); } 50% { box-shadow: 0 0 20px rgba(159,239,0,0.4); } }
+        @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+        @keyframes borderGlow { 0%, 100% { border-color: rgba(159,239,0,0.1); } 50% { border-color: rgba(159,239,0,0.4); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:.3} 94%{opacity:1} 96%{opacity:.5} 97%{opacity:1} }
 
-        .animate-in { animation: fadeInUp 0.7s ease-out forwards; opacity: 0; }
-        .animate-in:nth-child(2) { animation-delay: 0.1s; }
-        .animate-in:nth-child(3) { animation-delay: 0.2s; }
-        .animate-in:nth-child(4) { animation-delay: 0.3s; }
+        /* Scroll-triggered animation classes */
+        .scroll-hidden { opacity: 0; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .scroll-show { opacity: 1; transform: translateY(0) translateX(0) scale(1) !important; }
+        .scroll-up { transform: translateY(60px); }
+        .scroll-left { transform: translateX(-60px); }
+        .scroll-right { transform: translateX(60px); }
+        .scroll-scale { transform: scale(0.85); }
+        .stagger-1 { transition-delay: 0.1s !important; }
+        .stagger-2 { transition-delay: 0.2s !important; }
+        .stagger-3 { transition-delay: 0.3s !important; }
+        .stagger-4 { transition-delay: 0.4s !important; }
+        .stagger-5 { transition-delay: 0.5s !important; }
+        .stagger-6 { transition-delay: 0.6s !important; }
 
-        /* ---- Grid Background ---- */
+        /* Scanline overlay */
+        .scanline-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+        .scanline-overlay::before { content: ''; position: absolute; left: 0; right: 0; height: 4px; background: rgba(159,239,0,0.03); animation: scanline 4s linear infinite; }
+
+        /* Grid background */
         .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(159,239,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(159,239,0,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none; z-index: 0;
         }
 
-        /* ---- Glow Orbs ---- */
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .glow-orb-1 { width: 400px; height: 400px; background: rgba(109,40,217,0.15); top: -100px; left: -100px; }
-        .glow-orb-2 { width: 300px; height: 300px; background: rgba(6,182,212,0.1); top: 200px; right: -80px; }
-        .glow-orb-3 { width: 350px; height: 350px; background: rgba(16,185,129,0.08); bottom: -100px; left: 30%; }
+        .glow-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+        .glow-orb-1 { width: 300px; height: 300px; background: rgba(159,239,0,0.06); top: -100px; left: -100px; }
+        .glow-orb-2 { width: 250px; height: 250px; background: rgba(159,239,0,0.04); top: 300px; right: -80px; }
 
-        /* ---- Container ---- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
         /* ============ NAVBAR ============ */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(9,9,11,0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            transition: var(--transition);
-        }
-        .navbar .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--text-primary);
-        }
-        .nav-brand .logo {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            list-style: none;
-        }
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        .nav-links a:hover { color: var(--text-primary); }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 1rem; font-weight: 700; text-decoration: none; color: var(--accent); letter-spacing: 0.05em; }
+        .nav-brand .logo { width: 28px; height: 28px; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #000; }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-links a:hover { color: var(--accent); }
         .nav-actions { display: flex; gap: 12px; align-items: center; }
 
         /* ---- Buttons ---- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-        .btn-primary {
-            background: var(--gradient-1);
-            color: white;
-            box-shadow: 0 4px 15px rgba(109,40,217,0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(109,40,217,0.4);
-        }
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-light);
-        }
-        .btn-secondary:hover {
-            background: var(--bg-card);
-            border-color: var(--accent-light);
-        }
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-secondary);
-            padding: 8px 16px;
-        }
-        .btn-ghost:hover { color: var(--text-primary); }
-        .btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 14px; }
-        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-        .btn-icon { padding: 8px; border-radius: 8px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: var(--radius); font-size: 0.8rem; font-weight: 600; font-family: inherit; cursor: pointer; border: none; transition: var(--transition); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(159,239,0,0.3); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-ghost { background: transparent; color: var(--text-secondary); padding: 8px 14px; }
+        .btn-ghost:hover { color: var(--accent); }
+        .btn-lg { padding: 12px 28px; font-size: 0.85rem; }
+        .btn-sm { padding: 5px 12px; font-size: 0.75rem; }
+        .btn-danger { color: #ff4444; }
+        .btn-danger:hover { color: #ff6666; }
 
         /* ============ HERO ============ */
-        .hero {
-            padding: 160px 0 100px;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: var(--accent-glow);
-            border: 1px solid rgba(139,92,246,0.2);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--accent-light);
-            margin-bottom: 28px;
-            animation: fadeIn 0.8s ease-out;
-        }
-        .hero-badge .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-light);
-            border-radius: 50%;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-        .hero h1 .gradient-text {
-            background: var(--gradient-2);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-shift 4s ease infinite;
-        }
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 640px;
-            margin: 0 auto 40px;
-            animation: fadeInUp 0.8s ease-out 0.2s forwards;
-            opacity: 0;
-        }
-        .hero-actions {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            animation: fadeInUp 0.8s ease-out 0.4s forwards;
-            opacity: 0;
-        }
+        .hero { padding: 150px 0 80px; position: relative; overflow: hidden; text-align: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; background: var(--accent-glow); border: 1px solid rgba(159,239,0,0.2); border-radius: 4px; font-size: 0.7rem; color: var(--accent); margin-bottom: 28px; text-transform: uppercase; letter-spacing: 0.15em; animation: fadeIn 0.8s ease-out; }
+        .hero-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse-glow 2s ease-in-out infinite; }
+        .hero h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px; animation: fadeInUp 0.8s ease-out; color: #fff; }
+        .hero h1 .gradient-text { color: var(--accent); text-shadow: 0 0 40px rgba(159,239,0,0.3); }
+        .hero-subtitle { font-size: 1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 40px; animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
 
-        /* Hero visual */
-        .hero-visual {
-            margin-top: 80px;
-            position: relative;
-            animation: fadeInUp 1s ease-out 0.6s forwards;
-            opacity: 0;
-        }
-        .hero-terminal {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 0;
-            max-width: 800px;
-            margin: 0 auto;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.02);
-            border-bottom: 1px solid var(--border);
-        }
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
+        .hero-visual { margin-top: 60px; position: relative; animation: fadeInUp 1s ease-out 0.6s forwards; opacity: 0; }
+        .hero-terminal { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius); max-width: 780px; margin: 0 auto; overflow: hidden; box-shadow: 0 0 40px rgba(159,239,0,0.05); animation: borderGlow 3s ease-in-out infinite; }
+        .terminal-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); }
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
         .terminal-dot.red { background: #ff5f56; }
         .terminal-dot.yellow { background: #ffbd2e; }
         .terminal-dot.green { background: #27c93f; }
-        .terminal-title {
-            flex: 1;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .terminal-body {
-            padding: 24px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-        .terminal-body .cmd { color: var(--accent-2); }
-        .terminal-body .str { color: var(--accent-3); }
-        .terminal-body .comment { color: var(--text-muted); }
-        .terminal-body .num { color: #f59e0b; }
+        .terminal-title { flex: 1; text-align: center; font-size: 0.7rem; color: var(--text-muted); }
+        .terminal-body { padding: 20px; font-size: 0.8rem; line-height: 1.9; color: var(--text-secondary); }
+        .terminal-body .cmd { color: var(--accent); }
+        .terminal-body .str { color: #fff; }
+        .terminal-body .comment { color: #444; }
+        .terminal-body .num { color: var(--accent); }
+        .terminal-body .prompt { color: var(--accent-dim); }
 
         /* ============ LOGOS BAR ============ */
-        .logos-bar {
-            padding: 60px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-        .logos-bar p {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 30px;
-        }
-        .logos-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 48px;
-            flex-wrap: wrap;
-        }
-        .logo-item {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .logo-item:hover { color: var(--text-secondary); }
-        .logo-item span { font-size: 1.3rem; }
+        .logos-bar { padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .logos-bar p { text-align: center; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 24px; }
+        .logos-grid { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; }
+        .logo-item { font-size: 0.85rem; font-weight: 600; color: #444; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+        .logo-item:hover { color: var(--accent); }
+        .logo-item span { font-size: 1.1rem; }
 
         /* ============ SECTION BASE ============ */
-        section {
-            padding: 100px 0;
-            position: relative;
-        }
-        .section-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--accent-light);
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-        }
-        .section-desc {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 60px;
-        }
+        section { padding: 80px 0; position: relative; }
+        .section-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+        .section-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; color: #fff; }
+        .section-desc { font-size: 0.95rem; color: var(--text-secondary); max-width: 560px; margin-bottom: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
 
         /* ============ FEATURES ============ */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-1);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .feature-card:hover {
-            border-color: var(--border-light);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: var(--transition); position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0; transition: var(--transition); }
+        .feature-card:hover { border-color: rgba(159,239,0,0.3); transform: translateY(-4px); box-shadow: 0 0 30px rgba(159,239,0,0.05); }
         .feature-card:hover::before { opacity: 1; }
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-            background: var(--accent-glow);
-        }
-        .feature-card h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+        .feature-icon { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; background: var(--accent-glow); border: 1px solid rgba(159,239,0,0.1); color: var(--accent); font-weight: 700; }
+        .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .feature-card p { color: var(--text-secondary); font-size: 0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
 
         /* ============ HOW IT WORKS ============ */
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            position: relative;
-        }
-        .steps-container::before {
-            content: '';
-            position: absolute;
-            top: 36px;
-            left: 60px;
-            right: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
-            opacity: 0.3;
-        }
-        .step-item {
-            text-align: center;
-            position: relative;
-        }
-        .step-number {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent-light);
-            transition: var(--transition);
-            position: relative;
-            z-index: 1;
-        }
-        .step-item:hover .step-number {
-            border-color: var(--accent-light);
-            box-shadow: 0 0 30px rgba(139,92,246,0.2);
-        }
-        .step-item h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .step-item p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+        .steps-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
+        .steps-container::before { content: ''; position: absolute; top: 30px; left: 50px; right: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.2; }
+        .step-item { text-align: center; position: relative; }
+        .step-number { width: 60px; height: 60px; border-radius: 4px; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.2rem; font-weight: 800; color: var(--accent); transition: var(--transition); z-index: 1; position: relative; }
+        .step-item:hover .step-number { border-color: var(--accent); box-shadow: 0 0 20px rgba(159,239,0,0.15); }
+        .step-item h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; color: #fff; }
+        .step-item p { font-size: 0.8rem; color: var(--text-secondary); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
 
         /* ============ PRICING ============ */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .price-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            transition: var(--transition);
-        }
-        .price-card.featured {
-            border-color: var(--accent);
-            box-shadow: 0 0 40px rgba(109,40,217,0.15);
-            position: relative;
-        }
-        .price-card.featured::before {
-            content: 'POPULAR';
-            position: absolute;
-            top: -12px;
-            right: 24px;
-            background: var(--gradient-1);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 100px;
-        }
-        .price-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .price-card .price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 16px 0;
-        }
-        .price-card .price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
-        .price-card ul {
-            list-style: none;
-            margin: 24px 0;
-        }
-        .price-card li {
-            padding: 8px 0;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .price-card li::before {
-            content: '✓';
-            color: var(--accent-3);
-            font-weight: 700;
-        }
+        .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 750px; margin: 0 auto; }
+        .price-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; transition: var(--transition); }
+        .price-card.featured { border-color: rgba(159,239,0,0.3); box-shadow: 0 0 30px rgba(159,239,0,0.05); position: relative; }
+        .price-card.featured::before { content: 'ACTIVE'; position: absolute; top: -10px; right: 20px; background: var(--accent); color: #000; font-size: 0.65rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.1em; }
+        .price-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .price-card .price { font-size: 2.2rem; font-weight: 800; margin: 14px 0; color: var(--accent); }
+        .price-card .price span { font-size: 0.85rem; color: var(--text-muted); font-weight: 400; }
+        .price-card ul { list-style: none; margin: 20px 0; }
+        .price-card li { padding: 6px 0; font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
+        .price-card li::before { content: '>'; color: var(--accent); font-weight: 700; font-family: monospace; }
 
         /* ============ API DOCS ============ */
-        .api-section { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 60px; margin-top: 40px; }
-        .api-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .api-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            transition: var(--transition);
-        }
-        .api-card:hover {
-            border-color: var(--border-light);
-        }
-        .api-method {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            font-family: monospace;
-            margin-right: 8px;
-        }
-        .api-method.get { background: rgba(16,185,129,0.15); color: #10b981; }
-        .api-method.post { background: rgba(59,130,246,0.15); color: #3b82f6; }
-        .api-method.delete { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .api-path {
-            font-family: 'SF Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-primary);
-        }
-        .api-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
+        .api-section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; margin-top: 30px; }
+        .api-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .api-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: var(--transition); }
+        .api-card:hover { border-color: rgba(159,239,0,0.2); }
+        .api-method { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 0.65rem; font-weight: 700; font-family: monospace; margin-right: 8px; }
+        .api-method.get { background: rgba(159,239,0,0.1); color: var(--accent); }
+        .api-method.post { background: rgba(255,255,255,0.08); color: #fff; }
+        .api-method.delete { background: rgba(255,68,68,0.1); color: #ff4444; }
+        .api-path { font-size: 0.8rem; color: var(--text-primary); }
+        .api-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
 
         /* ============ CTA ============ */
-        .cta-section {
-            text-align: center;
-            padding: 120px 0;
-            position: relative;
-        }
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at center, rgba(109,40,217,0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-        .cta-section p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-        }
+        .cta-section { text-align: center; padding: 100px 0; position: relative; }
+        .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(159,239,0,0.04) 0%, transparent 70%); pointer-events: none; }
+        .cta-section h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; margin-bottom: 14px; }
+        .cta-section p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 36px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
 
         /* ============ FOOTER ============ */
-        .footer {
-            padding: 60px 0 30px;
-            border-top: 1px solid var(--border);
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        .footer-brand h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .footer-brand p { color: var(--text-muted); font-size: 0.85rem; }
-        .footer h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary); }
+        .footer { padding: 50px 0 24px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 36px; }
+        .footer-brand h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--accent); }
+        .footer-brand p { color: var(--text-muted); font-size: 0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
+        .footer h4 { font-size: 0.75rem; font-weight: 600; margin-bottom: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; }
         .footer ul { list-style: none; }
-        .footer li { margin-bottom: 8px; }
-        .footer a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: var(--transition); }
-        .footer a:hover { color: var(--text-primary); }
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        .footer li { margin-bottom: 6px; }
+        .footer a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: var(--transition); }
+        .footer a:hover { color: var(--accent); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.7rem; color: #444; }
 
-        /* ============ DASHBOARD (SPA views) ============ */
-        .app-view { display: none; min-height: 100vh; padding-top: 80px; }
+        /* ============ DASHBOARD ============ */
+        .app-view { display: none; min-height: 100vh; padding-top: 72px; }
         .app-view.active { display: block; }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-        .dashboard-header h1 { font-size: 1.8rem; font-weight: 700; }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            transition: var(--transition);
-        }
-        .stat-card:hover { border-color: var(--border-light); }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
-        .stat-value { font-size: 2rem; font-weight: 800; }
-        .stat-value.accent { color: var(--accent-light); }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            margin-bottom: 24px;
-        }
-        .card h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        .dashboard-header h1 { font-size: 1.5rem; font-weight: 700; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: var(--transition); }
+        .stat-card:hover { border-color: rgba(159,239,0,0.2); }
+        .stat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .stat-value { font-size: 1.8rem; font-weight: 800; }
+        .stat-value.accent { color: var(--accent); }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
 
         /* Tables */
         .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th {
-            text-align: left;
-            padding: 12px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--border);
-        }
-        .data-table td {
-            padding: 12px 16px;
-            font-size: 0.9rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-        .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .data-table th { text-align: left; padding: 10px 14px; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+        .data-table td { padding: 10px 14px; font-size: 0.8rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        .data-table tr:hover td { background: rgba(159,239,0,0.02); }
 
         /* Forms */
-        .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-secondary);
-        }
-        .form-input {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-light);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-        .form-select {
-            appearance: none;
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%2371717a'%3E%3Cpath d='M6 8L0 0h12z'/%3E%3C/svg%3E") no-repeat right 14px center;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        textarea.form-input {
-            resize: vertical;
-            min-height: 100px;
-            font-family: 'SF Mono', monospace;
-            font-size: 0.85rem;
-        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-input { width: 100%; padding: 9px 12px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit; transition: var(--transition); }
+        .form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+        .form-select { appearance: none; width: 100%; padding: 9px 12px; background: var(--bg-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='%23666'%3E%3Cpath d='M5 6L0 0h10z'/%3E%3C/svg%3E") no-repeat right 12px center; border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit; cursor: pointer; }
+        textarea.form-input { resize: vertical; min-height: 90px; }
 
-        /* Tags */
-        .tag {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .tag-success { background: rgba(16,185,129,0.15); color: #10b981; }
-        .tag-info { background: rgba(59,130,246,0.15); color: #3b82f6; }
-        .tag-warning { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .tag { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; }
+        .tag-success { background: rgba(159,239,0,0.1); color: var(--accent); }
+        .tag-info { background: rgba(255,255,255,0.06); color: #fff; }
 
         /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            width: 90%;
-            max-width: 500px;
-            animation: fadeInUp 0.3s ease-out;
-        }
-        .modal h2 { font-size: 1.3rem; margin-bottom: 20px; }
-        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+        .modal { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius); padding: 28px; width: 90%; max-width: 460px; animation: scaleIn 0.25s ease-out; }
+        .modal h2 { font-size: 1.1rem; margin-bottom: 18px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
         /* Toast */
-        .toast-container {
-            position: fixed;
-            top: 80px;
-            right: 24px;
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .toast {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px 20px;
-            font-size: 0.85rem;
-            animation: slide-in-right 0.3s ease-out;
-            box-shadow: var(--shadow-lg);
-            max-width: 360px;
-        }
-        .toast.success { border-left: 3px solid var(--accent-3); }
-        .toast.error { border-left: 3px solid #ef4444; }
-        .toast.info { border-left: 3px solid var(--accent-2); }
+        .toast-container { position: fixed; top: 72px; right: 20px; z-index: 300; display: flex; flex-direction: column; gap: 6px; }
+        .toast { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 18px; font-size: 0.8rem; animation: slideInRight 0.3s ease-out; box-shadow: var(--shadow-lg); max-width: 340px; }
+        .toast.success { border-left: 3px solid var(--accent); }
+        .toast.error { border-left: 3px solid #ff4444; }
+        .toast.info { border-left: 3px solid #666; }
 
-        /* Auth Modal */
-        .auth-tabs { display: flex; gap: 0; margin-bottom: 24px; }
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            border-bottom: 2px solid var(--border);
-            transition: var(--transition);
-            background: none;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-        }
-        .auth-tab.active { color: var(--accent-light); border-bottom-color: var(--accent-light); }
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 20px 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-        .auth-divider::before, .auth-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .github-btn {
-            width: 100%;
-            padding: 12px;
-            background: #24292e;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: var(--transition);
-        }
-        .github-btn:hover { background: #2d333b; }
-        .github-btn svg { width: 20px; height: 20px; fill: white; }
+        /* Auth */
+        .auth-tabs { display: flex; gap: 0; margin-bottom: 20px; }
+        .auth-tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.8rem; color: var(--text-muted); border-bottom: 2px solid var(--border); transition: var(--transition); background: none; border-top: none; border-left: none; border-right: none; font-family: inherit; }
+        .auth-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-        /* Reward playground */
-        .reward-playground {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-        }
-        .reward-result {
-            margin-top: 24px;
-            padding: 24px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-        .reward-score {
-            font-size: 3rem;
-            font-weight: 800;
-            text-align: center;
-            margin: 16px 0;
-        }
-        .reward-breakdown {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-        }
-        .reward-bar {
-            background: var(--bg-card);
-            border-radius: 8px;
-            padding: 12px;
-        }
-        .reward-bar-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .reward-bar-track {
-            width: 100%;
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .reward-bar-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        /* Mobile sidebar for dashboard */
-        .sidebar { display: none; }
+        /* Reward */
+        .reward-playground { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+        .reward-result { margin-top: 20px; padding: 20px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); }
+        .reward-score { font-size: 2.5rem; font-weight: 800; text-align: center; margin: 12px 0; }
+        .reward-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .reward-bar { background: var(--bg-card); border-radius: 6px; padding: 10px; }
+        .reward-bar-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; }
+        .reward-bar-track { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .reward-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 1024px) {
@@ -933,1017 +286,250 @@
             .pricing-grid { grid-template-columns: 1fr; }
             .steps-container { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.2rem; }
+            .hero h1 { font-size: 2rem; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="grid-bg"></div>
+    <div class="scanline-overlay"></div>
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============ NAVBAR ============ -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <a href="#" class="nav-brand" onclick="showView('landing')">
-                <div class="logo">⚡</div>
-                <span>Agentic RAG OS</span>
-            </a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#features" onclick="showView('landing')">Features</a></li>
-                <li><a href="#how-it-works" onclick="showView('landing')">How It Works</a></li>
-                <li><a href="#pricing" onclick="showView('landing')">Pricing</a></li>
-                <li><a href="#api-reference" onclick="showView('landing')">API</a></li>
-                <li><a href="/api/docs" target="_blank">Docs</a></li>
-            </ul>
-            <div class="nav-actions" id="navActions">
-                <button class="btn btn-ghost" id="navLoginBtn" onclick="showAuthModal()">Log In</button>
-                <button class="btn btn-primary" id="navSignupBtn" onclick="showAuthModal('register')">Get Started</button>
-                <div style="display:none" id="navUserMenu">
-                    <button class="btn btn-secondary btn-sm" onclick="showView('dashboard')">Dashboard</button>
-                    <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
-                </div>
-            </div>
+    <nav class="navbar"><div class="container">
+        <a href="#" class="nav-brand" onclick="showView('landing')"><div class="logo">></div><span>AGENTIC_RAG_OS</span></a>
+        <ul class="nav-links"><li><a href="#features" onclick="showView('landing')">Features</a></li><li><a href="#how-it-works" onclick="showView('landing')">Workflow</a></li><li><a href="#pricing" onclick="showView('landing')">Pricing</a></li><li><a href="#api-reference" onclick="showView('landing')">API</a></li><li><a href="/api/docs" target="_blank">Docs</a></li></ul>
+        <div class="nav-actions" id="navActions">
+            <button class="btn btn-ghost" id="navLoginBtn" onclick="showAuthModal()">Log In</button>
+            <button class="btn btn-primary" id="navSignupBtn" onclick="showAuthModal('register')">Get Started</button>
+            <div style="display:none" id="navUserMenu"><button class="btn btn-secondary btn-sm" onclick="showView('dashboard')">Dashboard</button><button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button></div>
         </div>
-    </nav>
+    </div></nav>
 
-    <!-- ============ AUTH MODAL ============ -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal">
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
-                <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Create Account</button>
-            </div>
+    <!-- AUTH MODAL -->
+    <div class="modal-overlay" id="authModal"><div class="modal">
+        <div class="auth-tabs"><button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button><button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Create Account</button></div>
+        <form id="authForm" onsubmit="handleAuth(event)">
+            <div class="form-group"><label>Username</label><input type="text" class="form-input" id="authUsername" placeholder="your_username" required></div>
+            <div class="form-group" id="emailGroup" style="display:none"><label>Email</label><input type="email" class="form-input" id="authEmail" placeholder="you@company.com"></div>
+            <div class="form-group"><label>Password</label><input type="password" class="form-input" id="authPassword" placeholder="••••••••" required minlength="8"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" id="authSubmitBtn">Sign In</button>
+        </form>
+        <div style="text-align:center;margin-top:14px"><button class="btn btn-ghost btn-sm" onclick="closeAuthModal()">Cancel</button></div>
+    </div></div>
 
-            <button class="github-btn" onclick="githubLogin()">
-                <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                Continue with GitHub
-            </button>
-
-            <div class="auth-divider">or</div>
-
-            <form id="authForm" onsubmit="handleAuth(event)">
-                <div class="form-group" id="usernameGroup">
-                    <label>Username</label>
-                    <input type="text" class="form-input" id="authUsername" placeholder="your_username" required>
-                </div>
-                <div class="form-group" id="emailGroup" style="display:none">
-                    <label>Email</label>
-                    <input type="email" class="form-input" id="authEmail" placeholder="you@company.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-input" id="authPassword" placeholder="••••••••" required minlength="8">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;" id="authSubmitBtn">Sign In</button>
-            </form>
-
-            <div style="text-align:center; margin-top:16px">
-                <button class="btn btn-ghost btn-sm" onclick="closeAuthModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ LANDING PAGE ============ -->
+    <!-- LANDING PAGE -->
     <div class="app-view active" id="viewLanding">
-        <!-- HERO -->
-        <section class="hero">
-            <div class="glow-orb glow-orb-1"></div>
-            <div class="glow-orb glow-orb-2"></div>
-            <div class="container">
-                <div class="hero-badge">
-                    <span class="dot"></span>
-                    RL B2B Rewards-as-a-Service
-                </div>
-                <h1>
-                    The Operating System<br>
-                    for <span class="gradient-text">Agentic RAG</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Transform your data into intelligent retrieval pipelines and generate production-ready reward signals for LLM fine-tuning — all from one platform.
-                </p>
-                <div class="hero-actions">
-                    <button class="btn btn-primary btn-lg" onclick="showAuthModal('register')">Start Building Free →</button>
-                    <a href="/api/docs" target="_blank" class="btn btn-secondary btn-lg">View API Docs</a>
-                </div>
+        <section class="hero"><div class="glow-orb glow-orb-1"></div><div class="glow-orb glow-orb-2"></div><div class="container">
+            <div class="hero-badge"><span class="dot"></span>Open Source Intelligence Platform</div>
+            <h1>The Operating System<br>for <span class="gradient-text">Agentic RAG</span></h1>
+            <p class="hero-subtitle">Transform your data into intelligent retrieval pipelines and generate production-ready reward signals for LLM fine-tuning — all from one platform.</p>
+            <div class="hero-actions"><button class="btn btn-primary btn-lg" onclick="showAuthModal('register')">Start Building Free ></button><a href="/api/docs" target="_blank" class="btn btn-secondary btn-lg">View API Docs</a></div>
+            <div class="hero-visual"><div class="hero-terminal"><div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">agentic-rag-os</span></div><div class="terminal-body">
+                <div><span class="prompt">$</span> <span class="comment"># upload data, generate rewards in seconds</span></div>
+                <div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rag/domains/my-app/documents <span class="str">← upload</span></div>
+                <div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rag/domains/my-app/query <span class="str">← retrieve</span></div>
+                <div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rewards/compute <span class="str">← reward</span></div>
+                <div style="margin-top:10px"><span class="comment"># response</span></div>
+                <div>{ <span class="str">"total_reward"</span>: <span class="num">0.847</span>, <span class="str">"algorithm"</span>: <span class="str">"grpo"</span>,</div>
+                <div>&nbsp;&nbsp;<span class="str">"breakdown"</span>: { <span class="str">"retrieval"</span>: <span class="num">0.92</span>, <span class="str">"reasoning"</span>: <span class="num">0.78</span> } }</div>
+            </div></div></div>
+        </div></section>
 
-                <div class="hero-visual">
-                    <div class="hero-terminal">
-                        <div class="terminal-header">
-                            <span class="terminal-dot red"></span>
-                            <span class="terminal-dot yellow"></span>
-                            <span class="terminal-dot green"></span>
-                            <span class="terminal-title">agentic-rag-os — rewards-as-a-service</span>
-                        </div>
-                        <div class="terminal-body">
-                            <div><span class="comment"># Upload your data, generate rewards in seconds</span></div>
-                            <div><span class="cmd">POST</span> /api/v1/rag/domains/my-app/documents &nbsp;<span class="str">← upload</span></div>
-                            <div><span class="cmd">POST</span> /api/v1/rag/domains/my-app/query &nbsp;<span class="str">← retrieve</span></div>
-                            <div><span class="cmd">POST</span> /api/v1/rewards/compute &nbsp;<span class="str">← generate reward</span></div>
-                            <div style="margin-top:12px"><span class="comment"># Response</span></div>
-                            <div>{ <span class="str">"total_reward"</span>: <span class="num">0.847</span>, <span class="str">"algorithm"</span>: <span class="str">"grpo"</span>,</div>
-                            <div>&nbsp;&nbsp;<span class="str">"breakdown"</span>: { <span class="str">"retrieval"</span>: <span class="num">0.92</span>, <span class="str">"reasoning"</span>: <span class="num">0.78</span>, <span class="str">"completeness"</span>: <span class="num">0.85</span> }}</div>
-                        </div>
-                    </div>
+        <section class="logos-bar scroll-hidden scroll-up"><div class="container"><p>Built with</p><div class="logos-grid">
+            <div class="logo-item"><span>🤗</span> HuggingFace</div><div class="logo-item"><span>🔥</span> PyTorch</div><div class="logo-item"><span>⚡</span> FastAPI</div><div class="logo-item"><span>🔍</span> FAISS</div><div class="logo-item"><span>🧠</span> Transformers</div>
+        </div></div></section>
+
+        <section id="features"><div class="container">
+            <div class="section-label scroll-hidden scroll-left">Platform</div>
+            <h2 class="section-title scroll-hidden scroll-left">Everything you need to build<br>intelligent RAG systems</h2>
+            <p class="section-desc scroll-hidden scroll-left">From data ingestion to reward generation — a complete operating system for agentic retrieval-augmented generation.</p>
+            <div class="features-grid">
+                <div class="feature-card scroll-hidden scroll-up stagger-1"><div class="feature-icon">></div><h3>Data > Embeddings Pipeline</h3><p>Upload text documents, automatically generate embeddings with sentence-transformers, and store them in high-performance FAISS indices.</p></div>
+                <div class="feature-card scroll-hidden scroll-up stagger-2"><div class="feature-icon">$</div><h3>Reward Compute Engine</h3><p>Generate production-ready reward signals for GRPO, PPO, DPO, REINFORCE — choose your algorithm, define your rules, get rewards via API.</p></div>
+                <div class="feature-card scroll-hidden scroll-up stagger-3"><div class="feature-icon">#</div><h3>Multi-Agent Orchestrator</h3><p>Five specialized agents — Retriever, Reasoner, Critic, Planner, Verifier — collaborate through structured message-passing.</p></div>
+                <div class="feature-card scroll-hidden scroll-up stagger-4"><div class="feature-icon">!</div><h3>Anti-Reward Hacking</h3><p>Built-in adversarial guards detect and penalize repetition, keyword stuffing, degenerate content, and copy-paste exploitation.</p></div>
+                <div class="feature-card scroll-hidden scroll-up stagger-5"><div class="feature-icon">/</div><h3>API-First Design</h3><p>Every capability is an API endpoint. Integrate with any LLM training pipeline — compatible with TRL, OpenRLHF, and custom stacks.</p></div>
+                <div class="feature-card scroll-hidden scroll-up stagger-6"><div class="feature-icon">*</div><h3>Domain Agnostic</h3><p>Works with any knowledge domain. Built-in support for Aerospace Research and Legal Research with extensible adapter pattern.</p></div>
+            </div>
+        </div></section>
+
+        <section id="how-it-works"><div class="container">
+            <div class="section-label scroll-hidden scroll-left">Workflow</div>
+            <h2 class="section-title scroll-hidden scroll-left">From raw data to reward signals<br>in four steps</h2>
+            <p class="section-desc scroll-hidden scroll-left">The simplest path from your proprietary data to RL-ready reward functions for LLM fine-tuning.</p>
+            <div class="steps-container">
+                <div class="step-item scroll-hidden scroll-scale stagger-1"><div class="step-number">01</div><h3>Create Domain</h3><p>Define your knowledge domain — aerospace, legal, medical, finance, or anything custom.</p></div>
+                <div class="step-item scroll-hidden scroll-scale stagger-2"><div class="step-number">02</div><h3>Upload Documents</h3><p>Feed your text data. We embed, index, and store it in high-performance FAISS vector stores.</p></div>
+                <div class="step-item scroll-hidden scroll-scale stagger-3"><div class="step-number">03</div><h3>Configure Rewards</h3><p>Choose algorithm (GRPO/PPO/DPO), set weights, define rules. Your reward function, your way.</p></div>
+                <div class="step-item scroll-hidden scroll-scale stagger-4"><div class="step-number">04</div><h3>Generate & Train</h3><p>Call our API to compute rewards at scale. Use them in your RL training loop to fine-tune any LLM.</p></div>
+            </div>
+        </div></section>
+
+        <section id="pricing"><div class="container"><div style="text-align:center">
+            <div class="section-label scroll-hidden scroll-up">Pricing</div>
+            <h2 class="section-title scroll-hidden scroll-up">Start free. Scale when ready.</h2>
+            <p class="section-desc scroll-hidden scroll-up" style="margin:0 auto 50px;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif">Simple, transparent pricing that grows with your team.</p>
+        </div><div class="pricing-grid">
+            <div class="price-card featured scroll-hidden scroll-left"><h3>Free</h3><p style="color:var(--text-muted);font-size:0.8rem">For experiments & prototypes</p><div class="price">$0<span>/month</span></div><ul><li>2 MB document storage per domain</li><li>Unlimited reward computations</li><li>All 5 RL algorithms</li><li>Full API access</li><li>Community support</li></ul><button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showAuthModal('register')">Get Started Free</button></div>
+            <div class="price-card scroll-hidden scroll-right"><h3>Premium</h3><p style="color:var(--text-muted);font-size:0.8rem">For production RAG systems</p><div class="price" style="color:var(--text-muted)">Soon</div><ul><li>100 MB+ document storage</li><li>Custom embedding models</li><li>Priority reward compute</li><li>Team collaboration</li><li>Dedicated support</li></ul><button class="btn btn-secondary" style="width:100%;justify-content:center;opacity:0.4" disabled>Coming Soon</button></div>
+        </div></div></section>
+
+        <section id="api-reference"><div class="container">
+            <div class="section-label scroll-hidden scroll-left">Developer</div>
+            <h2 class="section-title scroll-hidden scroll-left">API Reference</h2>
+            <p class="section-desc scroll-hidden scroll-left">RESTful API with full OpenAPI documentation. Integrate in minutes.</p>
+            <div class="api-section scroll-hidden scroll-up">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><h3 style="font-size:0.95rem">Core Endpoints</h3><a href="/api/docs" target="_blank" class="btn btn-secondary btn-sm">Full Docs ></a></div>
+                <div class="api-grid">
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/auth/register</span><p class="api-desc">Create account with username/password</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/auth/login</span><p class="api-desc">Authenticate and receive JWT token</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/rag/domains</span><p class="api-desc">Create a new knowledge domain</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/rag/domains/:id/documents</span><p class="api-desc">Upload document to domain</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/rag/domains/:id/query</span><p class="api-desc">Run RAG query against domain docs</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/rewards/compute</span><p class="api-desc">Compute reward on-the-fly</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/rewards/configs</span><p class="api-desc">Create reusable reward configuration</p></div>
+                    <div class="api-card"><span class="api-method get">GET</span><span class="api-path">/api/v1/rewards/algorithms</span><p class="api-desc">List supported RL algorithms</p></div>
+                    <div class="api-card"><span class="api-method get">GET</span><span class="api-path">/api/v1/user/dashboard</span><p class="api-desc">Get dashboard statistics</p></div>
+                    <div class="api-card"><span class="api-method post">POST</span><span class="api-path">/api/v1/user/api-keys</span><p class="api-desc">Generate API key</p></div>
+                    <div class="api-card"><span class="api-method get">GET</span><span class="api-path">/api/v1/health</span><p class="api-desc">Service health check</p></div>
+                    <div class="api-card"><span class="api-method delete">DELETE</span><span class="api-path">/api/v1/rag/domains/:id</span><p class="api-desc">Delete domain and all data</p></div>
                 </div>
             </div>
-        </section>
+        </div></section>
 
-        <!-- LOGOS BAR -->
-        <section class="logos-bar">
-            <div class="container">
-                <p>Built with industry-leading technologies</p>
-                <div class="logos-grid">
-                    <div class="logo-item"><span>🤗</span> HuggingFace</div>
-                    <div class="logo-item"><span>🔥</span> PyTorch</div>
-                    <div class="logo-item"><span>⚡</span> FastAPI</div>
-                    <div class="logo-item"><span>🔍</span> FAISS</div>
-                    <div class="logo-item"><span>🧠</span> Sentence Transformers</div>
-                    <div class="logo-item"><span>☁️</span> Google Cloud</div>
-                </div>
+        <section class="cta-section"><div class="container">
+            <h2 class="scroll-hidden scroll-up">Ready to build the future of RAG?</h2>
+            <p class="scroll-hidden scroll-up">Join the next generation of AI builders.</p>
+            <div class="scroll-hidden scroll-up" style="display:flex;gap:14px;justify-content:center"><button class="btn btn-primary btn-lg" onclick="showAuthModal('register')">Create Free Account</button><a href="/api/docs" target="_blank" class="btn btn-secondary btn-lg">Explore API ></a></div>
+        </div></section>
+
+        <footer class="footer"><div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand"><h3>> AGENTIC_RAG_OS</h3><p>The Operating System for Agentic RAG. A platform for building intelligent retrieval systems with RL reward signals.</p></div>
+                <div><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="/api/docs" target="_blank">API Docs</a></li><li><a href="#api-reference">Endpoints</a></li></ul></div>
+                <div><h4>Resources</h4><ul><li><a href="https://github.com/williyam-m/agentic-rag-gym" target="_blank">GitHub</a></li><li><a href="https://huggingface.co/spaces/williyam/agentic-rag-gym" target="_blank">HF Space</a></li><li><a href="https://huggingface.co/williyam/agentic-rag-aerospace-grpo" target="_blank">Models</a></li></ul></div>
+                <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
             </div>
-        </section>
-
-        <!-- FEATURES -->
-        <section id="features">
-            <div class="container">
-                <div class="section-label">Platform</div>
-                <h2 class="section-title">Everything you need to build<br>intelligent RAG systems</h2>
-                <p class="section-desc">From data ingestion to reward generation — a complete operating system for agentic retrieval-augmented generation.</p>
-
-                <div class="features-grid">
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">📄</div>
-                        <h3>Data → Embeddings Pipeline</h3>
-                        <p>Upload text documents, automatically generate embeddings with sentence-transformers, and store them in high-performance FAISS indices.</p>
-                    </div>
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">🎯</div>
-                        <h3>Rewards-as-a-Service</h3>
-                        <p>Generate production-ready reward signals for GRPO, PPO, DPO, REINFORCE — choose your algorithm, define your rules, get rewards via API.</p>
-                    </div>
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">🤖</div>
-                        <h3>Multi-Agent Orchestrator</h3>
-                        <p>Five specialized agents — Retriever, Reasoner, Critic, Planner, Verifier — collaborate through structured message-passing.</p>
-                    </div>
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">🛡️</div>
-                        <h3>Anti-Reward Hacking</h3>
-                        <p>Built-in adversarial guards detect and penalize repetition, keyword stuffing, degenerate content, and copy-paste exploitation.</p>
-                    </div>
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">🔌</div>
-                        <h3>API-First Design</h3>
-                        <p>Every capability is an API endpoint. Integrate with any LLM training pipeline — compatible with TRL, OpenRLHF, and custom stacks.</p>
-                    </div>
-                    <div class="feature-card animate-in">
-                        <div class="feature-icon">🌐</div>
-                        <h3>Domain Agnostic</h3>
-                        <p>Works with any knowledge domain. Built-in support for Aerospace Research and Legal Research with extensible adapter pattern.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- HOW IT WORKS -->
-        <section id="how-it-works">
-            <div class="container">
-                <div class="section-label">Workflow</div>
-                <h2 class="section-title">From raw data to reward signals<br>in four steps</h2>
-                <p class="section-desc">The simplest path from your proprietary data to RL-ready reward functions for LLM fine-tuning.</p>
-
-                <div class="steps-container">
-                    <div class="step-item animate-in">
-                        <div class="step-number">1</div>
-                        <h3>Create Domain</h3>
-                        <p>Define your knowledge domain — aerospace, legal, medical, finance, or anything custom.</p>
-                    </div>
-                    <div class="step-item animate-in">
-                        <div class="step-number">2</div>
-                        <h3>Upload Documents</h3>
-                        <p>Feed your text data. We embed, index, and store it in high-performance FAISS vector stores.</p>
-                    </div>
-                    <div class="step-item animate-in">
-                        <div class="step-number">3</div>
-                        <h3>Configure Rewards</h3>
-                        <p>Choose algorithm (GRPO/PPO/DPO), set weights, define rules. Your reward function, your way.</p>
-                    </div>
-                    <div class="step-item animate-in">
-                        <div class="step-number">4</div>
-                        <h3>Generate & Train</h3>
-                        <p>Call our API to compute rewards at scale. Use them in your RL training loop to fine-tune any LLM.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PRICING -->
-        <section id="pricing">
-            <div class="container">
-                <div style="text-align:center">
-                    <div class="section-label">Pricing</div>
-                    <h2 class="section-title">Start free. Scale when ready.</h2>
-                    <p class="section-desc" style="margin:0 auto 60px">Simple, transparent pricing that grows with your team.</p>
-                </div>
-
-                <div class="pricing-grid">
-                    <div class="price-card featured">
-                        <h3>Free</h3>
-                        <p style="color:var(--text-muted);font-size:0.9rem">Perfect for experiments & prototypes</p>
-                        <div class="price">$0<span>/month</span></div>
-                        <ul>
-                            <li>2 MB document storage per domain</li>
-                            <li>Unlimited reward computations</li>
-                            <li>All 5 RL algorithms (GRPO, PPO, DPO, ...)</li>
-                            <li>Full API access</li>
-                            <li>Community support</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showAuthModal('register')">Get Started Free</button>
-                    </div>
-                    <div class="price-card">
-                        <h3>Premium</h3>
-                        <p style="color:var(--text-muted);font-size:0.9rem">For teams building production RAG systems</p>
-                        <div class="price" style="color:var(--text-muted)">Coming Soon</div>
-                        <ul>
-                            <li>100 MB+ document storage</li>
-                            <li>Custom embedding models</li>
-                            <li>Priority reward compute</li>
-                            <li>Team collaboration</li>
-                            <li>Dedicated support</li>
-                            <li>Custom domain graders</li>
-                            <li>SSO & advanced auth</li>
-                        </ul>
-                        <button class="btn btn-secondary" style="width:100%;justify-content:center; opacity:0.6" disabled>Coming Soon</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- API REFERENCE -->
-        <section id="api-reference">
-            <div class="container">
-                <div class="section-label">Developer</div>
-                <h2 class="section-title">API Reference</h2>
-                <p class="section-desc">RESTful API with full OpenAPI documentation. Integrate in minutes.</p>
-
-                <div class="api-section">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
-                        <h3 style="font-size:1.1rem">Core Endpoints</h3>
-                        <a href="/api/docs" target="_blank" class="btn btn-secondary btn-sm">Full Docs →</a>
-                    </div>
-                    <div class="api-grid">
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/auth/register</span>
-                            <p class="api-desc">Create account with username/password</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/auth/login</span>
-                            <p class="api-desc">Authenticate and receive JWT token</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/rag/domains</span>
-                            <p class="api-desc">Create a new knowledge domain</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/rag/domains/:id/documents</span>
-                            <p class="api-desc">Upload document to domain (2MB free limit)</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/rag/domains/:id/query</span>
-                            <p class="api-desc">Run RAG query against domain docs</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/rewards/compute</span>
-                            <p class="api-desc">Compute reward on-the-fly</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/rewards/configs</span>
-                            <p class="api-desc">Create reusable reward configuration</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method get">GET</span>
-                            <span class="api-path">/api/v1/rewards/algorithms</span>
-                            <p class="api-desc">List supported RL algorithms</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method get">GET</span>
-                            <span class="api-path">/api/v1/user/dashboard</span>
-                            <p class="api-desc">Get dashboard statistics</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method post">POST</span>
-                            <span class="api-path">/api/v1/user/api-keys</span>
-                            <p class="api-desc">Generate API key for programmatic access</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method get">GET</span>
-                            <span class="api-path">/api/v1/health</span>
-                            <p class="api-desc">Service health check</p>
-                        </div>
-                        <div class="api-card">
-                            <span class="api-method delete">DELETE</span>
-                            <span class="api-path">/api/v1/rag/domains/:id</span>
-                            <p class="api-desc">Delete domain and all associated data</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="cta-section">
-            <div class="container">
-                <h2>Ready to build the future of RAG?</h2>
-                <p>Join the next generation of AI companies using Rewards-as-a-Service.</p>
-                <div style="display:flex; gap:16px; justify-content:center">
-                    <button class="btn btn-primary btn-lg" onclick="showAuthModal('register')">Create Free Account</button>
-                    <a href="/api/docs" target="_blank" class="btn btn-secondary btn-lg">Explore API →</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-brand">
-                        <h3>⚡ Agentic RAG OS</h3>
-                        <p>The Operating System for Agentic RAG. RL B2B Rewards-as-a-Service platform for building intelligent retrieval systems.</p>
-                    </div>
-                    <div>
-                        <h4>Product</h4>
-                        <ul>
-                            <li><a href="#features">Features</a></li>
-                            <li><a href="#pricing">Pricing</a></li>
-                            <li><a href="/api/docs" target="_blank">API Docs</a></li>
-                            <li><a href="#api-reference">Endpoints</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Resources</h4>
-                        <ul>
-                            <li><a href="https://github.com/williyam-m/agentic-rag-gym" target="_blank">GitHub</a></li>
-                            <li><a href="https://huggingface.co/spaces/williyam/agentic-rag-gym" target="_blank">HF Space</a></li>
-                            <li><a href="https://huggingface.co/williyam/agentic-rag-aerospace-grpo" target="_blank">Models</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Company</h4>
-                        <ul>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <span>© 2025 Agentic RAG OS. All rights reserved.</span>
-                    <span>Built with ❤️ for the AI community</span>
-                </div>
-            </div>
-        </footer>
+            <div class="footer-bottom"><span>© 2025 Agentic RAG OS</span><span>built for the AI community</span></div>
+        </div></footer>
     </div>
 
-    <!-- ============ DASHBOARD VIEW ============ -->
-    <div class="app-view" id="viewDashboard">
-        <div class="container" style="padding-top:20px">
-            <div class="dashboard-header">
-                <h1>Dashboard</h1>
-                <div style="display:flex;gap:12px">
-                    <button class="btn btn-secondary btn-sm" onclick="showView('domains')">Domains</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showView('rewards')">Rewards</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showView('apikeys')">API Keys</button>
-                </div>
-            </div>
+    <!-- DASHBOARD -->
+    <div class="app-view" id="viewDashboard"><div class="container" style="padding-top:16px">
+        <div class="dashboard-header"><h1>> Dashboard</h1><div style="display:flex;gap:10px"><button class="btn btn-secondary btn-sm" onclick="showView('domains')">Domains</button><button class="btn btn-secondary btn-sm" onclick="showView('rewards')">Rewards</button><button class="btn btn-secondary btn-sm" onclick="showView('apikeys')">API Keys</button></div></div>
+        <div class="stats-grid"><div class="stat-card"><div class="stat-label">Domains</div><div class="stat-value accent" id="statDomains">0</div></div><div class="stat-card"><div class="stat-label">Documents</div><div class="stat-value" id="statDocs">0</div></div><div class="stat-card"><div class="stat-label">RAG Queries</div><div class="stat-value" id="statQueries">0</div></div><div class="stat-card"><div class="stat-label">Storage</div><div class="stat-value" id="statStorage">0 KB</div></div></div>
+        <div class="card"><h2>Quick Start</h2><div class="terminal-body" style="background:var(--bg-primary);border-radius:6px;padding:16px;margin-top:10px">
+            <div><span class="comment"># 1. get your API token</span></div><div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/auth/login -d '{"username":"you","password":"pw"}'</div>
+            <div style="margin-top:10px"><span class="comment"># 2. create a domain</span></div><div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rag/domains -H "Authorization: Bearer $TOKEN" \</div><div>&nbsp;&nbsp;-d '{"name":"my-project","description":"My RAG domain"}'</div>
+            <div style="margin-top:10px"><span class="comment"># 3. upload documents</span></div><div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rag/domains/$ID/documents -F "file=@data.txt"</div>
+            <div style="margin-top:10px"><span class="comment"># 4. generate rewards</span></div><div><span class="prompt">$</span> <span class="cmd">curl</span> -X POST /api/v1/rewards/compute \</div><div>&nbsp;&nbsp;-d '{"algorithm":"grpo","query":"...","answer":"...","retrieved_docs":[...]}'</div>
+        </div></div>
+    </div></div>
 
-            <div class="stats-grid" id="dashStats">
-                <div class="stat-card"><div class="stat-label">Domains</div><div class="stat-value accent" id="statDomains">0</div></div>
-                <div class="stat-card"><div class="stat-label">Documents</div><div class="stat-value" id="statDocs">0</div></div>
-                <div class="stat-card"><div class="stat-label">RAG Queries</div><div class="stat-value" id="statQueries">0</div></div>
-                <div class="stat-card"><div class="stat-label">Storage Used</div><div class="stat-value" id="statStorage">0 KB</div></div>
-            </div>
+    <!-- DOMAINS -->
+    <div class="app-view" id="viewDomains"><div class="container" style="padding-top:16px">
+        <div class="dashboard-header"><h1>> RAG Domains</h1><button class="btn btn-primary btn-sm" onclick="showCreateDomain()">+ New Domain</button></div>
+        <div class="card" id="domainsList"><p style="color:var(--text-muted)">Loading domains...</p></div>
+        <div id="domainDetail" style="display:none"><div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center"><h2 id="domainDetailName">Domain</h2><button class="btn btn-ghost btn-sm" onclick="closeDomainDetail()">< Back</button></div>
+            <div style="margin:16px 0;padding:16px;border:1px dashed var(--border-light);border-radius:6px;text-align:center"><p style="color:var(--text-muted);margin-bottom:10px;font-size:0.8rem">Upload text files (max 2MB total)</p><input type="file" id="fileInput" accept=".txt,.md,.csv,.json" style="display:none" onchange="handleFileUpload(event)"><button class="btn btn-secondary btn-sm" onclick="document.getElementById('fileInput').click()">Choose File</button></div>
+            <div id="documentsList"></div>
+            <div style="margin-top:20px"><h3 style="font-size:0.9rem;margin-bottom:10px">Query Documents</h3><div style="display:flex;gap:10px"><input type="text" class="form-input" id="ragQueryInput" placeholder="enter search query..." style="flex:1"><button class="btn btn-primary btn-sm" onclick="runRAGQuery()">Search</button></div><div id="ragResults" style="margin-top:14px"></div></div>
+        </div></div>
+    </div></div>
 
-            <div class="card">
-                <h2>Quick Start</h2>
-                <div class="terminal-body" style="background:var(--bg-primary);border-radius:8px;padding:20px;margin-top:12px">
-                    <div><span class="comment"># 1. Get your API token</span></div>
-                    <div><span class="cmd">curl</span> -X POST /api/v1/auth/login -d '{"username":"you","password":"pw"}'</div>
-                    <div style="margin-top:12px"><span class="comment"># 2. Create a domain</span></div>
-                    <div><span class="cmd">curl</span> -X POST /api/v1/rag/domains -H "Authorization: Bearer $TOKEN" \</div>
-                    <div>&nbsp;&nbsp;-d '{"name":"my-project","description":"My RAG domain"}'</div>
-                    <div style="margin-top:12px"><span class="comment"># 3. Upload documents</span></div>
-                    <div><span class="cmd">curl</span> -X POST /api/v1/rag/domains/$ID/documents -F "file=@data.txt"</div>
-                    <div style="margin-top:12px"><span class="comment"># 4. Generate rewards</span></div>
-                    <div><span class="cmd">curl</span> -X POST /api/v1/rewards/compute \</div>
-                    <div>&nbsp;&nbsp;-d '{"algorithm":"grpo","query":"...","answer":"...","retrieved_docs":[...]}'</div>
+    <!-- REWARDS -->
+    <div class="app-view" id="viewRewards"><div class="container" style="padding-top:16px">
+        <div class="dashboard-header"><h1>> Reward Engine</h1><button class="btn btn-primary btn-sm" onclick="showCreateRewardConfig()">+ New Config</button></div>
+        <div class="reward-playground" style="margin-bottom:20px">
+            <h3 style="margin-bottom:14px;font-size:0.95rem">> Reward Playground</h3>
+            <p style="color:var(--text-secondary);margin-bottom:16px;font-size:0.8rem;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif">Compute rewards on-the-fly. Choose your algorithm, provide input, and see the reward breakdown.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div>
+                    <div class="form-group"><label>Algorithm</label><select class="form-select" id="playAlgorithm"><option value="grpo">GRPO</option><option value="ppo">PPO</option><option value="dpo">DPO</option><option value="reinforce">REINFORCE</option><option value="custom">Custom</option></select></div>
+                    <div class="form-group"><label>Query</label><input type="text" class="form-input" id="playQuery" placeholder="What is the specific impulse of ion propulsion?"></div>
+                    <div class="form-group"><label>Answer</label><textarea class="form-input" id="playAnswer" placeholder="Ion propulsion systems achieve specific impulse values of 3000-5000 seconds..."></textarea></div>
+                    <div class="form-group"><label>Retrieved Docs (one per line)</label><textarea class="form-input" id="playDocs" placeholder="Ion engines produce low thrust but high specific impulse..."></textarea></div>
+                    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="computePlaygroundReward()">Compute Reward ></button>
                 </div>
+                <div id="playgroundResult" style="display:flex;align-items:center;justify-content:center"><p style="color:var(--text-muted);font-size:0.8rem">Configure inputs and click compute</p></div>
             </div>
         </div>
-    </div>
+        <div class="card" id="rewardConfigsList"><h2>Saved Configurations</h2><p style="color:var(--text-muted)">Loading...</p></div>
+    </div></div>
 
-    <!-- ============ DOMAINS VIEW ============ -->
-    <div class="app-view" id="viewDomains">
-        <div class="container" style="padding-top:20px">
-            <div class="dashboard-header">
-                <h1>RAG Domains</h1>
-                <button class="btn btn-primary btn-sm" onclick="showCreateDomain()">+ New Domain</button>
-            </div>
-            <div class="card" id="domainsList">
-                <p style="color:var(--text-muted)">Loading domains...</p>
-            </div>
+    <!-- API KEYS -->
+    <div class="app-view" id="viewApikeys"><div class="container" style="padding-top:16px">
+        <div class="dashboard-header"><h1>> API Keys</h1><button class="btn btn-primary btn-sm" onclick="createNewAPIKey()">+ Generate Key</button></div>
+        <div class="card" id="apiKeysList"><p style="color:var(--text-muted)">Loading...</p></div>
+    </div></div>
 
-            <!-- Domain Detail -->
-            <div id="domainDetail" style="display:none">
-                <div class="card">
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <h2 id="domainDetailName">Domain</h2>
-                        <button class="btn btn-ghost btn-sm" onclick="closeDomainDetail()">← Back</button>
-                    </div>
+    <!-- MODALS -->
+    <div class="modal-overlay" id="createDomainModal"><div class="modal"><h2>Create Domain</h2><form onsubmit="createDomain(event)"><div class="form-group"><label>Domain Name</label><input type="text" class="form-input" id="newDomainName" placeholder="e.g., aerospace-research" required></div><div class="form-group"><label>Description</label><input type="text" class="form-input" id="newDomainDesc" placeholder="Knowledge base for aerospace research"></div><div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('createDomainModal')">Cancel</button><button type="submit" class="btn btn-primary">Create</button></div></form></div></div>
+    <div class="modal-overlay" id="createRewardModal"><div class="modal"><h2>Create Reward Config</h2><form onsubmit="createRewardConfig(event)"><div class="form-group"><label>Config Name</label><input type="text" class="form-input" id="newRewardName" placeholder="e.g., my-grpo-config" required></div><div class="form-group"><label>Algorithm</label><select class="form-select" id="newRewardAlgo"><option value="grpo">GRPO</option><option value="ppo">PPO</option><option value="dpo">DPO</option><option value="reinforce">REINFORCE</option><option value="custom">Custom</option></select></div><div class="form-group"><label>Retrieval Weight</label><input type="number" class="form-input" id="rwRetrieval" value="0.25" step="0.05" min="0" max="1"></div><div class="form-group"><label>Reasoning Weight</label><input type="number" class="form-input" id="rwReasoning" value="0.20" step="0.05" min="0" max="1"></div><div class="form-group"><label>Completeness Weight</label><input type="number" class="form-input" id="rwCompleteness" value="0.30" step="0.05" min="0" max="1"></div><div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('createRewardModal')">Cancel</button><button type="submit" class="btn btn-primary">Create</button></div></form></div></div>
 
-                    <!-- Upload -->
-                    <div style="margin:20px 0;padding:20px;border:2px dashed var(--border);border-radius:12px;text-align:center">
-                        <p style="color:var(--text-muted);margin-bottom:12px">Upload text files (max 2MB total · Premium for more storage)</p>
-                        <input type="file" id="fileInput" accept=".txt,.md,.csv,.json" style="display:none" onchange="handleFileUpload(event)">
-                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('fileInput').click()">Choose File</button>
-                    </div>
-
-                    <!-- Documents table -->
-                    <div id="documentsList"></div>
-
-                    <!-- RAG Query -->
-                    <div style="margin-top:24px">
-                        <h3 style="font-size:1rem;margin-bottom:12px">Query Documents</h3>
-                        <div style="display:flex;gap:12px">
-                            <input type="text" class="form-input" id="ragQueryInput" placeholder="Enter your search query..." style="flex:1">
-                            <button class="btn btn-primary btn-sm" onclick="runRAGQuery()">Search</button>
-                        </div>
-                        <div id="ragResults" style="margin-top:16px"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ REWARDS VIEW ============ -->
-    <div class="app-view" id="viewRewards">
-        <div class="container" style="padding-top:20px">
-            <div class="dashboard-header">
-                <h1>Rewards-as-a-Service</h1>
-                <button class="btn btn-primary btn-sm" onclick="showCreateRewardConfig()">+ New Config</button>
-            </div>
-
-            <!-- Reward Playground -->
-            <div class="reward-playground" style="margin-bottom:24px">
-                <h3 style="margin-bottom:16px">⚡ Reward Playground</h3>
-                <p style="color:var(--text-secondary);margin-bottom:20px;font-size:0.9rem">Compute rewards on-the-fly. Choose your algorithm, provide input, and see the reward breakdown instantly.</p>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-                    <div>
-                        <div class="form-group">
-                            <label>Algorithm</label>
-                            <select class="form-select" id="playAlgorithm">
-                                <option value="grpo">GRPO — Group Relative Policy Optimization</option>
-                                <option value="ppo">PPO — Proximal Policy Optimization</option>
-                                <option value="dpo">DPO — Direct Preference Optimization</option>
-                                <option value="reinforce">REINFORCE — Policy Gradient</option>
-                                <option value="custom">Custom</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Query</label>
-                            <input type="text" class="form-input" id="playQuery" placeholder="What is the specific impulse of ion propulsion?">
-                        </div>
-                        <div class="form-group">
-                            <label>Answer</label>
-                            <textarea class="form-input" id="playAnswer" placeholder="Ion propulsion systems achieve specific impulse values of 3000-5000 seconds, significantly higher than chemical propulsion..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Retrieved Documents (one per line)</label>
-                            <textarea class="form-input" id="playDocs" placeholder="Ion engines produce low thrust but extremely high specific impulse...&#10;Nuclear thermal propulsion offers thrust-to-weight ratios..."></textarea>
-                        </div>
-                        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="computePlaygroundReward()">Compute Reward →</button>
-                    </div>
-                    <div id="playgroundResult" style="display:flex;align-items:center;justify-content:center">
-                        <p style="color:var(--text-muted)">Configure inputs and click compute to see reward breakdown</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reward Configs List -->
-            <div class="card" id="rewardConfigsList">
-                <h2>Saved Configurations</h2>
-                <p style="color:var(--text-muted)">Loading...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ API KEYS VIEW ============ -->
-    <div class="app-view" id="viewApikeys">
-        <div class="container" style="padding-top:20px">
-            <div class="dashboard-header">
-                <h1>API Keys</h1>
-                <button class="btn btn-primary btn-sm" onclick="createNewAPIKey()">+ Generate Key</button>
-            </div>
-            <div class="card" id="apiKeysList">
-                <p style="color:var(--text-muted)">Loading...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ CREATE DOMAIN MODAL ============ -->
-    <div class="modal-overlay" id="createDomainModal">
-        <div class="modal">
-            <h2>Create Domain</h2>
-            <form onsubmit="createDomain(event)">
-                <div class="form-group">
-                    <label>Domain Name</label>
-                    <input type="text" class="form-input" id="newDomainName" placeholder="e.g., aerospace-research" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" class="form-input" id="newDomainDesc" placeholder="Knowledge base for aerospace research">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-ghost" onclick="closeModal('createDomainModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============ CREATE REWARD CONFIG MODAL ============ -->
-    <div class="modal-overlay" id="createRewardModal">
-        <div class="modal">
-            <h2>Create Reward Config</h2>
-            <form onsubmit="createRewardConfig(event)">
-                <div class="form-group">
-                    <label>Config Name</label>
-                    <input type="text" class="form-input" id="newRewardName" placeholder="e.g., my-grpo-config" required>
-                </div>
-                <div class="form-group">
-                    <label>Algorithm</label>
-                    <select class="form-select" id="newRewardAlgo">
-                        <option value="grpo">GRPO</option>
-                        <option value="ppo">PPO</option>
-                        <option value="dpo">DPO</option>
-                        <option value="reinforce">REINFORCE</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Retrieval Weight</label>
-                    <input type="number" class="form-input" id="rwRetrieval" value="0.25" step="0.05" min="0" max="1">
-                </div>
-                <div class="form-group">
-                    <label>Reasoning Weight</label>
-                    <input type="number" class="form-input" id="rwReasoning" value="0.20" step="0.05" min="0" max="1">
-                </div>
-                <div class="form-group">
-                    <label>Completeness Weight</label>
-                    <input type="number" class="form-input" id="rwCompleteness" value="0.30" step="0.05" min="0" max="1">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-ghost" onclick="closeModal('createRewardModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============ JAVASCRIPT ============ -->
     <script>
-        // ==== State ====
         const API = '/api/v1';
         let token = localStorage.getItem('ragos_token') || '';
         let currentUser = null;
         let currentDomainId = null;
         let authMode = 'login';
 
-        // ==== Init ====
-        document.addEventListener('DOMContentLoaded', () => {
-            if (token) {
-                loadUser();
-            }
-            initScrollAnimations();
-        });
+        document.addEventListener('DOMContentLoaded', () => { if (token) loadUser(); initScrollAnimations(); });
 
-        // ==== Scroll animations ====
         function initScrollAnimations() {
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('animate-in');
-                        obs.unobserve(e.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.feature-card, .step-item').forEach(el => obs.observe(el));
+            const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('scroll-show'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.scroll-hidden').forEach(el => obs.observe(el));
         }
 
-        // ==== Auth ====
-        function showAuthModal(mode = 'login') {
-            switchAuthTab(mode);
-            document.getElementById('authModal').classList.add('active');
-        }
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
-        }
-        function switchAuthTab(mode) {
-            authMode = mode;
-            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
-            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
-            document.getElementById('emailGroup').style.display = mode === 'register' ? 'block' : 'none';
-            document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Sign In' : 'Create Account';
-        }
+        function showAuthModal(mode='login') { switchAuthTab(mode); document.getElementById('authModal').classList.add('active'); }
+        function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+        function switchAuthTab(mode) { authMode=mode; document.getElementById('tabLogin').classList.toggle('active',mode==='login'); document.getElementById('tabRegister').classList.toggle('active',mode==='register'); document.getElementById('emailGroup').style.display=mode==='register'?'block':'none'; document.getElementById('authSubmitBtn').textContent=mode==='login'?'Sign In':'Create Account'; }
         async function handleAuth(e) {
             e.preventDefault();
-            const username = document.getElementById('authUsername').value;
-            const password = document.getElementById('authPassword').value;
-            const email = document.getElementById('authEmail').value;
+            try {
+                const body = authMode==='login' ? {username:document.getElementById('authUsername').value,password:document.getElementById('authPassword').value} : {username:document.getElementById('authUsername').value,email:document.getElementById('authEmail').value,password:document.getElementById('authPassword').value};
+                const resp = await apiFetch(authMode==='login'?'/auth/login':'/auth/register','POST',body,false);
+                token=resp.access_token; localStorage.setItem('ragos_token',token); currentUser=resp.user;
+                closeAuthModal(); updateNavForUser(); showView('dashboard'); loadDashboard();
+                toast('Welcome, '+currentUser.username,'success');
+            } catch(err) { toast(err.message||'Authentication failed','error'); }
+        }
+        function logout() { token=''; currentUser=null; localStorage.removeItem('ragos_token'); updateNavForUser(); showView('landing'); toast('Logged out','info'); }
+        async function loadUser() { try { currentUser=await apiFetch('/user/me'); updateNavForUser(); } catch { token=''; localStorage.removeItem('ragos_token'); } }
+        function updateNavForUser() { const l=!!currentUser; document.getElementById('navLoginBtn').style.display=l?'none':''; document.getElementById('navSignupBtn').style.display=l?'none':''; document.getElementById('navUserMenu').style.display=l?'flex':'none'; }
 
-            try {
-                const endpoint = authMode === 'login' ? '/auth/login' : '/auth/register';
-                const body = authMode === 'login'
-                    ? { username, password }
-                    : { username, email, password };
-                const resp = await apiFetch(endpoint, 'POST', body, false);
-                token = resp.access_token;
-                localStorage.setItem('ragos_token', token);
-                currentUser = resp.user;
-                closeAuthModal();
-                updateNavForUser();
-                showView('dashboard');
-                loadDashboard();
-                toast('Welcome, ' + currentUser.username + '!', 'success');
-            } catch (err) {
-                toast(err.message || 'Authentication failed', 'error');
-            }
-        }
-        function githubLogin() {
-            const clientId = ''; // Will be populated from env
-            if (!clientId) {
-                toast('GitHub OAuth is configured on the deployed version', 'info');
-                return;
-            }
-            window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user:email`;
-        }
-        function logout() {
-            token = '';
-            currentUser = null;
-            localStorage.removeItem('ragos_token');
-            updateNavForUser();
-            showView('landing');
-            toast('Logged out', 'info');
-        }
-        async function loadUser() {
-            try {
-                currentUser = await apiFetch('/user/me');
-                updateNavForUser();
-            } catch {
-                token = '';
-                localStorage.removeItem('ragos_token');
-            }
-        }
-        function updateNavForUser() {
-            const loggedIn = !!currentUser;
-            document.getElementById('navLoginBtn').style.display = loggedIn ? 'none' : '';
-            document.getElementById('navSignupBtn').style.display = loggedIn ? 'none' : '';
-            document.getElementById('navUserMenu').style.display = loggedIn ? 'flex' : 'none';
-        }
+        function showView(view) { document.querySelectorAll('.app-view').forEach(v=>v.classList.remove('active')); const el=document.getElementById('view'+view.charAt(0).toUpperCase()+view.slice(1)); if(el) el.classList.add('active'); if(view==='dashboard') loadDashboard(); if(view==='domains') loadDomains(); if(view==='rewards') loadRewards(); if(view==='apikeys') loadAPIKeys(); }
 
-        // ==== View Switching ====
-        function showView(view) {
-            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
-            const el = document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1));
-            if (el) el.classList.add('active');
+        async function loadDashboard() { try { const s=await apiFetch('/user/dashboard'); document.getElementById('statDomains').textContent=s.total_domains; document.getElementById('statDocs').textContent=s.total_documents; document.getElementById('statQueries').textContent=s.total_queries; const kb=Math.round(s.storage_used_bytes/1024); document.getElementById('statStorage').textContent=kb>1024?(kb/1024).toFixed(1)+' MB':kb+' KB'; } catch{} }
 
-            if (view === 'dashboard') loadDashboard();
-            if (view === 'domains') loadDomains();
-            if (view === 'rewards') loadRewards();
-            if (view === 'apikeys') loadAPIKeys();
-        }
+        async function loadDomains() { try { const d=await apiFetch('/rag/domains'); const el=document.getElementById('domainsList'); if(!d.length){el.innerHTML='<p style="color:var(--text-muted)">No domains yet. Create one to get started.</p>';return;} el.innerHTML='<table class="data-table"><thead><tr><th>Name</th><th>Docs</th><th>Size</th><th>Created</th><th></th></tr></thead><tbody>'+d.map(d=>'<tr><td><strong style="color:#fff">'+esc(d.name)+'</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">'+esc(d.description)+'</span></td><td>'+d.document_count+'</td><td>'+formatBytes(d.total_size_bytes)+'</td><td>'+new Date(d.created_at).toLocaleDateString()+'</td><td><button class="btn btn-ghost btn-sm" onclick="openDomain(\''+d.id+"','"+esc(d.name)+'\')">Open ></button></td></tr>').join('')+'</tbody></table>'; } catch(e){toast(e.message,'error');} }
+        function showCreateDomain(){document.getElementById('createDomainModal').classList.add('active');}
+        async function createDomain(e){e.preventDefault();try{await apiFetch('/rag/domains','POST',{name:document.getElementById('newDomainName').value,description:document.getElementById('newDomainDesc').value});closeModal('createDomainModal');loadDomains();toast('Domain created','success');}catch(e){toast(e.message,'error');}}
+        async function openDomain(id,name){currentDomainId=id;document.getElementById('domainDetailName').textContent=name;document.getElementById('domainDetail').style.display='block';document.getElementById('domainsList').style.display='none';await loadDocuments();}
+        function closeDomainDetail(){document.getElementById('domainDetail').style.display='none';document.getElementById('domainsList').style.display='block';currentDomainId=null;}
+        async function loadDocuments(){if(!currentDomainId)return;try{const d=await apiFetch('/rag/domains/'+currentDomainId+'/documents');const el=document.getElementById('documentsList');if(!d.length){el.innerHTML='<p style="color:var(--text-muted)">No documents yet.</p>';return;}el.innerHTML='<table class="data-table"><thead><tr><th>Filename</th><th>Size</th><th>Uploaded</th><th></th></tr></thead><tbody>'+d.map(d=>'<tr><td>'+esc(d.filename)+'</td><td>'+formatBytes(d.size_bytes)+'</td><td>'+new Date(d.created_at).toLocaleDateString()+'</td><td><button class="btn btn-ghost btn-sm btn-danger" onclick="deleteDoc(\''+d.id+'\')">Delete</button></td></tr>').join('')+'</tbody></table>';}catch(e){toast(e.message,'error');}}
+        async function handleFileUpload(e){const f=e.target.files[0];if(!f)return;if(!currentDomainId){toast('No domain selected','error');return;}const fd=new FormData();fd.append('file',f);try{const r=await fetch(API+'/rag/domains/'+currentDomainId+'/documents',{method:'POST',headers:{'Authorization':'Bearer '+token},body:fd});if(!r.ok){const err=await r.json();throw new Error(err.detail||'Upload failed');}toast('Document uploaded','success');await loadDocuments();}catch(e){toast(e.message,'error');}e.target.value='';}
+        async function deleteDoc(id){if(!confirm('Delete this document?'))return;try{await apiFetch('/rag/domains/'+currentDomainId+'/documents/'+id,'DELETE');toast('Deleted','success');await loadDocuments();}catch(e){toast(e.message,'error');}}
+        async function runRAGQuery(){const q=document.getElementById('ragQueryInput').value.trim();if(!q)return;try{const r=await apiFetch('/rag/domains/'+currentDomainId+'/query','POST',{query:q,top_k:5});const el=document.getElementById('ragResults');if(!r.results.length){el.innerHTML='<p style="color:var(--text-muted)">No results.</p>';return;}el.innerHTML=r.results.map((r,i)=>'<div style="padding:10px;background:var(--bg-primary);border:1px solid var(--border);border-radius:6px;margin-bottom:6px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-weight:600;font-size:0.8rem;color:var(--accent)">Result '+(i+1)+'</span><span class="tag tag-success">Score: '+r.score.toFixed(4)+'</span></div><p style="font-size:0.8rem;color:var(--text-secondary);font-family:-apple-system,BlinkMacSystemFont,\'Inter\',sans-serif">'+esc(r.content.substring(0,300))+(r.content.length>300?'...':'')+'</p></div>').join('');}catch(e){toast(e.message,'error');}}
 
-        // ==== Dashboard ====
-        async function loadDashboard() {
-            try {
-                const stats = await apiFetch('/user/dashboard');
-                document.getElementById('statDomains').textContent = stats.total_domains;
-                document.getElementById('statDocs').textContent = stats.total_documents;
-                document.getElementById('statQueries').textContent = stats.total_queries;
-                const kb = Math.round(stats.storage_used_bytes / 1024);
-                document.getElementById('statStorage').textContent = kb > 1024 ? (kb / 1024).toFixed(1) + ' MB' : kb + ' KB';
-            } catch {}
-        }
+        async function loadRewards(){try{const c=await apiFetch('/rewards/configs');const el=document.getElementById('rewardConfigsList');if(!c.length){el.innerHTML='<h2>Saved Configurations</h2><p style="color:var(--text-muted)">No reward configs yet.</p>';return;}el.innerHTML='<h2>Saved Configurations</h2><table class="data-table"><thead><tr><th>Name</th><th>Algorithm</th><th>Created</th><th></th></tr></thead><tbody>'+c.map(c=>'<tr><td><strong style="color:#fff">'+esc(c.name)+'</strong></td><td><span class="tag tag-info">'+c.algorithm.toUpperCase()+'</span></td><td>'+new Date(c.created_at).toLocaleDateString()+'</td><td><button class="btn btn-ghost btn-sm btn-danger" onclick="deleteRewardConfig(\''+c.id+'\')">Delete</button></td></tr>').join('')+'</tbody></table>';}catch(e){toast(e.message,'error');}}
+        function showCreateRewardConfig(){document.getElementById('createRewardModal').classList.add('active');}
+        async function createRewardConfig(e){e.preventDefault();try{await apiFetch('/rewards/configs','POST',{name:document.getElementById('newRewardName').value,algorithm:document.getElementById('newRewardAlgo').value,config:{retrieval_relevance_weight:parseFloat(document.getElementById('rwRetrieval').value),reasoning_quality_weight:parseFloat(document.getElementById('rwReasoning').value),answer_completeness_weight:parseFloat(document.getElementById('rwCompleteness').value),efficiency_weight:0.15,anti_hack_weight:0.10}});closeModal('createRewardModal');loadRewards();toast('Config created','success');}catch(e){toast(e.message,'error');}}
+        async function deleteRewardConfig(id){if(!confirm('Delete?'))return;try{await apiFetch('/rewards/configs/'+id,'DELETE');loadRewards();toast('Deleted','success');}catch(e){toast(e.message,'error');}}
+        async function computePlaygroundReward(){const algo=document.getElementById('playAlgorithm').value,q=document.getElementById('playQuery').value,a=document.getElementById('playAnswer').value,docs=document.getElementById('playDocs').value.split('\n').filter(l=>l.trim());try{const r=await apiFetch('/rewards/compute','POST',{algorithm:algo,query:q,answer:a,retrieved_docs:docs,config:{}});const el=document.getElementById('playgroundResult');const s=r.total_reward;const c=s>0.7?'var(--accent)':s>0.4?'#ffc800':'#ff4444';el.innerHTML='<div style="width:100%"><div class="reward-result"><div style="text-align:center;font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">Total Reward</div><div class="reward-score" style="color:'+c+'">'+s.toFixed(4)+'</div><div style="text-align:center;margin-bottom:16px"><span class="tag tag-info">'+r.algorithm.toUpperCase()+'</span></div><div class="reward-breakdown">'+Object.entries(r.breakdown).map(([k,v])=>{const bc=k==='anti_hack_penalty'?'#ff4444':'var(--accent)';return'<div class="reward-bar"><div class="reward-bar-label">'+k.replace(/_/g,' ')+'</div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px"><span>'+v.toFixed(4)+'</span></div><div class="reward-bar-track"><div class="reward-bar-fill" style="width:'+Math.min(v*100,100)+'%;background:'+bc+'"></div></div></div>';}).join('')+'</div>'+(r.metadata.description?'<p style="margin-top:14px;font-size:0.75rem;color:var(--text-muted);text-align:center">'+r.metadata.description+'</p>':'')+'</div></div>';}catch(e){toast(e.message,'error');}}
 
-        // ==== Domains ====
-        async function loadDomains() {
-            try {
-                const domains = await apiFetch('/rag/domains');
-                const el = document.getElementById('domainsList');
-                if (domains.length === 0) {
-                    el.innerHTML = '<p style="color:var(--text-muted)">No domains yet. Create one to get started.</p>';
-                    return;
-                }
-                el.innerHTML = `<table class="data-table"><thead><tr><th>Name</th><th>Documents</th><th>Size</th><th>Created</th><th></th></tr></thead><tbody>` +
-                    domains.map(d => `<tr>
-                        <td><strong style="color:var(--text-primary)">${esc(d.name)}</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">${esc(d.description)}</span></td>
-                        <td>${d.document_count}</td>
-                        <td>${formatBytes(d.total_size_bytes)}</td>
-                        <td>${new Date(d.created_at).toLocaleDateString()}</td>
-                        <td><button class="btn btn-ghost btn-sm" onclick="openDomain('${d.id}','${esc(d.name)}')">Open →</button></td>
-                    </tr>`).join('') +
-                    '</tbody></table>';
-            } catch (err) {
-                toast(err.message, 'error');
-            }
-        }
-        function showCreateDomain() { document.getElementById('createDomainModal').classList.add('active'); }
-        async function createDomain(e) {
-            e.preventDefault();
-            try {
-                await apiFetch('/rag/domains', 'POST', {
-                    name: document.getElementById('newDomainName').value,
-                    description: document.getElementById('newDomainDesc').value
-                });
-                closeModal('createDomainModal');
-                loadDomains();
-                toast('Domain created', 'success');
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function openDomain(id, name) {
-            currentDomainId = id;
-            document.getElementById('domainDetailName').textContent = name;
-            document.getElementById('domainDetail').style.display = 'block';
-            document.getElementById('domainsList').style.display = 'none';
-            await loadDocuments();
-        }
-        function closeDomainDetail() {
-            document.getElementById('domainDetail').style.display = 'none';
-            document.getElementById('domainsList').style.display = 'block';
-            currentDomainId = null;
-        }
-        async function loadDocuments() {
-            if (!currentDomainId) return;
-            try {
-                const docs = await apiFetch(`/rag/domains/${currentDomainId}/documents`);
-                const el = document.getElementById('documentsList');
-                if (docs.length === 0) {
-                    el.innerHTML = '<p style="color:var(--text-muted)">No documents yet. Upload a text file above.</p>';
-                    return;
-                }
-                el.innerHTML = `<table class="data-table"><thead><tr><th>Filename</th><th>Size</th><th>Uploaded</th><th></th></tr></thead><tbody>` +
-                    docs.map(d => `<tr>
-                        <td>${esc(d.filename)}</td>
-                        <td>${formatBytes(d.size_bytes)}</td>
-                        <td>${new Date(d.created_at).toLocaleDateString()}</td>
-                        <td><button class="btn btn-ghost btn-sm" onclick="deleteDoc('${d.id}')" style="color:#ef4444">Delete</button></td>
-                    </tr>`).join('') +
-                    '</tbody></table>';
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function handleFileUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (!currentDomainId) {
-                toast('No domain selected', 'error');
-                return;
-            }
-            const form = new FormData();
-            form.append('file', file);
-            try {
-                const resp = await fetch(`${API}/rag/domains/${currentDomainId}/documents`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` },
-                    body: form,
-                });
-                if (!resp.ok) {
-                    const err = await resp.json();
-                    throw new Error(err.detail || 'Upload failed');
-                }
-                toast('Document uploaded', 'success');
-                await loadDocuments();
-            } catch (err) { toast(err.message, 'error'); }
-            e.target.value = '';
-        }
-        async function deleteDoc(docId) {
-            if (!confirm('Delete this document?')) return;
-            try {
-                await apiFetch(`/rag/domains/${currentDomainId}/documents/${docId}`, 'DELETE');
-                toast('Document deleted', 'success');
-                await loadDocuments();
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function runRAGQuery() {
-            const query = document.getElementById('ragQueryInput').value.trim();
-            if (!query) return;
-            try {
-                const result = await apiFetch(`/rag/domains/${currentDomainId}/query`, 'POST', { query, top_k: 5 });
-                const el = document.getElementById('ragResults');
-                if (result.results.length === 0) {
-                    el.innerHTML = '<p style="color:var(--text-muted)">No results found.</p>';
-                    return;
-                }
-                el.innerHTML = result.results.map((r, i) => `
-                    <div style="padding:12px;background:var(--bg-primary);border:1px solid var(--border);border-radius:8px;margin-bottom:8px">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-                            <span style="font-weight:600;font-size:0.85rem">Result ${i + 1}</span>
-                            <span class="tag tag-info">Score: ${r.score.toFixed(4)}</span>
-                        </div>
-                        <p style="font-size:0.85rem;color:var(--text-secondary)">${esc(r.content.substring(0, 300))}${r.content.length > 300 ? '...' : ''}</p>
-                    </div>
-                `).join('');
-            } catch (err) { toast(err.message, 'error'); }
-        }
+        async function loadAPIKeys(){try{const k=await apiFetch('/user/api-keys');const el=document.getElementById('apiKeysList');if(!k.length){el.innerHTML='<p style="color:var(--text-muted)">No API keys.</p>';return;}el.innerHTML='<table class="data-table"><thead><tr><th>Name</th><th>Key</th><th>Created</th><th>Last Used</th><th></th></tr></thead><tbody>'+k.map(k=>'<tr><td>'+esc(k.name)+'</td><td><code style="color:var(--accent)">'+k.key_prefix+'</code></td><td>'+new Date(k.created_at).toLocaleDateString()+'</td><td>'+(k.last_used?new Date(k.last_used).toLocaleDateString():'Never')+'</td><td><button class="btn btn-ghost btn-sm btn-danger" onclick="revokeKey(\''+k.id+'\')">Revoke</button></td></tr>').join('')+'</tbody></table>';}catch(e){toast(e.message,'error');}}
+        async function createNewAPIKey(){const n=prompt('API key name:');if(!n)return;try{const r=await apiFetch('/user/api-keys','POST',{name:n});alert('Your API key (shown only once):\n\n'+r.key+'\n\nSave it now!');loadAPIKeys();toast('Key created','success');}catch(e){toast(e.message,'error');}}
+        async function revokeKey(id){if(!confirm('Revoke?'))return;try{await apiFetch('/user/api-keys/'+id,'DELETE');loadAPIKeys();toast('Revoked','success');}catch(e){toast(e.message,'error');}}
 
-        // ==== Rewards ====
-        async function loadRewards() {
-            try {
-                const configs = await apiFetch('/rewards/configs');
-                const el = document.getElementById('rewardConfigsList');
-                if (configs.length === 0) {
-                    el.innerHTML = '<h2>Saved Configurations</h2><p style="color:var(--text-muted)">No reward configs yet. Create one or use the playground above.</p>';
-                    return;
-                }
-                el.innerHTML = '<h2>Saved Configurations</h2>' +
-                    `<table class="data-table"><thead><tr><th>Name</th><th>Algorithm</th><th>Created</th><th></th></tr></thead><tbody>` +
-                    configs.map(c => `<tr>
-                        <td><strong style="color:var(--text-primary)">${esc(c.name)}</strong></td>
-                        <td><span class="tag tag-info">${c.algorithm.toUpperCase()}</span></td>
-                        <td>${new Date(c.created_at).toLocaleDateString()}</td>
-                        <td><button class="btn btn-ghost btn-sm" onclick="deleteRewardConfig('${c.id}')" style="color:#ef4444">Delete</button></td>
-                    </tr>`).join('') +
-                    '</tbody></table>';
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        function showCreateRewardConfig() { document.getElementById('createRewardModal').classList.add('active'); }
-        async function createRewardConfig(e) {
-            e.preventDefault();
-            try {
-                await apiFetch('/rewards/configs', 'POST', {
-                    name: document.getElementById('newRewardName').value,
-                    algorithm: document.getElementById('newRewardAlgo').value,
-                    config: {
-                        retrieval_relevance_weight: parseFloat(document.getElementById('rwRetrieval').value),
-                        reasoning_quality_weight: parseFloat(document.getElementById('rwReasoning').value),
-                        answer_completeness_weight: parseFloat(document.getElementById('rwCompleteness').value),
-                        efficiency_weight: 0.15,
-                        anti_hack_weight: 0.10,
-                    }
-                });
-                closeModal('createRewardModal');
-                loadRewards();
-                toast('Reward config created', 'success');
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function deleteRewardConfig(id) {
-            if (!confirm('Delete this reward config?')) return;
-            try {
-                await apiFetch(`/rewards/configs/${id}`, 'DELETE');
-                loadRewards();
-                toast('Config deleted', 'success');
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function computePlaygroundReward() {
-            const algo = document.getElementById('playAlgorithm').value;
-            const query = document.getElementById('playQuery').value;
-            const answer = document.getElementById('playAnswer').value;
-            const docsText = document.getElementById('playDocs').value;
-            const docs = docsText.split('\n').filter(l => l.trim());
+        async function apiFetch(path,method='GET',body=null,auth=true){const h={'Content-Type':'application/json'};if(auth&&token)h['Authorization']='Bearer '+token;const o={method,headers:h};if(body)o.body=JSON.stringify(body);const r=await fetch(API+path,o);const d=await r.json();if(r.status===401){token='';localStorage.removeItem('ragos_token');currentUser=null;updateNavForUser();showView('landing');toast('Session expired.','info');throw new Error('Session expired');}if(!r.ok)throw new Error(d.detail||'Request failed');return d;}
 
-            try {
-                const result = await apiFetch('/rewards/compute', 'POST', {
-                    algorithm: algo,
-                    query, answer,
-                    retrieved_docs: docs,
-                    config: {}
-                });
-                const el = document.getElementById('playgroundResult');
-                const score = result.total_reward;
-                const color = score > 0.7 ? '#10b981' : score > 0.4 ? '#f59e0b' : '#ef4444';
-                el.innerHTML = `
-                    <div style="width:100%">
-                        <div class="reward-result">
-                            <div style="text-align:center;font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">Total Reward</div>
-                            <div class="reward-score" style="color:${color}">${score.toFixed(4)}</div>
-                            <div style="text-align:center;margin-bottom:20px"><span class="tag tag-info">${result.algorithm.toUpperCase()}</span></div>
-                            <div class="reward-breakdown">
-                                ${Object.entries(result.breakdown).map(([k, v]) => {
-                                    const barColor = k === 'anti_hack_penalty' ? '#ef4444' : 'var(--accent-light)';
-                                    return `<div class="reward-bar">
-                                        <div class="reward-bar-label">${k.replace(/_/g, ' ')}</div>
-                                        <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px">
-                                            <span>${v.toFixed(4)}</span>
-                                        </div>
-                                        <div class="reward-bar-track">
-                                            <div class="reward-bar-fill" style="width:${Math.min(v * 100, 100)}%;background:${barColor}"></div>
-                                        </div>
-                                    </div>`;
-                                }).join('')}
-                            </div>
-                            ${result.metadata.description ? `<p style="margin-top:16px;font-size:0.8rem;color:var(--text-muted);text-align:center">${result.metadata.description}</p>` : ''}
-                        </div>
-                    </div>`;
-            } catch (err) { toast(err.message, 'error'); }
-        }
-
-        // ==== API Keys ====
-        async function loadAPIKeys() {
-            try {
-                const keys = await apiFetch('/user/api-keys');
-                const el = document.getElementById('apiKeysList');
-                if (keys.length === 0) {
-                    el.innerHTML = '<p style="color:var(--text-muted)">No API keys. Generate one for programmatic access.</p>';
-                    return;
-                }
-                el.innerHTML = `<table class="data-table"><thead><tr><th>Name</th><th>Key</th><th>Created</th><th>Last Used</th><th></th></tr></thead><tbody>` +
-                    keys.map(k => `<tr>
-                        <td>${esc(k.name)}</td>
-                        <td><code style="color:var(--accent-2)">${k.key_prefix}</code></td>
-                        <td>${new Date(k.created_at).toLocaleDateString()}</td>
-                        <td>${k.last_used ? new Date(k.last_used).toLocaleDateString() : 'Never'}</td>
-                        <td><button class="btn btn-ghost btn-sm" onclick="revokeKey('${k.id}')" style="color:#ef4444">Revoke</button></td>
-                    </tr>`).join('') +
-                    '</tbody></table>';
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function createNewAPIKey() {
-            const name = prompt('API key name:');
-            if (!name) return;
-            try {
-                const result = await apiFetch('/user/api-keys', 'POST', { name });
-                alert('Your API key (shown only once):\n\n' + result.key + '\n\nSave it now!');
-                loadAPIKeys();
-                toast('API key created', 'success');
-            } catch (err) { toast(err.message, 'error'); }
-        }
-        async function revokeKey(id) {
-            if (!confirm('Revoke this key?')) return;
-            try {
-                await apiFetch(`/user/api-keys/${id}`, 'DELETE');
-                loadAPIKeys();
-                toast('Key revoked', 'success');
-            } catch (err) { toast(err.message, 'error'); }
-        }
-
-        // ==== API Fetch Helper ====
-        async function apiFetch(path, method = 'GET', body = null, auth = true) {
-            const headers = { 'Content-Type': 'application/json' };
-            if (auth && token) headers['Authorization'] = `Bearer ${token}`;
-            const opts = { method, headers };
-            if (body) opts.body = JSON.stringify(body);
-            const resp = await fetch(API + path, opts);
-            const data = await resp.json();
-            if (resp.status === 401) {
-                token = '';
-                localStorage.removeItem('ragos_token');
-                currentUser = null;
-                updateNavForUser();
-                showView('landing');
-                toast('Session expired. Please log in again.', 'info');
-                throw new Error('Session expired');
-            }
-            if (!resp.ok) throw new Error(data.detail || 'Request failed');
-            return data;
-        }
-
-        // ==== Utilities ====
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-        function formatBytes(b) { if (b === 0) return '0 B'; const k = 1024; const s = ['B','KB','MB']; const i = Math.floor(Math.log(b)/Math.log(k)); return (b/Math.pow(k,i)).toFixed(1)+' '+s[i]; }
-        function toast(msg, type = 'info') {
-            const el = document.createElement('div');
-            el.className = `toast ${type}`;
-            el.textContent = msg;
-            document.getElementById('toastContainer').appendChild(el);
-            setTimeout(() => el.remove(), 4000);
-        }
-
-        // Handle GitHub callback
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('code')) {
-            (async () => {
-                try {
-                    const resp = await apiFetch(`/auth/github/callback?code=${urlParams.get('code')}`, 'GET', null, false);
-                    token = resp.access_token;
-                    localStorage.setItem('ragos_token', token);
-                    currentUser = resp.user;
-                    updateNavForUser();
-                    showView('dashboard');
-                    loadDashboard();
-                    toast('Signed in with GitHub!', 'success');
-                    window.history.replaceState({}, '', '/');
-                } catch (err) { toast('GitHub auth failed: ' + err.message, 'error'); }
-            })();
-        }
+        function closeModal(id){document.getElementById(id).classList.remove('active');}
+        function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+        function formatBytes(b){if(b===0)return'0 B';const k=1024;const s=['B','KB','MB'];const i=Math.floor(Math.log(b)/Math.log(k));return(b/Math.pow(k,i)).toFixed(1)+' '+s[i];}
+        function toast(msg,type='info'){const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;document.getElementById('toastContainer').appendChild(el);setTimeout(()=>el.remove(),4000);}
     </script>
 </body>
 </html>

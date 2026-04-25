@@ -1,11 +1,11 @@
-"""Authentication routes — register, login, GitHub OAuth."""
+"""Authentication routes — register and login."""
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 
 from agentic_rag_os.models.schemas import LoginRequest, RegisterRequest, TokenResponse
-from agentic_rag_os.services import github_oauth_callback, login_user, register_user
+from agentic_rag_os.services import login_user, register_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -26,13 +26,3 @@ async def login(req: LoginRequest):
         return result
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
-
-
-@router.get("/github/callback")
-async def github_callback(code: str = Query(...)):
-    """GitHub OAuth callback — exchange code for JWT."""
-    try:
-        result = await github_oauth_callback(code)
-        return result
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))

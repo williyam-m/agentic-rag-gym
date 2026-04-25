@@ -25,10 +25,6 @@ class RagOSSettings(BaseSettings):
     # --- Auth ---
     jwt_algorithm: str = "HS256"
     jwt_expiry_minutes: int = 1440  # 24h
-    github_client_id: str = os.getenv("GITHUB_CLIENT_ID", "")
-    github_client_secret: str = os.getenv("GITHUB_CLIENT_SECRET", "")
-    github_redirect_uri: str = os.getenv("GITHUB_REDIRECT_URI", "")
-
     # --- Database (SQLite for simplicity, file-based) ---
     db_path: Path = _ROOT / "agentic_rag_os" / "data" / "ragos.db"
 

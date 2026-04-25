@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
 
 app = FastAPI(
     title="Agentic RAG OS",
-    description="The Operating System for Agentic RAG — RL B2B Rewards-as-a-Service",
+    description="The Operating System for Agentic RAG",
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
