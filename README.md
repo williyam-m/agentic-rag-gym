@@ -25,6 +25,11 @@ pinned: true
 
 # ⚜ Agentic RAG Gym
 
+| Resource | URL |
+|---|---|
+| **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
+| **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
 
 **Agentic RAG Gym** is an open-source reinforcement learning framework that fundamentally transforms Retrieval-Augmented Generation. We designed a new orchestrator from scratch — a **RAG Master** engine where autonomous agents don't just retrieve and generate, they *learn to research like experts* through RL-driven process supervision, multi-agent collaboration, and adversarial self-improvement.
@@ -443,15 +448,6 @@ agentic-rag-gym/
 ├── docker-compose.yml       # Service orchestration
 └── main.py                  # Entry point
 ```
-
----
-
-## Links
-
-| Resource | URL |
-|---|---|
-| **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
-| **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
 
 ---
 

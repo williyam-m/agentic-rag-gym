@@ -213,12 +213,23 @@ def _call_api(method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[s
 
 
 def switch_domain(domain: str):
-    """Switch the active domain and return updated task choices."""
+    """Switch the active domain and return updated task choices for both dropdowns."""
     result = _call_api("POST", "/domain/switch", {"domain": domain})
     if "error" in result:
-        return gr.update(choices=DOMAIN_TASKS.get("aerospace", []), value=None), f"Error: {result['error']}"
+        fallback = DOMAIN_TASKS.get("aerospace", [])
+        return (
+            gr.update(choices=fallback, value=None),
+            gr.update(choices=fallback, value=None),
+            f"Error: {result['error']}",
+        )
     tasks = DOMAIN_TASKS.get(domain, [])
-    return gr.update(choices=tasks, value=tasks[0][1] if tasks else None), f"Switched to **{DOMAIN_LABELS.get(domain, domain)}** domain"
+    default_val = tasks[0][1] if tasks else None
+    label = DOMAIN_LABELS.get(domain, domain)
+    return (
+        gr.update(choices=tasks, value=default_val),
+        gr.update(choices=tasks, value=default_val),
+        f"Switched to {label} domain",
+    )
 
 
 def reset_environment(task_id: str) -> tuple:
@@ -293,7 +304,7 @@ def take_step(action_type: str, query: str, answer: str) -> tuple:
         )
 
     current_answer = obs.get("current_answer", "")
-    status = "**Episode Complete!**" if done else f"Step {step_num} completed"
+    status = "Episode Complete!" if done else f"Step {step_num} completed"
 
     return (
         docs_display,
@@ -364,6 +375,10 @@ def run_full_episode(task_id: str) -> tuple:
         reward = result.get("reward", 0.0)
         total_reward += reward
         done = result.get("done", False)
+        # Mark done on the final answer step since orchestrator only flags
+        # done on the step *after* answer, which auto pilot never takes.
+        if action["type"] == "answer" and i == len(steps):
+            done = True
         log_lines.append(
             f"**Step {i}** | `{action['type']}` | Reward: `{reward:.4f}` | Done: `{done}`"
         )
@@ -547,16 +562,11 @@ def build_ui() -> gr.Blocks:
                     """
                 )
 
-        # Wire domain selector to update task dropdowns
+        # Wire domain selector to update both task dropdowns in one call
         domain_selector.change(
             fn=switch_domain,
             inputs=[domain_selector],
-            outputs=[task_dropdown, domain_status],
-        )
-        domain_selector.change(
-            fn=switch_domain,
-            inputs=[domain_selector],
-            outputs=[auto_task, domain_status],
+            outputs=[task_dropdown, auto_task, domain_status],
         )
 
     return demo
