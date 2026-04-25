@@ -21,7 +21,7 @@ pinned: true
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-OpenEnv%20API-009688?logo=fastapi&logoColor=white)](server/app.py)
 [![OpenEnv](https://img.shields.io/badge/OpenEnv-Compliant-4CAF50)](openenv.yaml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 # ⚜ Agentic RAG Gym
 
@@ -452,13 +452,6 @@ agentic-rag-gym/
 |---|---|
 | **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
 | **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
-| **GitHub** | [github.com/williyam-m/agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
-
----
-
-## License
-
-MIT
 
 ---
 
