@@ -29,3 +29,5 @@ node_modules/
 # Training checkpoints (large files)
 checkpoints/
 .venv-1/
+*.db
+agentic_rag_os/data/

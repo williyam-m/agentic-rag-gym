@@ -29,6 +29,8 @@ pinned: true
 |---|---|
 | **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
 | **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+| **Agentic RAG OS** | [agentic-rag-os (Google Cloud)](https://agentic-rag-os-441459779686.us-central1.run.app) |
+| **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
 
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
 
@@ -60,7 +62,7 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 | **#2 Long-Horizon Planning** | Tasks require 10-20 step trajectories with planning, iterative retrieval, reasoning, critique, and verification |
 | **#3.1 World Modeling (Professional)** | Dynamic RAG environment with FAISS vector store, LLM reasoning, and tool orchestration |
 | **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, GRPO fine-tuning with real graders |
-| **#5 Wild Card** | **A new orchestrator/framework designed from scratch** — RAG Master represents a new revolution for agentic RAG. This RL gym helps the system make better decisions by improving the entire agentic RAG foundation with reinforcement learning. Implemented as a domain-agnostic framework extensible to any domain, with 2 production domains (Aerospace Research, Legal Research) and deterministic grading |
+| **#5 Wild Card** | **Agentic RAG OS** — An RL B2B Rewards-as-a-Service (RaaS) startup platform built as a full-stack operating system for agentic RAG. **RAG Master** — A new orchestrator/framework designed from scratch (like LangChain/LangGraph) as a domain-agnostic engine for multi-agent RAG with RL-driven process supervision. |
 
 ---
 
