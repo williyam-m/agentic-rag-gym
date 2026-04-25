@@ -349,22 +349,59 @@ def get_tasks() -> str:
     return header + "\n".join(lines)
 
 
+def _build_auto_steps(task_description: str, max_steps: int) -> list:
+    """Build a dynamic step plan that fills exactly max_steps.
+
+    Structure: plan → [retrieve, reason, critique] cycles → answer.
+    The number of cycles is determined by the task's max_steps.
+    """
+    # Queries to rotate through during retrieve steps
+    queries = [
+        task_description,
+        "detailed technical analysis and supporting evidence",
+        "specific examples and case studies",
+        "expert methodology and best practices",
+        "risks, challenges, and mitigations",
+    ]
+
+    steps = [{"type": "plan"}]
+    remaining = max_steps - 2  # plan takes 1, answer takes 1
+    cycle_types = ["retrieve", "reason", "critique"]
+    cycle_idx = 0
+    retrieve_count = 0
+
+    while remaining > 0:
+        action_type = cycle_types[cycle_idx % 3]
+        if action_type == "retrieve":
+            steps.append({"type": "retrieve", "query": queries[retrieve_count % len(queries)]})
+            retrieve_count += 1
+        else:
+            steps.append({"type": action_type})
+        cycle_idx += 1
+        remaining -= 1
+
+    steps.append({"type": "answer"})
+    return steps
+
+
 def run_full_episode(task_id: str) -> tuple:
     """Run a complete automated episode."""
     reset_result = _call_api("POST", "/reset", {"task_id": task_id} if task_id else {})
     if "error" in reset_result:
         return (f"Error: {reset_result['error']}", "", "")
 
-    log_lines = ["**Episode Started**\n"]
-    steps = [
-        {"type": "plan"},
-        {"type": "retrieve", "query": reset_result.get("observation", {}).get("task", {}).get("description", "")},
-        {"type": "reason"},
-        {"type": "critique"},
-        {"type": "retrieve", "query": "detailed technical analysis"},
-        {"type": "reason"},
-        {"type": "answer"},
+    obs = reset_result.get("observation", {})
+    task_meta = obs.get("task", {})
+    task_name = task_meta.get("name", task_id or "Unknown")
+    task_description = task_meta.get("description", "")
+    max_steps: int = int(task_meta.get("max_steps", 12))
+    difficulty = task_meta.get("difficulty", "unknown")
+
+    log_lines = [
+        f"**Episode Started** — {task_name} ({difficulty}, {max_steps} steps)\n"
     ]
+
+    steps = _build_auto_steps(task_description, max_steps)
 
     total_reward = 0.0
     for i, action in enumerate(steps, 1):

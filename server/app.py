@@ -85,8 +85,10 @@ async def _initialize_orchestrator(settings: AppSettings, domain_name: str = "ae
         raise ValueError(f"Unknown domain: {domain_name}. Available: {list(DOMAIN_REGISTRY.keys())}")
     domain = domain_cls()
 
+    # Each domain gets its own subdirectory so they never share embeddings.
+    domain_index_dir = settings.faiss_index_dir / domain_name
     retriever = FAISSRetriever(
-        index_dir=settings.faiss_index_dir,
+        index_dir=domain_index_dir,
         embedding_model=settings.embedding_model,
         dimension=settings.faiss_dimension,
     )
