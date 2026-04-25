@@ -61,7 +61,7 @@ async def health():
 
 
 # --- Serve static files ---
-_FRONTEND_DIR = Path(__file__).parent / "frontend"
+_FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 _STATIC_DIR = _FRONTEND_DIR / "static"
 
 if _STATIC_DIR.exists():

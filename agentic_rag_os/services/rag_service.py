@@ -101,7 +101,7 @@ async def upload_document(user_id: str, domain_id: str, filename: str, content: 
     retriever = _get_retriever(domain_id)
     from rag_master.models import Document
     doc_obj = Document(doc_id=doc_id, content=content, source=filename, metadata={"filename": filename})
-    retriever.index_documents([doc_obj])
+    await retriever.index_documents([doc_obj])
 
     return {"id": doc_id, "filename": filename, "size_bytes": doc_size, "metadata": {}, "created_at": ts}
 
@@ -138,7 +138,7 @@ async def rag_query(user_id: str, domain_id: str, query: str, top_k: int = 5) ->
     # Ensure all docs are indexed
     retriever = _get_retriever(domain_id)
 
-    results = retriever.retrieve(query, top_k=top_k)
+    results = await retriever.retrieve(query, top_k=top_k)
     formatted = [
         {"content": r.document.content, "score": round(r.score, 4), "metadata": r.document.metadata}
         for r in results
@@ -158,7 +158,7 @@ async def rag_query(user_id: str, domain_id: str, query: str, top_k: int = 5) ->
 async def reindex_domain(domain_id: str) -> None:
     """Reindex all documents in a domain's FAISS index."""
     retriever = _get_retriever(domain_id)
-    retriever.clear_index()
+    await retriever.clear_index()
     docs = await fetch_all("SELECT id, filename, content FROM documents WHERE domain_id=?", (domain_id,))
     if docs:
         from rag_master.models import Document
@@ -166,4 +166,4 @@ async def reindex_domain(domain_id: str) -> None:
             Document(doc_id=d["id"], content=d["content"], source=d["filename"], metadata={"filename": d["filename"]})
             for d in docs
         ]
-        retriever.index_documents(doc_objs)
+        await retriever.index_documents(doc_objs)

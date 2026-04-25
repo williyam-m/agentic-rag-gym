@@ -1713,6 +1713,10 @@
         async function handleFileUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
+            if (!currentDomainId) {
+                toast('No domain selected', 'error');
+                return;
+            }
             const form = new FormData();
             form.append('file', file);
             try {
@@ -1898,6 +1902,15 @@
             if (body) opts.body = JSON.stringify(body);
             const resp = await fetch(API + path, opts);
             const data = await resp.json();
+            if (resp.status === 401) {
+                token = '';
+                localStorage.removeItem('ragos_token');
+                currentUser = null;
+                updateNavForUser();
+                showView('landing');
+                toast('Session expired. Please log in again.', 'info');
+                throw new Error('Session expired');
+            }
             if (!resp.ok) throw new Error(data.detail || 'Request failed');
             return data;
         }
