@@ -29,7 +29,6 @@ pinned: true
 |---|---|
 | **HF Space** | [huggingface.co/spaces/williyam/agentic-rag-gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
 | **Fine-Tuned Model** | [huggingface.co/williyam/agentic-rag-aerospace-grpo](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
-| **Agentic RAG OS** | [agentic-rag-os (HuggingFace Spaces)](https://williyam-agentic-rag-os.hf.space) |
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
 
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
