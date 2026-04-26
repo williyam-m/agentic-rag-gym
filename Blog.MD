@@ -1,6 +1,6 @@
 # Building Agentic RAG Gym: Teaching AI Agents to Research Like Experts
 
-> **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
+> **What happens when you stop treating RAG as a pipeline and start treating it as a learning system? You get agents that don't just retrieve — they investigate, critique, and refine until the answer is right.**
 
 ## The Story Behind This Project
 
@@ -201,6 +201,10 @@ That realization led us to build **Agentic RAG OS** — a full-stack **Rewards-a
 - **Multi-domain support** — Upload documents for any domain and get calibrated rewards immediately
 
 The idea is simple: if you're fine-tuning an LLM and need reward signals grounded in real documents, you shouldn't have to build the entire retrieval + grading + anti-hacking infrastructure yourself. Upload your data, configure your weights, and call the API.
+
+### Agentic RAG OS — Live Demo
+
+![Agentic RAG OS Demo](assets/demo/agentic-rag-os-demo.gif)
 
 **Live at:** [https://rag-8000.zcodecorp.in/](https://rag-8000.zcodecorp.in/)
 

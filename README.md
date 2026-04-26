@@ -30,7 +30,7 @@ pinned: true
 | **HF Space** | [Agentic RAG Gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
 | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
-| **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
+| **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) — see demo below |
 
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
 
@@ -63,6 +63,10 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 | **#3.1 World Modeling (Professional)** | Dynamic RAG environment with FAISS vector store, LLM reasoning, and tool orchestration |
 | **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, GRPO fine-tuning with real graders |
 | **#5 Wild Card** | **Agentic RAG OS** — An RL B2B Rewards-as-a-Service (RaaS) startup platform built as a full-stack operating system for agentic RAG. **RAG Master** — A new orchestrator/framework designed from scratch (like LangChain/LangGraph) as a domain-agnostic engine for multi-agent RAG with RL-driven process supervision. |
+
+### Agentic RAG OS — Live Demo
+
+![Agentic RAG OS Demo](assets/demo/agentic-rag-os-demo.gif)
 
 ---
 

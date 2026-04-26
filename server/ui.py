@@ -606,11 +606,11 @@ def build_ui() -> gr.Blocks:
 
             # --- Tab 4: Blog / Writeup ---
             with gr.Tab("📝 Blog / Writeup", id="blog"):
-                gr.Markdown(_load_markdown("Blog.MD"))
+                gr.Markdown(_load_markdown("Blog.MD"), sanitize_html=False)
 
             # --- Tab 5: README ---
             with gr.Tab("📖 README", id="readme"):
-                gr.Markdown(_load_readme())
+                gr.Markdown(_load_readme(), sanitize_html=False)
 
             # --- Tab 6: About ---
             with gr.Tab("ℹ️ About", id="about"):
