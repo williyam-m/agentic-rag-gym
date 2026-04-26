@@ -252,7 +252,13 @@ def _call_api(method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[s
                 resp = client.get(url)
             else:
                 resp = client.post(url, json=data or {})
-            resp.raise_for_status()
+            if resp.status_code >= 400:
+                try:
+                    body = resp.json()
+                    detail = body.get("detail", resp.text)
+                except Exception:
+                    detail = resp.text
+                return {"error": detail}
             return resp.json()
     except Exception as exc:
         return {"error": str(exc)}
@@ -325,6 +331,11 @@ def take_step(action_type: str, query: str, answer: str) -> tuple:
         action_data["answer"] = answer
 
     result = _call_api("POST", "/step", action_data)
+
+    # Auto-reset if environment was not initialized
+    if "error" in result and "not initialized" in str(result["error"]).lower():
+        _call_api("POST", "/reset")
+        result = _call_api("POST", "/step", action_data)
 
     if "error" in result:
         return ("", "0", "0.0", f"**Error:** {result['error']}", "")
