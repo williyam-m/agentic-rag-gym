@@ -42,18 +42,6 @@ The first two domains? **Aerospace Research** and **Legal Research** — because
 
 ---
 
-## The Story Behind This Project
-
-It started with a frustration every AI engineer has felt: watching a RAG system retrieve perfectly relevant documents, only to generate a shallow, incomplete answer that ignores half the evidence. The retriever did its job. The generator didn't know what to do with it.
-
-The real problem isn't retrieval — it's the *process*. Traditional RAG has no awareness of its own quality. It can't tell when it needs more information, when its reasoning has gaps, or when it should stop and verify its work. It's a pipeline, not a researcher.
-
-We asked: **What if we could build an environment where AI agents learn to research the way experts do?** Not just retrieve-and-generate, but plan their investigation, critique their own reasoning, verify claims against evidence, and iterate until the answer is genuinely comprehensive.
-
-That question became **Agentic RAG Gym** — and eventually led us to build an entire ecosystem around it.
-
----
-
 ## Why This Matters
 
 Traditional RAG systems are static pipelines: retrieve → generate → done. They have no feedback loop, no process awareness, no ability to learn from mistakes. **Agentic RAG Gym** changes this by:
@@ -75,19 +63,6 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 | **#3.1 World Modeling (Professional)** | Dynamic RAG environment with FAISS vector store, LLM reasoning, and tool orchestration |
 | **#4 Self-Improvement** | Adversarial critique loops, iterative refinement, GRPO fine-tuning with real graders |
 | **#5 Wild Card** | **Agentic RAG OS** — An RL B2B Rewards-as-a-Service (RaaS) startup platform built as a full-stack operating system for agentic RAG. **RAG Master** — A new orchestrator/framework designed from scratch (like LangChain/LangGraph) as a domain-agnostic engine for multi-agent RAG with RL-driven process supervision. |
-
----
-
-## The HF Space: A Live Research Lab
-
-The **[Agentic RAG Gym HF Space](https://huggingface.co/spaces/williyam/agentic-rag-gym)** is more than a demo — it's a live research lab where you can watch AI agents think in real-time:
-
-- **Interactive Mode** — Take the wheel and guide the agent step-by-step. Choose when to retrieve, reason, critique, or answer. See exactly how each action affects the reward signal.
-- **Auto Pilot** — Sit back and watch the agent research autonomously. It plans its approach, retrieves evidence, reasons over documents, critiques its own work, and delivers a final answer — all while you see the reward breakdown at every step.
-- **Multi-Domain** — Switch between Aerospace Research (scramjet propulsion, Mars EDL, hypersonic vehicles) and Legal Research (IP disputes, M&A due diligence, privacy compliance) with one click.
-- **Real-Time Reward Visualization** — Every step shows the composite reward decomposition: retrieval relevance, reasoning quality, answer completeness, efficiency, and anti-hacking penalties.
-
-The Space runs as a Docker container on HF infrastructure, exposing a full OpenEnv-compliant API. It uses the **[GRPO fine-tuned Qwen2.5 model](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)** as its default LLM for aerospace tasks.
 
 ---
 
@@ -114,22 +89,6 @@ The Space runs as a Docker container on HF infrastructure, exposing a full OpenE
 │  Domains: [Aerospace] [Legal Research] [Your Domain]     │
 └──────────────────────────────────────────────────────────┘
 ```
-
-## Why We Built RAG Master From Scratch
-
-We looked at existing orchestration frameworks — LangChain, LangGraph, LlamaIndex — and found they weren't designed for what we needed. They're great for building RAG pipelines, but they lack:
-
-- **RL-native reward computation** — No built-in support for per-step rewards that can drive policy optimization
-- **Process-aware grading** — They evaluate final outputs, not the research *process*
-- **Anti-reward-hacking** — No adversarial guards against the degenerate strategies agents discover during RL training
-- **Domain-agnostic adapter pattern** — Adding a new knowledge domain shouldn't require rewriting the orchestrator
-
-So we built **RAG Master** — a domain-agnostic orchestrator designed from the ground up for agentic RAG with reinforcement learning. The key architectural decisions:
-
-- **Composite rewards with bounded scores [0.01, 0.99]** — Prevents degenerate training signals
-- **Deterministic graders** — Real domain-expert grading criteria, not learned reward models
-- **Pluggable LLM backend** — Works with any model via a unified client interface
-- **FAISS vector store** — Per-domain embedding indices with automatic document ingestion
 
 ## Key Features
 
@@ -471,32 +430,6 @@ python inference.py    # Results saved to baseline_results.json
 
 ---
 
-## From Research to Production: Agentic RAG OS
-
-After building the RL gym, we realized something: **the reward computation engine we built is valuable on its own**. Every team fine-tuning LLMs with RL needs reward signals, but building domain-specific graders, anti-hacking guards, and composite reward functions from scratch is painful.
-
-That realization led us to build **[Agentic RAG OS](https://rag-8000.zcodecorp.in/)** — a full-stack **Rewards-as-a-Service (RaaS)** platform that packages our reward computation engine as an API anyone can use:
-
-- **Upload any data** → automatically embed and index with FAISS
-- **Configure reward functions** → choose algorithm (GRPO/PPO/DPO/REINFORCE), set component weights
-- **Compute rewards via API** → integrate into any LLM training pipeline with a single HTTP call
-- **Dashboard & monitoring** → track usage, storage (1 GB per user), API keys, and reward distributions
-- **Multi-domain support** — Upload documents for any domain and get calibrated rewards immediately
-
-The idea is simple: if you're fine-tuning an LLM and need reward signals grounded in real documents, you shouldn't have to build the entire retrieval + grading + anti-hacking infrastructure yourself. Upload your data, configure your weights, and call the API.
-
----
-
-## What We Learned
-
-1. **Process supervision beats outcome supervision.** Per-step rewards teach better research strategies than just grading the final answer.
-2. **Anti-reward-hacking is essential.** Without it, agents quickly learn to stuff keywords and repeat phrases to inflate scores.
-3. **Real graders > proxy rewards.** Using actual domain-expert grading criteria (even if rule-based) produces more aligned behavior than learned reward models.
-4. **Small models can learn research skills.** Even Qwen2.5-0.5B shows measurable improvement with GRPO fine-tuning on domain tasks.
-5. **Domain agnosticism requires careful abstraction.** The adapter pattern works well for different knowledge domains while keeping the core RL loop domain-independent.
-
----
-
 ## Project Structure
 
 ```
@@ -515,7 +448,6 @@ agentic-rag-gym/
 ├── openenv.yaml             # OpenEnv specification
 ├── Dockerfile               # Container definition
 ├── docker-compose.yml       # Service orchestration
-├── Blog.MD                  # Full writeup / blog post
 └── main.py                  # Entry point
 ```
 
