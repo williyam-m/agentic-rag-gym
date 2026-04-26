@@ -219,6 +219,7 @@ The idea is simple: if you're fine-tuning an LLM and need reward signals grounde
 ## Try It Yourself
 
 - **Live Demo:** [Agentic RAG Gym on HF Spaces](https://huggingface.co/spaces/williyam/agentic-rag-gym)
+- **YouTube Demo:** [Watch It in Action](https://www.youtube.com/watch?v=M65DHY8za6M)
 - **Fine-Tuned Model:** [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)
 - **Source Code:** [GitHub Repository](https://github.com/williyam-m/agentic-rag-gym)
 - **Training Notebook:** [Google Colab](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing)

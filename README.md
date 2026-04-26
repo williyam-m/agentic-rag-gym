@@ -30,6 +30,8 @@ pinned: true
 | **HF Space** | [Agentic RAG Gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
 | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
+| **YouTube Demo** | [Watch the Demo](https://www.youtube.com/watch?v=M65DHY8za6M) |
+| **GitHub Repo** | [williyam-m/agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
 | **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) — see demo below |
 
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
