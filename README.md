@@ -16,7 +16,7 @@ pinned: true
 ---
 
 [![HF Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Space-blue)](https://huggingface.co/spaces/williyam/agentic-rag-gym)
-[![Fine-Tuned Model](https://img.shields.io/badge/%F0%9F%A4%97%20HF%20Model-GRPO--LoRA-orange)](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)
+[![Fine-Tuned Model](https://img.shields.io/badge/%F0%9F%A4%97%20HF%20Model-Qwen2.5--GRPO-orange)](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-OpenEnv%20API-009688?logo=fastapi&logoColor=white)](server/app.py)
@@ -29,7 +29,7 @@ pinned: true
 |---|---|
 | **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
 | **HF Space** | [Agentic RAG Gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
-| **Fine-Tuned Model** | [GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+| **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
 
 > **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
@@ -353,15 +353,15 @@ with LoRA adapters and the **real domain graders** as the reward signal — no p
 
 ### Training Curves
 
-![Training Curves](plots/training_curves.png)
+![Training Curves](assets/qwen-finetuning-plots/training_curves.png)
 
 ### Baseline vs. GRPO-Trained
 
-![Baseline vs Trained](plots/baseline_vs_trained.png)
+![Baseline vs Trained](assets/qwen-finetuning-plots/baseline_vs_trained.png)
 
 ### Score Distribution
 
-![Score Distribution](plots/score_distribution.png)
+![Score Distribution](assets/qwen-finetuning-plots/score_distribution.png)
 
 ### Run Training
 
@@ -441,7 +441,7 @@ agentic-rag-gym/
 ├── training/                # GRPO training package
 ├── tests/                   # Unit & integration tests
 ├── documents/               # Architecture & design docs
-├── plots/                   # Training curves & evaluation plots
+├── assets/qwen-finetuning-plots/  # Training curves & evaluation plots
 ├── agentic-rag-for-aerospace-research.ipynb  # GRPO training notebook
 ├── train.py                 # Standalone training script
 ├── inference.py             # Baseline inference script
