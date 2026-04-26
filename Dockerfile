@@ -19,7 +19,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Pre-warm embedding model so first /reset doesn't time out
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
 
-COPY inference.py main.py openenv.yaml ./
+COPY Blog.MD inference.py main.py openenv.yaml ./
+COPY assets/ assets/
 
 RUN mkdir -p /app/data/faiss_indices
 

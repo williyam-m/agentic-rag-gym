@@ -21,6 +21,20 @@ import httpx
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
+_RAW_GH = "https://raw.githubusercontent.com/williyam-m/agentic-rag-gym/main"
+
+
+def _resolve_images(text: str) -> str:
+    """Replace relative image paths with absolute GitHub raw URLs for Gradio."""
+    import re
+    def _repl(m: re.Match) -> str:
+        alt, path = m.group(1), m.group(2)
+        if path.startswith(("http://", "https://")):
+            return m.group(0)
+        return f"![{alt}]({_RAW_GH}/{path})"
+    return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _repl, text)
+
+
 def _load_markdown(filename: str) -> str:
     """Load a markdown file from the project root, stripping YAML frontmatter."""
     path = _PROJECT_ROOT / filename
@@ -32,7 +46,7 @@ def _load_markdown(filename: str) -> str:
         end = text.find("---", 3)
         if end != -1:
             text = text[end + 3:].lstrip("\n")
-    return text
+    return _resolve_images(text)
 
 
 def _load_readme() -> str:
