@@ -12,10 +12,41 @@ Provides an interactive interface for:
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import gradio as gr
 import httpx
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _load_markdown(filename: str) -> str:
+    """Load a markdown file from the project root, stripping YAML frontmatter."""
+    path = _PROJECT_ROOT / filename
+    if not path.exists():
+        return f"*{filename} not found.*"
+    text = path.read_text(encoding="utf-8")
+    # Strip YAML frontmatter if present
+    if text.startswith("---"):
+        end = text.find("---", 3)
+        if end != -1:
+            text = text[end + 3:].lstrip("\n")
+    return text
+
+
+def _load_readme() -> str:
+    """Load README.md, stripping frontmatter and badge lines."""
+    text = _load_markdown("README.md")
+    # Remove badge image lines ([![...](...)]) at the top
+    lines = text.split("\n")
+    cleaned: list[str] = []
+    for line in lines:
+        if line.strip().startswith("[![") and line.strip().endswith(")"):
+            continue
+        cleaned.append(line)
+    return "\n".join(cleaned)
+
 
 ROYAL_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -558,7 +589,15 @@ def build_ui() -> gr.Blocks:
                 refresh_btn = gr.Button("🔄 Refresh Tasks", variant="secondary")
                 refresh_btn.click(fn=get_tasks, outputs=[tasks_display])
 
-            # --- Tab 4: About ---
+            # --- Tab 4: Blog / Writeup ---
+            with gr.Tab("📝 Blog / Writeup", id="blog"):
+                gr.Markdown(_load_markdown("Blog.MD"))
+
+            # --- Tab 5: README ---
+            with gr.Tab("📖 README", id="readme"):
+                gr.Markdown(_load_readme())
+
+            # --- Tab 6: About ---
             with gr.Tab("ℹ️ About", id="about"):
                 gr.Markdown(
                     """
@@ -594,6 +633,16 @@ def build_ui() -> gr.Blocks:
 
                     Full implementation of the OpenEnv specification:
                     `reset()` → `step()` → `state()` → `grade()`
+
+                    ### Links
+
+                    | Resource | URL |
+                    |---|---|
+                    | **HF Space** | [Agentic RAG Gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
+                    | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+                    | **GitHub** | [agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
+                    | **Training Notebook** | [Google Colab](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
+                    | **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
 
                     </div>
                     """
