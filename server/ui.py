@@ -12,13 +12,14 @@ Provides an interactive interface for:
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import gradio as gr
 import httpx
 
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_PROJECT_ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent.parent))
 
 
 _RAW_GH = "https://raw.githubusercontent.com/williyam-m/agentic-rag-gym/main"
