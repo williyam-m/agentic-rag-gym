@@ -19,6 +19,8 @@ from typing import Any, Dict, List, Optional
 import gradio as gr
 import httpx
 
+from rag_master.rewards import _SCORE_MIN, clamp_score
+
 _PROJECT_ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent.parent))
 
 
@@ -382,7 +384,7 @@ def grade_episode() -> str:
     result = _call_api("POST", "/grade")
     if "error" in result:
         return f"**Error:** {result['error']}"
-    score = result.get("score", 0.0)
+    score = clamp_score(float(result.get("score", _SCORE_MIN)))
     task_id = result.get("task_id", "Unknown")
     return (
         f'<div class="reward-display" style="color: var(--gold);">'
@@ -486,7 +488,11 @@ def run_full_episode(task_id: str) -> tuple:
 
     # Grade
     grade_result = _call_api("POST", "/grade")
-    final_score = grade_result.get("score", 0.0) if "error" not in grade_result else 0.0
+    final_score = clamp_score(
+        float(grade_result.get("score", _SCORE_MIN))
+        if "error" not in grade_result
+        else _SCORE_MIN
+    )
 
     log_text = "\n\n".join(log_lines)
     state = _call_api("GET", "/state")

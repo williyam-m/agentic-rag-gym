@@ -22,6 +22,8 @@ from typing import Any, Dict, List, Optional
 import httpx
 from openai import OpenAI
 
+from rag_master.rewards import _SCORE_MIN, clamp_score
+
 # --- Configuration from environment ---
 API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:11434/v1")
 API_KEY: str = os.getenv("HF_TOKEN") or os.getenv("API_KEY") or "ollama"
@@ -195,7 +197,7 @@ def run_episode(client: OpenAI, task_id: str, max_steps: int = 20) -> Dict[str, 
 
     # Grade
     grade_result = call_env("POST", "/grade")
-    final_score = grade_result.get("score", 0.0)
+    final_score = clamp_score(float(grade_result.get("score", _SCORE_MIN)))
 
     print(f"\n  Final Score: {final_score:.4f}")
     print(f"  Total Reward: {total_reward:.4f}")
@@ -262,7 +264,7 @@ def main() -> None:
             results.append(result)
         except Exception as exc:
             print(f"  ERROR on {task_id}: {exc}")
-            results.append({"task_id": task_id, "score": 0.0, "error": str(exc)})
+            results.append({"task_id": task_id, "score": clamp_score(_SCORE_MIN), "error": str(exc)})
 
     elapsed = time.time() - start_time
 
@@ -273,11 +275,14 @@ def main() -> None:
     print(f"{'Task ID':<45} {'Score':>8} {'Steps':>6}")
     print("-" * 60)
     for r in results:
-        score = r.get("score", 0.0)
+        score = clamp_score(float(r.get("score", _SCORE_MIN)))
         steps = r.get("steps", 0)
         print(f"{r['task_id']:<45} {score:>8.4f} {steps:>6}")
 
-    avg_score = sum(r.get("score", 0.0) for r in results) / max(len(results), 1)
+    avg_score = clamp_score(
+        sum(clamp_score(float(r.get("score", _SCORE_MIN))) for r in results)
+        / max(len(results), 1)
+    )
     print("-" * 60)
     print(f"{'Average Score':<45} {avg_score:>8.4f}")
     print(f"Total Time: {elapsed:.1f}s")

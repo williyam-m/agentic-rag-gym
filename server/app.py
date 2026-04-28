@@ -30,7 +30,7 @@ from rag_master.logging_config import get_logger, setup_logging
 from rag_master.models import AgentRole
 from rag_master.orchestrator import Orchestrator
 from rag_master.retriever import FAISSRetriever
-from rag_master.rewards import CompositeRewardFunction
+from rag_master.rewards import CompositeRewardFunction, clamp_score
 
 from domains.aerospace.config import AerospaceDomainConfig
 from domains.legal_research.config import LegalResearchDomainConfig
@@ -250,6 +250,14 @@ async def step(action: Action) -> Dict[str, Any]:
     try:
         async with _lock:
             result = await orchestrator.step(action_dict)
+        # Defense-in-depth: ensure reward fields are strictly within [0.01, 0.99].
+        if "reward" in result:
+            result["reward"] = clamp_score(float(result["reward"]))
+        info = result.get("info") or {}
+        if "step_reward" in info and info["step_reward"] is not None:
+            info["step_reward"] = clamp_score(float(info["step_reward"]))
+        if "episode_reward" in info and info["episode_reward"] is not None:
+            info["episode_reward"] = clamp_score(float(info["episode_reward"]))
         return result
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -290,7 +298,7 @@ async def grade(request: GradeRequest = GradeRequest()) -> Dict[str, Any]:
         state_data = orchestrator.state()
         return GradeResult(
             task_id=state_data.get("task_id", ""),
-            score=score,
+            score=clamp_score(float(score)),
             episode_id=state_data.get("episode_id", ""),
         ).model_dump()
     except Exception as exc:

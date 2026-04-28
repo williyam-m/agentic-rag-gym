@@ -18,7 +18,7 @@ from rag_master.models import (
     Trajectory,
 )
 from rag_master.orchestrator import Orchestrator
-from rag_master.rewards import clamp_score
+from rag_master.rewards import _SCORE_MAX, _SCORE_MIN, clamp_score
 
 import server.app as server_app_module
 from server.app import app
@@ -170,6 +170,7 @@ class TestStepEndpoint:
         data = resp.json()
         assert "observation" in data
         assert "reward" in data
+        assert _SCORE_MIN <= data["reward"] <= _SCORE_MAX
 
     @pytest.mark.asyncio
     async def test_step_after_reset(self, client: AsyncClient) -> None:
@@ -200,7 +201,7 @@ class TestGradeEndpoint:
         assert resp.status_code == 200
         data = resp.json()
         assert "score" in data
-        assert 0.0 <= data["score"] <= 1.0
+        assert _SCORE_MIN <= data["score"] <= _SCORE_MAX
 
 
 class TestServerModels:
