@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 
 from domains.aerospace.graders import GRADER_REGISTRY
 from rag_master.models import EpisodeState, StepRecord, Trajectory
-from rag_master.rewards import _SCORE_MIN
+from rag_master.rewards import _SCORE_MIN, clamp_score
 
 
 def _make_dummy_state(task_id: str, answer: str) -> EpisodeState:
@@ -67,10 +67,13 @@ def _make_dummy_trajectory(task_id: str) -> Trajectory:
 
 
 def grade_answer_sync(task_id: str, answer: str) -> float:
-    """Grade a single answer using the domain grader (synchronous)."""
+    """Grade a single answer using the domain grader (synchronous).
+
+    Returned scores are strictly clamped within [0.01, 0.99].
+    """
     grader_cls = GRADER_REGISTRY.get(task_id)
     if grader_cls is None:
-        return float(_SCORE_MIN)
+        return clamp_score(_SCORE_MIN)
     grader = grader_cls()
     state = _make_dummy_state(task_id, answer)
     trajectory = _make_dummy_trajectory(task_id)
@@ -83,5 +86,7 @@ def grade_answer_sync(task_id: str, answer: str) -> float:
     if loop and loop.is_running():
         import concurrent.futures
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            return pool.submit(asyncio.run, grader.grade(state, trajectory)).result()
-    return asyncio.run(grader.grade(state, trajectory))
+            score = pool.submit(asyncio.run, grader.grade(state, trajectory)).result()
+    else:
+        score = asyncio.run(grader.grade(state, trajectory))
+    return clamp_score(score)

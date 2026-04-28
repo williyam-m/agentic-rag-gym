@@ -204,13 +204,13 @@ class Orchestrator:
 
         return {
             "observation": self._build_observation(),
-            "reward": step_reward if not done else episode_reward,
+            "reward": clamp_score(step_reward if not done else episode_reward),
             "done": done,
             "info": {
                 "step": self._state.current_step,
                 "action_type": action_type,
-                "step_reward": step_reward,
-                "episode_reward": episode_reward if done else None,
+                "step_reward": clamp_score(step_reward),
+                "episode_reward": clamp_score(episode_reward) if done else None,
             },
         }
 
@@ -238,7 +238,7 @@ class Orchestrator:
     async def grade(self, task_id: Optional[str] = None) -> float:
         """Grade the current episode using the domain grader."""
         if self._state is None or self._trajectory is None:
-            return 0.01
+            return clamp_score(0.01)
         tid = task_id or self._state.task.task_id
         grader = self._domain.get_grader(tid)
         score = await grader.grade(self._state, self._trajectory)

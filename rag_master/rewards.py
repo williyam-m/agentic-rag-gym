@@ -87,7 +87,7 @@ class CompositeRewardFunction(BaseRewardFunction):
     ) -> float:
         """Compute final episode reward with anti-hacking checks."""
         if not trajectory.steps:
-            return _SCORE_MIN
+            return clamp_score(_SCORE_MIN)
 
         # Aggregate step rewards
         step_rewards = [s.intermediate_reward for s in trajectory.steps]
@@ -122,15 +122,15 @@ class CompositeRewardFunction(BaseRewardFunction):
     def _retrieval_step_reward(self, state: EpisodeState, step: StepRecord) -> float:
         """Reward for retrieval quality based on retrieved document scores."""
         if not state.retrieved_docs:
-            return 0.1
+            return clamp_score(0.1)
         avg_score = sum(r.score for r in state.retrieved_docs) / len(state.retrieved_docs)
-        return avg_score * 0.8
+        return clamp_score(avg_score * 0.8)
 
     def _reasoning_step_reward(self, state: EpisodeState, step: StepRecord) -> float:
         """Reward for reasoning quality based on trace analysis."""
         trace = step.reasoning_trace
         if not trace:
-            return 0.1
+            return clamp_score(0.1)
         # Process supervision signals
         score = 0.3
         if len(trace) > 50:
@@ -139,13 +139,13 @@ class CompositeRewardFunction(BaseRewardFunction):
             score += 0.2
         if any(kw in trace.lower() for kw in ["however", "but", "alternatively", "caveat"]):
             score += 0.1
-        return min(score, 0.9)
+        return clamp_score(score)
 
     def _answer_step_reward(self, state: EpisodeState, step: StepRecord) -> float:
         """Reward for answer quality."""
         answer = state.generated_answer
         if not answer:
-            return 0.05
+            return clamp_score(0.05)
         score = 0.3
         if len(answer) > 100:
             score += 0.15
@@ -161,13 +161,13 @@ class CompositeRewardFunction(BaseRewardFunction):
             answer_terms = set(w for w in answer.lower().split() if w not in stopwords and len(w) > 3)
             overlap = len(ref_terms & answer_terms) / max(len(ref_terms), 1)
             score += overlap * 0.3
-        return min(score, 0.9)
+        return clamp_score(score)
 
     def _evaluate_answer_quality(self, state: EpisodeState) -> float:
         """Evaluate final answer quality against task criteria."""
         answer = state.generated_answer
         if not answer:
-            return 0.05
+            return clamp_score(0.05)
 
         score = 0.3
         # Length heuristic
@@ -183,15 +183,15 @@ class CompositeRewardFunction(BaseRewardFunction):
             if criterion.lower() in answer.lower():
                 score += weight * 0.3
 
-        return min(score, 0.95)
+        return clamp_score(score)
 
     def _evaluate_retrieval_coverage(self, state: EpisodeState) -> float:
         """Evaluate how well retrieved docs cover the task."""
         if not state.retrieved_docs:
-            return 0.1
+            return clamp_score(0.1)
         avg_relevance = sum(r.score for r in state.retrieved_docs) / len(state.retrieved_docs)
         coverage = min(len(state.retrieved_docs) / 3.0, 1.0)
-        return avg_relevance * 0.6 + coverage * 0.4
+        return clamp_score(avg_relevance * 0.6 + coverage * 0.4)
 
     def _detect_repetition(self, state: EpisodeState, step: StepRecord) -> float:
         """Detect and penalize repetitive actions (queries and action types)."""
@@ -279,7 +279,7 @@ class LLMJudgeRewardFunction(BaseRewardFunction):
             score = float(response.strip())
             return clamp_score(score)
         except (ValueError, Exception):
-            return 0.5
+            return clamp_score(0.5)
 
     async def compute_episode_reward(
         self,
@@ -308,4 +308,4 @@ class LLMJudgeRewardFunction(BaseRewardFunction):
             score = float(response.strip())
             return clamp_score(score)
         except (ValueError, Exception):
-            return 0.5
+            return clamp_score(0.5)

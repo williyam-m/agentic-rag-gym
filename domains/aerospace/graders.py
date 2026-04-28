@@ -93,7 +93,7 @@ class KeywordCoverageGrader(BaseGrader):
     def _evaluate_process(self, trajectory: Trajectory) -> float:
         """Evaluate quality of the reasoning process."""
         if not trajectory.steps:
-            return 0.1
+            return clamp_score(0.1)
 
         action_types = [s.action_type for s in trajectory.steps]
         score = 0.2
@@ -122,7 +122,7 @@ class KeywordCoverageGrader(BaseGrader):
         if len(trajectory.steps) > 15:
             score -= 0.1
 
-        return min(max(score, 0.0), 0.95)
+        return clamp_score(score)
 
 
 class PropulsionComparisonGrader(KeywordCoverageGrader):
