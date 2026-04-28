@@ -158,7 +158,7 @@ class TestFullEpisodeIntegration:
         resp = await client.post("/grade", json={})
         assert resp.status_code == 200
         grade = resp.json()
-        assert 0.0 <= grade["score"] <= 1.0
+        assert 0.01 <= grade["score"] <= 0.99
 
     @pytest.mark.asyncio
     async def test_reset_clears_previous_episode(self, client: AsyncClient) -> None:

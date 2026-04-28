@@ -78,7 +78,7 @@ class Trajectory(BaseModel):
     task_id: str
     steps: List[StepRecord] = Field(default_factory=list)
     total_reward: float = 0.0
-    final_score: float = 0.0
+    final_score: float = Field(default=0.01, ge=0.01, le=0.99)
     completed: bool = False
     metadata: Dict[str, Any] = Field(default_factory=dict)
 

@@ -152,7 +152,7 @@ class TestOrchestrator:
         assert "observation" in result
         assert "reward" in result
         assert "done" in result
-        assert 0.0 <= result["reward"] <= 1.0
+        assert 0.01 <= result["reward"] <= 0.99
 
     @pytest.mark.asyncio
     async def test_step_reason(self, orchestrator: Orchestrator) -> None:
@@ -197,7 +197,7 @@ class TestOrchestrator:
         # Now episode is done, further steps should return done=True with 0 reward
         result = await orchestrator.step({"type": "retrieve"})
         assert result["done"] is True
-        assert result["reward"] == 0.0
+        assert result["reward"] == 0.01
 
     @pytest.mark.asyncio
     async def test_state_before_reset(self, orchestrator: Orchestrator) -> None:

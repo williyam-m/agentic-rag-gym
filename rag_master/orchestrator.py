@@ -137,7 +137,7 @@ class Orchestrator:
         if self._state.done:
             return {
                 "observation": self._build_observation(),
-                "reward": 0.0,
+                "reward": clamp_score(0.01),
                 "done": True,
                 "info": {"message": "Episode already completed."},
             }
@@ -280,10 +280,10 @@ class Orchestrator:
             ],
             "query_history": self._state.query_history[-5:],
             "current_answer": self._state.generated_answer[:1000],
-            "last_reward": (
+            "last_reward": clamp_score(
                 self._state.intermediate_rewards[-1]
                 if self._state.intermediate_rewards
-                else 0.0
+                else 0.01
             ),
             "done": self._state.done,
         }

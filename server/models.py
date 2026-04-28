@@ -60,14 +60,14 @@ class Observation(BaseModel):
         default_factory=list, description="Recent query history."
     )
     current_answer: str = Field(default="", description="Current answer draft.")
-    last_reward: float = Field(default=0.0, description="Reward from last step.")
+    last_reward: float = Field(default=0.01, ge=0.01, le=0.99, description="Reward from last step (strictly within [0.01, 0.99]).")
     done: bool = Field(default=False, description="Whether the episode has ended.")
 
 
 class Reward(BaseModel):
     """Reward signal from the environment."""
 
-    value: float = Field(ge=0.0, le=1.0, description="Reward value.")
+    value: float = Field(ge=0.01, le=0.99, description="Reward value (strictly within [0.01, 0.99]).")
     breakdown: Dict[str, float] = Field(
         default_factory=dict, description="Reward component breakdown."
     )
@@ -77,7 +77,7 @@ class StepResult(BaseModel):
     """Result of a single environment step."""
 
     observation: Observation
-    reward: float = Field(ge=0.0, le=1.0)
+    reward: float = Field(ge=0.01, le=0.99)
     done: bool = Field(default=False)
     info: Dict[str, Any] = Field(default_factory=dict)
 
@@ -121,7 +121,7 @@ class GradeResult(BaseModel):
     """Grading result for a task."""
 
     task_id: str
-    score: float = Field(ge=0.0, le=1.0)
+    score: float = Field(ge=0.01, le=0.99)
     episode_id: str = Field(default="")
 
 
