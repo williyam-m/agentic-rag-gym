@@ -34,13 +34,11 @@ pinned: true
 | **GitHub Repo** | [williyam-m/agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
 | **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) — see demo below |
 
-> **We didn't just build another RAG pipeline — we redesigned the foundation of how agentic RAG systems learn, decide, and improve.**
+**Agentic RAG Gym** is an open-source reinforcement learning framework that empowers the entire RAG technology stack — retrieval, reasoning, critique, verification, and synthesis — with RL-driven process supervision. We designed a new orchestrator from scratch, **RAG Master**, where autonomous agents don't just retrieve and generate; they *learn to research like domain experts* through multi-agent collaboration, per-step reward signals from real domain graders, and adversarial self-improvement.
 
-**Agentic RAG Gym** is an open-source reinforcement learning framework that fundamentally transforms Retrieval-Augmented Generation. We designed a new orchestrator from scratch — a **RAG Master** engine where autonomous agents don't just retrieve and generate, they *learn to research like experts* through RL-driven process supervision, multi-agent collaboration, and adversarial self-improvement.
+The framework is **domain-agnostic by design**: plug in any knowledge domain through the adapter pattern, define tasks, build deterministic graders, and the RL training loop handles everything else — embedding, FAISS indexing, composite reward computation, anti-reward-hacking, and policy optimization via GRPO.
 
-This is not an incremental improvement. This is a **new revolution for agentic RAG**: an RL gym that teaches the system to make better decisions at every step — which documents to retrieve, how to reason over them, when to critique its own work, and how to synthesize expert-level answers. Built as a **domain-agnostic framework**, it extends to any knowledge domain. We used reinforcement learning to improve the entire agentic RAG foundation — from retrieval strategies to reasoning quality to answer completeness.
-
-The first two domains? **Aerospace Research** and **Legal Research** — because if your agent can design a hypersonic vehicle by cross-referencing scramjet propulsion with UHTC materials, or navigate a cross-border IP dispute across three jurisdictions, it can handle anything.
+The first two domains? **Aerospace Research** (scramjet propulsion, UHTC thermal protection, Mars EDL architecture) and **Legal Research** (cross-border IP disputes, GDPR/CCPA compliance, ICC arbitration) — because if your agent can design a hypersonic vehicle or navigate a multi-jurisdictional patent dispute, it can handle anything.
 
 ---
 
@@ -105,7 +103,7 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 - **Process Supervision** — Per-step rewards for retrieval quality, reasoning depth, and answer completeness
 - **Anti-Reward-Hacking** — Repetition detection, degenerate output penalties, keyword stuffing guards, copy-paste detection
 - **GRPO Fine-Tuning** — Real domain graders as reward signal, LoRA adapters, published on HF Hub
-- **OpenAI-Compatible** — Works with any OpenAI-compatible API: Ollama, vLLM, OpenAI, Groq, HuggingFace Inference, and more
+- **OpenAI-Compatible** — Works with any OpenAI-compatible API: Ollama, vLLM, OpenAI, HuggingFace Inference, and more
 - **[Live HF Space](https://huggingface.co/spaces/williyam/agentic-rag-gym)** — Interactive demo with domain switching and real-time feedback
 
 ---
@@ -115,7 +113,7 @@ Traditional RAG systems are static pipelines: retrieve → generate → done. Th
 ### Prerequisites
 
 - Python 3.10+
-- Any OpenAI-compatible LLM endpoint (Ollama, OpenAI, Groq, HF Inference, vLLM, etc.)
+- Any OpenAI-compatible LLM endpoint (Ollama, OpenAI, HF Inference, vLLM, etc.)
 
 ### Install & Run
 
@@ -155,7 +153,6 @@ All configuration is via environment variables (`.env` file):
 | `API_BASE_URL` | `http://localhost:11434/v1` | Any OpenAI-compatible LLM endpoint |
 | `MODEL_NAME` | `qwen2.5:7b` | Model identifier |
 | `HF_TOKEN` | — | HuggingFace token |
-| `GROQ_API_KEY` | — | GROQ API key |
 | `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Embedding model |
 | `FAISS_INDEX_DIR` | `./data/faiss_indices` | FAISS storage path |
 | `SERVER_PORT` | `7860` | Server port |

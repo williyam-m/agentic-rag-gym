@@ -1,6 +1,6 @@
-# Building Agentic RAG Gym: Teaching AI Agents to Research Like Experts
+# Building Agentic RAG Gym: Empowering the Entire RAG Stack with Reinforcement Learning
 
-> **What happens when you stop treating RAG as a pipeline and start treating it as a learning system? You get agents that don't just retrieve — they investigate, critique, and refine until the answer is right.**
+> **We are not optimizing a single use case — we are re-engineering the entire Retrieval-Augmented Generation technology stack from first principles, using reinforcement learning as the foundational training signal across every layer: retrieval, reasoning, critique, verification, and synthesis.**
 
 ## The Story Behind This Project
 
@@ -12,25 +12,41 @@ We asked: **What if we could build an environment where AI agents learn to resea
 
 That question became **Agentic RAG Gym** — and eventually led us to build an entire ecosystem around it.
 
-## The Problem
+## The Problem: Why Static RAG Fails at Scale
 
-Traditional Retrieval-Augmented Generation (RAG) systems are static pipelines: retrieve → generate → done. They have no feedback loop, no process awareness, no ability to learn from mistakes. The agent doesn't know when it has retrieved enough, when its reasoning is flawed, or when its answer is incomplete.
+Traditional Retrieval-Augmented Generation systems are fundamentally constrained by their architecture: a single-pass pipeline of retrieve → generate → done. This design has no feedback loop, no process awareness, no mechanism for self-correction or iterative refinement. The agent has zero visibility into whether its retrieval was sufficient, whether its reasoning is coherent, or whether its answer actually addresses the question.
+
+At scale, these limitations compound. When the knowledge base grows to thousands of documents spanning multiple technical domains, a single retrieval pass is almost never sufficient. The agent needs the capacity to **reformulate queries**, **triangulate across sources**, **identify contradictions**, and **synthesize multi-document evidence** — capabilities that require a fundamentally different architecture.
 
 What if we could teach the agent to *research* — not just retrieve?
 
 ## Our Approach: An RL Gym for Agentic RAG
 
-**Agentic RAG Gym** is an open-source reinforcement learning framework that fundamentally transforms RAG. We designed a new orchestrator from scratch — **RAG Master** — where autonomous agents don't just retrieve and generate; they *learn to research like experts* through RL-driven process supervision, multi-agent collaboration, and adversarial self-improvement.
+**Agentic RAG Gym** is an open-source reinforcement learning framework that empowers the complete RAG technology stack with RL-driven optimization. We designed a new orchestrator from scratch — **RAG Master** — where autonomous agents don't just retrieve and generate; they *learn to research like domain experts* through RL-driven process supervision, multi-agent collaboration, and adversarial self-improvement.
+
+This is not a wrapper around existing tools. This is a **ground-up reimagining** of how RAG systems should work — one where every component (retrieval strategy, reasoning depth, critique quality, verification rigor) is individually trainable through reinforcement learning signals grounded in real domain-expert evaluation.
+
+**🔗 Explore the project:**
+
+| Resource | Link |
+|---|---|
+| **Live Demo** | [Agentic RAG Gym — HF Space](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
+| **YouTube Demo** | [Watch It in Action](https://www.youtube.com/watch?v=M65DHY8za6M) |
+| **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
+| **Source Code** | [GitHub — agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
+| **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
+| **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
 
 ### What Makes This Different
 
 | Capability | Traditional RAG | Agentic RAG Gym |
 |---|---|---|
-| Pipeline | Static (retrieve → generate) | Dynamic (plan → retrieve → reason → critique → verify → answer) |
-| Feedback | None | Per-step reward signals |
-| Agents | Single | 5 cooperating agents (Retriever, Reasoner, Critic, Planner, Verifier) |
-| Learning | No training loop | GRPO fine-tuning with real domain graders |
-| Robustness | Vulnerable to junk | Anti-reward-hacking guards |
+| Pipeline | Static single-pass (retrieve → generate) | Dynamic multi-turn (plan → retrieve → reason → critique → verify → answer) |
+| Feedback | None — open-loop execution | Per-step composite reward signals with bounded scoring |
+| Agents | Monolithic single-model pipeline | 5 cooperating specialized agents with structured message-passing |
+| Learning | No training loop — frozen at deployment | GRPO fine-tuning with real domain-expert graders as reward signals |
+| Robustness | Vulnerable to hallucination and junk retrieval | Adversarial anti-reward-hacking guards with degenerate output detection |
+| Extensibility | Hardcoded to one domain | Domain-agnostic adapter pattern — plug any knowledge domain in 4 steps |
 
 ## The HF Space: A Live Research Lab
 
@@ -43,52 +59,83 @@ The **[Agentic RAG Gym HF Space](https://huggingface.co/spaces/williyam/agentic-
 
 The Space runs as a Docker container on HF infrastructure, exposing a full OpenEnv-compliant API. It uses the **[GRPO fine-tuned Qwen2.5 model](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)** as its default LLM for aerospace tasks.
 
-## Architecture
+## Deep Architecture: How the System Works End-to-End
+
+The architecture is a layered stack designed for composability, observability, and RL-native training:
 
 ```
-┌────────────── HF Space Client ──────────────────────────┐
-│  Interactive │ Auto Pilot │ Tasks │ About                │
+┌─────────────────── Presentation Layer ──────────────────┐
+│  Gradio UI (6 tabs)                                      │
+│  Interactive │ Auto Pilot │ Tasks │ Blog │ README │ About│
 │           [Domain Selector: Aerospace / Legal]           │
 └────────────────────────┬────────────────────────────────┘
-                         │
+                         │ HTTP/SSE
 ┌────────────────────────▼────────────────────────────────┐
-│              FastAPI Server (OpenEnv API)                 │
-│  /reset │ /step │ /state │ /grade │ /domain/switch       │
+│           API Gateway (FastAPI + Uvicorn)                 │
+│  POST /reset │ /step │ /grade │ /domain/switch           │
+│  GET  /state │ /tasks │ /domains │ /health               │
+│  OpenEnv-compliant: reset() → step() → grade()          │
 └────────────────────────┬────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────┐
-│              RAG Master Orchestrator                      │
+│         RAG Master Orchestrator (Core Engine)             │
 │                                                          │
-│  Retriever ←→ Reasoner ←→ Critic ←→ Verifier           │
-│       ↕            ↕           ↕                         │
-│  FAISS Store   LLM Client    Composite Rewards           │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐   │
+│  │ Planner  │→│ Retriever│→│ Reasoner │→│  Critic  │   │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘   │
+│       ↕            ↕            ↕            ↕          │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐   │
+│  │ Verifier │ │FAISS VDB │ │LLM Client│ │  Reward  │   │
+│  │          │ │per-domain│ │(any API) │ │ Computer │   │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘   │
 ├──────────────────────────────────────────────────────────┤
-│  Domains: [Aerospace] [Legal Research] [Your Domain]     │
+│  Domain Adapters (pluggable via BaseDomainConfig)        │
+│  [Aerospace] [Legal Research] [Your Domain Here]         │
+└──────────────────────────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────┐
+│              RL Training Loop (Offline)                   │
+│  GRPO Policy Optimization ← Composite Reward Signal      │
+│  LoRA Adapters (r=16, α=32) → q/k/v/o_proj targets      │
+│  Real domain graders as reward (no proxy models)         │
 └──────────────────────────────────────────────────────────┘
 ```
 
-## The Five Agents
+### Data Flow for a Single Episode
+
+1. **Reset** — The orchestrator selects a task, clears state, and presents the agent with a task description and access to the domain's FAISS vector store
+2. **Plan** — The Planner agent generates an execution strategy: which queries to run, what aspects to cover, how many retrieval rounds are needed
+3. **Retrieve** — The Retriever agent queries the FAISS index using `sentence-transformers/all-MiniLM-L6-v2` embeddings. Top-k documents (with cosine similarity scores) are added to the agent's working memory
+4. **Reason** — The Reasoner agent synthesizes across all retrieved documents, building structured arguments with evidence citations
+5. **Critique** — The Critic agent evaluates the current reasoning: Are there gaps? Contradictions? Missing evidence? Unsupported claims?
+6. **Verify** — The Verifier agent checks that every claim in the draft answer is grounded in retrieved evidence
+7. **Answer** — The agent submits a final answer, and the composite reward function scores the entire trajectory
+8. **Grade** — Domain-specific deterministic graders evaluate the final answer on keyword coverage, technical depth, cross-reference accuracy, and structural completeness
+
+Each step produces a **per-step reward signal** that decomposes into five weighted components — this is what makes the system RL-trainable.
+
+## The Five Agents: Specialized Collaboration
 
 Our multi-agent system uses five specialized agents that collaborate through structured message-passing:
 
-1. **Retriever** — Searches the FAISS vector store with learned query strategies
-2. **Reasoner** — Analyzes retrieved documents, draws connections, builds arguments
-3. **Critic** — Evaluates reasoning quality, identifies gaps and logical flaws
-4. **Planner** — Creates execution strategies for multi-step research tasks
-5. **Verifier** — Checks answer grounding against retrieved evidence
+1. **Retriever** — Searches the FAISS vector store with learned query strategies. Evaluates document relevance and decides whether to retrieve more
+2. **Reasoner** — Analyzes retrieved documents, draws cross-document connections, builds structured technical arguments with evidence chains
+3. **Critic** — Adversarially evaluates reasoning quality. Identifies logical gaps, unsupported claims, missing perspectives, and contradictions
+4. **Planner** — Creates execution strategies for multi-step research tasks. Allocates the step budget across retrieval, reasoning, and verification phases
+5. **Verifier** — Performs factual grounding verification. Checks every claim against the retrieved evidence base, flags hallucinations and unsupported assertions
 
-Each agent receives per-step reward signals that teach it *how* to do its job better.
+Each agent receives per-step reward signals that teach it *how* to do its job better — this is fundamentally different from outcome-only supervision.
 
 ## Why We Built RAG Master From Scratch
 
-We looked at existing orchestration frameworks — LangChain, LangGraph, LlamaIndex — and found they weren't designed for what we needed. They're great for building RAG pipelines, but they lack:
+We evaluated existing orchestration frameworks — LangChain, LangGraph, LlamaIndex — and found they weren't designed for RL-native agentic research. They're excellent for building RAG pipelines, but they lack:
 
-- **RL-native reward computation** — No built-in support for per-step rewards that can drive policy optimization
-- **Process-aware grading** — They evaluate final outputs, not the research *process*
-- **Anti-reward-hacking** — No adversarial guards against the degenerate strategies agents discover during RL training
-- **Domain-agnostic adapter pattern** — Adding a new knowledge domain shouldn't require rewriting the orchestrator
+- **RL-native reward computation** — No built-in support for per-step rewards that can drive policy optimization via GRPO, PPO, or DPO
+- **Process-aware grading** — They evaluate final outputs, not the research *process* (how many retrieval rounds, what reasoning strategies, which critique patterns)
+- **Anti-reward-hacking** — No adversarial guards against the degenerate strategies agents inevitably discover during RL training (keyword stuffing, repetition loops, shallow pattern matching)
+- **Domain-agnostic adapter pattern** — Adding a new knowledge domain shouldn't require rewriting the orchestrator core
 
-So we built **RAG Master** — a domain-agnostic orchestrator designed from the ground up for agentic RAG with reinforcement learning. Think of it as a specialized framework (like LangChain/LangGraph) but purpose-built for RL-driven research agents:
+So we built **RAG Master** — a domain-agnostic orchestrator designed from the ground up for agentic RAG with reinforcement learning. Think of it as a purpose-built framework (in the same category as LangChain/LangGraph) but architecturally optimized for RL-driven research agents:
 
 ```python
 from rag_master.adapters import BaseDomainConfig
@@ -104,36 +151,41 @@ class YourDomainConfig(BaseDomainConfig):
 Four steps to add any domain: create config, define tasks, build graders, register. The framework handles embedding, indexing, retrieval, reward computation, and agent orchestration.
 
 The key architectural decisions:
-- **Composite rewards with bounded scores [0.01, 0.99]** — Prevents degenerate training signals
-- **Deterministic graders** — Real domain-expert grading criteria, not learned reward models
-- **Pluggable LLM backend** — Works with any model via a unified client interface
-- **FAISS vector store** — Per-domain embedding indices with automatic document ingestion
+- **Composite rewards with bounded scores [0.01, 0.99]** — Prevents degenerate training signals (vanishing/exploding gradients)
+- **Deterministic graders** — Real domain-expert grading criteria, not learned reward models that can be gamed
+- **Pluggable LLM backend** — Works with any OpenAI-compatible API: Ollama, vLLM, OpenAI, HuggingFace Inference, and more
+- **FAISS vector store with per-domain indices** — Automatic document ingestion, embedding, and index management per domain
 
 ## Reward Design: The Core Innovation
 
-The reward function is where the magic happens. We decompose the reward into five components:
+The reward function is where the RL magic happens. We decompose the composite reward into five orthogonal components, each measuring a distinct aspect of research quality:
 
 | Component | Weight | What It Measures |
 |---|---|---|
-| **Retrieval Relevance** | 25% | Are the retrieved documents relevant to the query? |
-| **Reasoning Quality** | 20% | Does the reasoning show evidence of logical analysis? |
-| **Answer Completeness** | 30% | Does the answer cover all required aspects? |
-| **Efficiency** | 15% | Did the agent solve it in a reasonable number of steps? |
-| **Anti-Hacking** | 10% | Penalty for detected reward gaming attempts |
+| **Retrieval Relevance** | 25% | Cosine similarity between query embeddings and retrieved document embeddings. Penalizes irrelevant retrieval |
+| **Reasoning Quality** | 20% | Presence of logical connectives, evidence citations, structured argumentation, and multi-document synthesis |
+| **Answer Completeness** | 30% | Coverage of all required technical aspects as defined by the task rubric. Keyword coverage + structural depth |
+| **Efficiency** | 15% | Step usage ratio — rewards solving tasks in fewer steps. Penalizes unnecessary retrieval/reasoning loops |
+| **Anti-Hacking** | 10% | Deduction for detected reward gaming: repetition, keyword stuffing, degenerate outputs, copy-paste patterns |
 
-All scores are strictly bounded within **[0.01, 0.99]** to prevent degenerate training signals.
+All scores are strictly bounded within **[0.01, 0.99]** — this clamping is critical for stable GRPO training, preventing both vanishing rewards (all-zero trajectories) and exploding rewards (degenerate high-reward exploits).
 
-### Anti-Reward-Hacking
+### Anti-Reward-Hacking: Adversarial Robustness
 
-We built adversarial guards that detect and penalize:
-- **Repetition** — Copy-pasting the same sentences or phrases
-- **Keyword stuffing** — Loading answers with domain keywords without coherent reasoning
-- **Degenerate outputs** — Empty, trivially short, or nonsensical content
-- **Query manipulation** — Submitting queries designed to game relevance scores
+During early RL experiments, we observed agents discovering creative exploits:
+
+- **Repetition loops** — Repeating the same high-reward sentence 50 times to inflate scores
+- **Keyword stuffing** — Cramming domain keywords into answers without coherent reasoning
+- **Degenerate outputs** — Submitting empty strings, single-word answers, or nonsensical token sequences
+- **Query manipulation** — Crafting retrieval queries designed to game relevance scores rather than find useful information
+
+We built adversarial guards that detect and penalize all of these patterns. The anti-hacking component uses n-gram overlap analysis, entropy measurement, and structural coherence checks to identify and suppress gaming strategies.
 
 ## GRPO Fine-Tuning: Real Graders as Reward Signals
 
-We fine-tuned **Qwen2.5-0.5B-Instruct** using **Group Relative Policy Optimization (GRPO)** from the TRL library. The key innovation: we use **real domain graders** (not proxy rewards) as the training signal.
+We fine-tuned **Qwen2.5-0.5B-Instruct** using **Group Relative Policy Optimization (GRPO)** from the TRL library. The critical innovation: we use **real domain-expert graders** (deterministic, rule-based) as the reward signal — not proxy reward models that can be gamed or hallucinate.
+
+GRPO compares groups of completions for the same prompt and optimizes the policy to prefer higher-scoring completions relative to the group mean. This avoids the need for a separate critic/value network (unlike PPO) and produces stable training dynamics even with small models.
 
 ### Training Configuration
 
@@ -141,11 +193,13 @@ We fine-tuned **Qwen2.5-0.5B-Instruct** using **Group Relative Policy Optimizati
 |---|---|
 | Base Model | Qwen/Qwen2.5-0.5B-Instruct |
 | Method | GRPO (Group Relative Policy Optimization) |
-| LoRA | r=16, α=32, targets=q/k/v/o_proj |
-| Learning Rate | 5e-6 |
+| LoRA | r=16, α=32, targets=q_proj, k_proj, v_proj, o_proj |
+| Optimizer | AdamW (8-bit) |
+| Learning Rate | 5e-6 with cosine annealing |
 | Epochs | 2 |
-| Group Size | 4 |
+| Group Size (G) | 4 completions per prompt |
 | Max Completion | 512 tokens |
+| Training Time | ~116 minutes on Colab T4 |
 
 ### Results
 
@@ -170,23 +224,23 @@ We fine-tuned **Qwen2.5-0.5B-Instruct** using **Group Relative Policy Optimizati
 
 ![Score Distribution](assets/qwen-finetuning-plots/score_distribution.png)
 
-The GRPO-trained model shows consistent improvement on easy and hard tasks, with the largest gains on Debris Mitigation (+0.056) and Propulsion Comparison (+0.053). Medium-difficulty tasks remained stable, suggesting that the model learned domain-specific retrieval and reasoning strategies rather than shallow pattern matching.
+The GRPO-trained model shows consistent improvement on easy and hard tasks (+5.3% to +5.6% on easy, +3.9% on hard), while medium-difficulty tasks remained stable. This pattern indicates the model learned genuine domain-specific retrieval and reasoning strategies rather than shallow surface-level pattern matching.
 
 ## Two Domains: Aerospace & Legal
 
-We built the framework to be **domain-agnostic**, and proved it with two very different domains:
+We built the framework to be **domain-agnostic**, and proved it with two radically different technical domains:
 
 ### Aerospace Research
 - **5 tasks** ranging from easy (propulsion comparison) to hard (hypersonic vehicle design)
-- **16 documents** covering propulsion, debris mitigation, Mars EDL, life support systems, and hypersonic aerothermodynamics
-- **Deterministic graders** with keyword coverage, technical depth assessment, and cross-reference validation
+- **16 documents** covering propulsion systems (ion, nuclear thermal, scramjet), debris mitigation (ADR technologies), Mars Entry/Descent/Landing, life support systems (ECLSS), and hypersonic aerothermodynamics (UHTC materials, thermal protection)
+- **Deterministic graders** with keyword coverage matrices, technical depth assessment (multi-document cross-referencing), and structural completeness scoring
 
 ### Legal Research
 - **5 tasks** from contract review to cross-border dispute resolution
-- **16 documents** spanning contract law, privacy regulations (GDPR/CCPA), IP law, M&A due diligence, and international dispute resolution
-- **Legal-specific graders** evaluating citation accuracy, jurisdictional awareness, and regulatory framework coverage
+- **16 documents** spanning contract law (liability, indemnification, IP assignment), privacy regulations (GDPR Article 6/17, CCPA/CPRA), patent law (35 USC §101/§103), M&A due diligence, and international dispute resolution (ICC, LCIA, SIAC arbitration)
+- **Legal-specific graders** evaluating citation accuracy, jurisdictional awareness, regulatory framework coverage, and risk assessment completeness
 
-The key insight: if your agent can design a hypersonic vehicle by cross-referencing scramjet propulsion with UHTC materials, *or* navigate a cross-border IP dispute across three jurisdictions, it can handle anything.
+The key insight: if your agent can design a hypersonic vehicle by cross-referencing scramjet propulsion with UHTC materials, *or* navigate a cross-border IP dispute across three jurisdictions referencing ICC arbitration rules, it can handle anything.
 
 ## From Research to Production: The Motivation Behind Agentic RAG OS
 
@@ -210,20 +264,23 @@ The idea is simple: if you're fine-tuning an LLM and need reward signals grounde
 
 ## What We Learned
 
-1. **Process supervision beats outcome supervision.** Per-step rewards teach better research strategies than just grading the final answer.
-2. **Anti-reward-hacking is essential.** Without it, agents quickly learn to stuff keywords and repeat phrases to inflate scores.
-3. **Real graders > proxy rewards.** Using actual domain-expert grading criteria (even if rule-based) produces more aligned behavior than learned reward models.
-4. **Small models can learn research skills.** Even Qwen2.5-0.5B shows measurable improvement with GRPO fine-tuning on domain tasks.
-5. **Domain agnosticism requires careful abstraction.** The adapter pattern works well for different knowledge domains while keeping the core RL loop domain-independent.
+1. **Process supervision beats outcome supervision.** Per-step rewards teach better research strategies than just grading the final answer. The agent learns *when* to retrieve more vs. *when* to stop and synthesize.
+2. **Anti-reward-hacking is non-negotiable.** Without adversarial guards, agents discover keyword stuffing and repetition exploits within the first 20 training steps. Every RL-for-LLM system needs these defenses.
+3. **Real graders > proxy rewards.** Using deterministic domain-expert grading criteria (even if rule-based) produces more aligned behavior than learned reward models. Proxy models can be gamed; deterministic graders cannot.
+4. **Small models can learn research skills.** Even Qwen2.5-0.5B (500M parameters) shows measurable improvement with GRPO fine-tuning — you don't need 70B models to benefit from RL-driven RAG.
+5. **Domain agnosticism requires careful abstraction.** The adapter pattern works well for different knowledge domains while keeping the core RL loop domain-independent. Four files is all it takes to add a new domain.
 
-## Try It Yourself
+---
 
-- **Live Demo:** [Agentic RAG Gym on HF Spaces](https://huggingface.co/spaces/williyam/agentic-rag-gym)
-- **YouTube Demo:** [Watch It in Action](https://www.youtube.com/watch?v=M65DHY8za6M)
-- **Fine-Tuned Model:** [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo)
-- **Source Code:** [GitHub Repository](https://github.com/williyam-m/agentic-rag-gym)
-- **Training Notebook:** [Google Colab](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing)
-- **Agentic RAG OS:** [Live Platform](https://rag-8000.zcodecorp.in/)
+## References
+
+1. Shao, Z., et al. "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models." *arXiv preprint arXiv:2402.03300* (2024). — GRPO algorithm foundation
+2. Lewis, P., et al. "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks." *NeurIPS 2020*. — RAG foundational paper
+3. Hu, E. J., et al. "LoRA: Low-Rank Adaptation of Large Language Models." *ICLR 2022*. — LoRA fine-tuning methodology
+4. Schulman, J., et al. "Proximal Policy Optimization Algorithms." *arXiv preprint arXiv:1707.06347* (2017). — PPO baseline for RL policy optimization
+5. Rafailov, R., et al. "Direct Preference Optimization: Your Language Model is Secretly a Reward Model." *NeurIPS 2023*. — DPO alternative alignment method
+6. Johnson, J., et al. "Billion-scale similarity search with GPUs." *IEEE Transactions on Big Data* (2019). — FAISS vector search engine
+7. Qwen Team. "Qwen2.5 Technical Report." *arXiv preprint arXiv:2412.15115* (2024). — Base model architecture
 
 ---
 

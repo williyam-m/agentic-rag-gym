@@ -42,7 +42,7 @@ Agentic RAG Gym is a **reinforcement learning environment** built on the OpenEnv
 ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐
 │  FAISS Vector │ │ OpenAI-compat │ │    MySQL      │
 │    Store      │ │   LLM API     │ │   Database    │
-│  (Retrieval)  │ │ (Ollama/GROQ) │ │ (Persistence) │
+│  (Retrieval)  │ │ (Ollama/HF/..) │ │ (Persistence) │
 └───────────────┘ └───────────────┘ └───────────────┘
 ```
 

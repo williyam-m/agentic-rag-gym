@@ -22,17 +22,22 @@ import httpx
 _PROJECT_ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent.parent))
 
 
-_RAW_GH = "https://raw.githubusercontent.com/williyam-m/agentic-rag-gym/main"
+_MEDIA_GH = "https://media.githubusercontent.com/media/williyam-m/agentic-rag-gym/main"
 
 
 def _resolve_images(text: str) -> str:
-    """Replace relative image paths with absolute GitHub raw URLs for Gradio."""
+    """Replace relative image paths with absolute GitHub media URLs for Gradio.
+
+    Uses media.githubusercontent.com instead of raw.githubusercontent.com
+    because the repo uses Git LFS for images — raw URLs return LFS pointers,
+    while media URLs serve the actual binary content.
+    """
     import re
     def _repl(m: re.Match) -> str:
         alt, path = m.group(1), m.group(2)
         if path.startswith(("http://", "https://")):
             return m.group(0)
-        return f"![{alt}]({_RAW_GH}/{path})"
+        return f"![{alt}]({_MEDIA_GH}/{path})"
     return re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _repl, text)
 
 
@@ -665,6 +670,7 @@ def build_ui() -> gr.Blocks:
                     | Resource | URL |
                     |---|---|
                     | **HF Space** | [Agentic RAG Gym](https://huggingface.co/spaces/williyam/agentic-rag-gym) |
+                    | **YouTube Demo** | [Watch the Demo](https://www.youtube.com/watch?v=M65DHY8za6M) |
                     | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
                     | **GitHub** | [agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
                     | **Training Notebook** | [Google Colab](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
