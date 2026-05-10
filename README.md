@@ -32,7 +32,6 @@ pinned: true
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
 | **YouTube Demo** | [Watch the Demo](https://www.youtube.com/watch?v=M65DHY8za6M) |
 | **GitHub Repo** | [williyam-m/agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
-| **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) — see demo below |
 
 **Agentic RAG Gym** is an open-source reinforcement learning framework that empowers the entire RAG technology stack — retrieval, reasoning, critique, verification, and synthesis — with RL-driven process supervision. We designed a new orchestrator from scratch, **RAG Master**, where autonomous agents don't just retrieve and generate; they *learn to research like domain experts* through multi-agent collaboration, per-step reward signals from real domain graders, and adversarial self-improvement.
 
@@ -454,6 +453,3 @@ agentic-rag-gym/
 └── main.py                  # Entry point
 ```
 
----
-
-*Built for the Meta × OpenEnv × Hugging Face × PyTorch Hackathon*

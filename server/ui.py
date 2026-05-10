@@ -680,7 +680,6 @@ def build_ui() -> gr.Blocks:
                     | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
                     | **GitHub** | [agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
                     | **Training Notebook** | [Google Colab](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
-                    | **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
 
                     </div>
                     """

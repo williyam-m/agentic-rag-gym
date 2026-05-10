@@ -35,7 +35,6 @@ This is not a wrapper around existing tools. This is a **ground-up reimagining**
 | **Fine-Tuned Model** | [Qwen2.5 GRPO LoRA Adapter](https://huggingface.co/williyam/agentic-rag-aerospace-grpo) |
 | **Source Code** | [GitHub — agentic-rag-gym](https://github.com/williyam-m/agentic-rag-gym) |
 | **Training Notebook** | [Google Colab — GRPO Fine-Tuning](https://colab.research.google.com/drive/14il2JQmy9-id_fSGpmYbssp-j975DSDo?usp=sharing) |
-| **Agentic RAG OS** | [Live Platform](https://rag-8000.zcodecorp.in/) |
 
 ### What Makes This Different
 
@@ -260,8 +259,6 @@ The idea is simple: if you're fine-tuning an LLM and need reward signals grounde
 
 ![Agentic RAG OS Demo](assets/demo/agentic-rag-os-demo.gif)
 
-**Live at:** [https://rag-8000.zcodecorp.in/](https://rag-8000.zcodecorp.in/)
-
 ## What We Learned
 
 1. **Process supervision beats outcome supervision.** Per-step rewards teach better research strategies than just grading the final answer. The agent learns *when* to retrieve more vs. *when* to stop and synthesize.
@@ -282,6 +279,3 @@ The idea is simple: if you're fine-tuning an LLM and need reward signals grounde
 6. Johnson, J., et al. "Billion-scale similarity search with GPUs." *IEEE Transactions on Big Data* (2019). — FAISS vector search engine
 7. Qwen Team. "Qwen2.5 Technical Report." *arXiv preprint arXiv:2412.15115* (2024). — Base model architecture
 
----
-
-*Built for the Meta × OpenEnv × Hugging Face × PyTorch Hackathon*
